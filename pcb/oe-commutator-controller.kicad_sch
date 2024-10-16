@@ -1948,16 +1948,6 @@
 			)
 			(uuid "efe01cad-11ab-400c-a220-de392e7bae84")
 		)
-		(pin "LTC44_{CURR}" output
-			(at 139.7 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-			(uuid "4e7ef4b8-cc54-484d-81fd-f9f918d6c9d1")
-		)
 		(pin "LTC44_{~{PFO}}" input
 			(at 139.7 95.25 0)
 			(effects
@@ -2047,6 +2037,16 @@
 				(justify right)
 			)
 			(uuid "307008af-19c7-4a41-9e7c-f2fcc2b1866f")
+		)
+		(pin "LTC44_{CURR}" input
+			(at 139.7 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "1e8391a8-c306-42d2-a32a-80079aa0d80c")
 		)
 		(instances
 			(project "oe-commutator-controller"

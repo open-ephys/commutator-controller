@@ -9652,7 +9652,7 @@
 		(uuid "885639a6-2e99-42a7-9e88-8bbe1f12712d")
 	)
 	(hierarchical_label "LTC44_{CURR}"
-		(shape output)
+		(shape input)
 		(at 168.91 134.62 0)
 		(fields_autoplaced yes)
 		(effects
@@ -11258,7 +11258,7 @@
 			(uuid "6d55bd61-d208-48bf-8d07-0da40ea0287a")
 		)
 		(instances
-			(project ""
+			(project "oe-commutator-controller"
 				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40/f332ab09-c494-4f8f-98bf-7facb28de9af"
 					(reference "SW1")
 					(unit 1)
