@@ -18,7 +18,10 @@
 #define IS31_POW_EN             0
 #define IS31_POW_BW             1
 
+#define IS31_ADDR               0x68
+
 // I2C
+#define I2C_PORT                i2c1
 #define I2C_SDA                 2
 #define I2C_SCL                 3
 
@@ -50,7 +53,7 @@ void setup_io()
     gpio_init(IS31_POW_EN);
     gpio_set_dir(IS31_POW_EN, GPIO_OUT);
 
-    i2c_init(i2c1, 400000);
+    i2c_init(I2C_PORT, 400000);
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
     gpio_pull_up(I2C_SDA);
@@ -82,54 +85,40 @@ void intialize_board()
 
 }
 
-static inline float charge_current()
+inline float charge_current()
 {
     uint16_t result = adc_read();
     return result * CODE_TO_AMPS;
 }
 
-// I2C reserves some addresses for special purposes. We exclude these from the scan.
-// These are any addresses of the form 000 0xxx or 111 1xxx
-bool reserved_addr(uint8_t addr) {
-    return (addr & 0x78) == 0 || (addr & 0x78) == 0x78;
+void set_rgb_color(uint8_t r, uint8_t g, uint8_t b)
+{
+    uint8_t rgb[4] = {0x04, r, g, b};
+    i2c_write_blocking(I2C_PORT, IS31_ADDR, rgb, 4, false);
+
+    const uint8_t pwm_data[2]  = {0x07, 0x00};
+    i2c_write_blocking(I2C_PORT, IS31_ADDR, pwm_data, 2, false);
+}
+
+void setup_rgb_driver()
+{
+    // Set max current to 5 mA
+    const uint8_t max_curr[2] = {0x03, 0x08};
+    i2c_write_blocking(I2C_PORT, IS31_ADDR, max_curr, 2, false);
+
+    // TODO: update_rgb()
+    set_rgb_color(1, 20, 7);
+
+    // Enable current driver
+    const uint8_t en_curr[2]  = {0x00, 0x20};
+    i2c_write_blocking(I2C_PORT, IS31_ADDR, en_curr, 2, false);
 }
 
 int main() 
 {
-    
     setup_io();
     intialize_board();
-
-    while(true){
-        printf("\nI2C Bus Scan\n");
-        printf("   0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F\n");
-
-        for (int addr = 0; addr < (1 << 7); ++addr) {
-            if (addr % 16 == 0) {
-                printf("%02x ", addr);
-            }
-
-            // Perform a 1-byte dummy read from the probe address. If a slave
-            // acknowledges this address, the function returns the number of bytes
-            // transferred. If the address byte is ignored, the function returns
-            // -1.
-
-            // Skip over any reserved addresses.
-            int ret;
-            uint8_t rxdata;
-            if (reserved_addr(addr))
-                ret = PICO_ERROR_GENERIC;
-            else
-                ret = i2c_read_blocking(i2c1, addr, &rxdata, 1, false);
-
-            printf(ret < 0 ? "." : "@");
-            printf(addr % 16 == 15 ? "\n" : "  ");
-        }
-        printf("Done.\n");
-    }
-
-
-    intialize_board();
+    setup_rgb_driver();
 
     while (true) 
     {
