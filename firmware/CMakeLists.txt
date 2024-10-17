@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(commutator commutator.c )
+add_executable(commutator commutator.c ltc4425.c is32fl3193.c tmc2130.c)
 
 pico_set_program_name(commutator "open-ephys-commutator")
 pico_set_program_version(commutator "0.1")
@@ -45,7 +45,7 @@ pico_enable_stdio_uart(commutator 0)
 pico_enable_stdio_usb(commutator 1)
 
 # Add the standard library to the build
-target_link_libraries(commutator pico_stdlib hardware_adc hardware_i2c)
+target_link_libraries(commutator pico_stdlib hardware_adc hardware_i2c hardware_spi)
 
 # Add the standard include files to the build
 target_include_directories(commutator PRIVATE
