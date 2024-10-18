@@ -34,7 +34,7 @@ project(commutator C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp accelstepper/AccelStepper.cpp)
+add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp parser.cpp accelstepper/AccelStepper.cpp tinyjson/tiny-json.c)
 
 pico_set_program_name(commutator "open-ephys-commutator")
 pico_set_program_version(commutator "0.1")
@@ -59,6 +59,7 @@ target_include_directories(commutator PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
   ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
    accelstepper 
+   tinyjson
 )
 
 # target_sources(commutator PRIVATE 

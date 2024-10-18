@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
 #include "hardware/gpio.h"
@@ -7,8 +8,10 @@
 #include "ltc4425.h"
 #include "is32fl3193.h"
 #include "tmc2130.h"
+#include "parser.h"
 
 #include "accelstepper/AccelStepper.h"
+#include "tinyjson/tiny-json.h"
 
 
 // Firmware Version
@@ -39,7 +42,37 @@
 #define MAX_SPEED_SPS       ((float)USTEPS_PER_REV * GEAR_RATIO * SPEED_RPM / 60.0)
 #define MAX_ACCEL_SPSS      ((float)USTEPS_PER_REV * GEAR_RATIO * ACCEL_RPMM / 60.0)
 
+
+
 AccelStepper motor(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR);
+double target_turns = 0;
+
+
+void soft_stop()
+{
+    motor.setCurrentPosition(0);
+    target_turns = 0.0;
+}
+
+void turn_motor(double turns)
+{
+    // Invalid request
+    if (abs(turns) > MAX_TURNS)
+        return; // Failure, cant turn this far
+
+    // Relative move
+    target_turns += turns;
+
+    if (abs(target_turns) < MAX_TURNS)
+    {
+        motor.moveTo(lround(target_turns * (double)USTEPS_PER_REV * GEAR_RATIO));
+    } else {
+        // Deal with very unlikely case of overflow
+        soft_stop();
+        turn_motor(turns); // Restart this routine now that position has been zeroed
+    }
+}
+
 
 void core1_entry() 
 {
@@ -48,6 +81,8 @@ void core1_entry()
         motor.run();
     }
 }
+
+
 
 int main() 
 {
@@ -81,13 +116,26 @@ int main()
     // Start the second core with motor.run() as its only task
     multicore_launch_core1(core1_entry);
 
+    // When using serial monitor
+    // -- set ending to CR
+    // -- send this {"turn":1.0} and it will turn
     while (true)
     {
-        // Oscillate
-        motor.move(1000);
-        sleep_ms(1000);
-        motor.move(-1000);
-        sleep_ms(1000);
+        json_t const *root = NULL;
+        int rc = read_json_from_stdin(root);
+        if (rc)
+        {
+            printf("Invalid JSON formatting: %d\n", rc);
+            continue;
+        }
+
+        double turns = 0;
+        rc = parse_turns(root, &turns);
+        if (!rc && !isnan(turns)) {
+            turn_motor(turns);
+        } else {
+            printf("Invalid JSON formatting: %d\n", rc);
+        }
     }
 
     return 0;
