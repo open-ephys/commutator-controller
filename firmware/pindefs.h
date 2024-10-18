@@ -18,11 +18,11 @@
 #define I2C_SCL                 3
 
 // Stepper driver pins
-#define TMC2130_DIR             14
-#define TMC2130_STEP            16
-#define TMC2130_CFG0_MISO       12
-#define TMC2130_CFG1_MOSI       11
-#define TMC2130_CFG2_SCLK       13
-#define TMC2130_CFG3_CS         10
-#define TMC2130_CFG6_EN         9
+#define TMC2130_DIR             18
+#define TMC2130_STEP            19
+#define TMC2130_CFG0_MISO       20
+#define TMC2130_CFG1_MOSI       23
+#define TMC2130_CFG2_SCLK       22
+#define TMC2130_CFG3_CS         21
+#define TMC2130_CFG6_EN         17
 

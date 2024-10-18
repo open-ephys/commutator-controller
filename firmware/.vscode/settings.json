@@ -42,6 +42,8 @@
         "is32fl3193.h": "c",
         "defs.h": "c",
         "stdlib.h": "c",
-        "pindefs.h": "c"
+        "pindefs.h": "c",
+        "*.pio": "cpp",
+        "xutility": "cpp"
     }
 }
