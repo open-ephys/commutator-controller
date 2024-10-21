@@ -11,6 +11,108 @@
 		(comment 1 "Jonathan P. Newman")
 	)
 	(lib_symbols
+		(symbol "Connector:TestPoint"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0.762) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:R_US"
 			(pin_numbers hide)
 			(pin_names
@@ -383,12 +485,108 @@
 				)
 			)
 		)
+		(symbol "power:GND"
+			(power)
+			(pin_numbers hide)
+			(pin_names
+				(offset 0) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "GND"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "GND_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "GND_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 	)
 	(junction
-		(at 179.07 66.04)
+		(at 177.8 66.04)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "07b3b54b-9881-4ac7-8b90-a05a32295ba0")
+		(uuid "2598194d-90ca-4c9a-a2ce-4332641bd78f")
 	)
 	(junction
 		(at 167.64 68.58)
@@ -397,10 +595,16 @@
 		(uuid "355bcb8c-bac2-4f9a-842d-e1bcc7842555")
 	)
 	(junction
-		(at 191.77 68.58)
+		(at 190.5 68.58)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "42c62316-acc9-4ba5-a2dc-65e2c30e9797")
+		(uuid "46d400da-9ac8-4f1a-929f-2c893438864b")
+	)
+	(junction
+		(at 152.4 63.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5c4384af-7b32-49b9-8e61-c49d530b0632")
 	)
 	(junction
 		(at 165.1 66.04)
@@ -410,7 +614,7 @@
 	)
 	(wire
 		(pts
-			(xy 179.07 53.34) (xy 179.07 54.61)
+			(xy 177.8 53.34) (xy 177.8 54.61)
 		)
 		(stroke
 			(width 0)
@@ -467,6 +671,16 @@
 			(type default)
 		)
 		(uuid "0f506624-c163-45ec-b6ee-5163f7fba45f")
+	)
+	(wire
+		(pts
+			(xy 101.6 151.13) (xy 101.6 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12a52e7b-7bf5-44aa-aaae-996a7b2f0e3e")
 	)
 	(wire
 		(pts
@@ -540,7 +754,7 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 66.04) (xy 179.07 66.04)
+			(xy 165.1 66.04) (xy 177.8 66.04)
 		)
 		(stroke
 			(width 0)
@@ -550,7 +764,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 53.34) (xy 191.77 54.61)
+			(xy 190.5 53.34) (xy 190.5 54.61)
 		)
 		(stroke
 			(width 0)
@@ -570,16 +784,6 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 68.58) (xy 203.2 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "40f0f64c-b3b1-4556-a678-440d17023e01")
-	)
-	(wire
-		(pts
 			(xy 152.4 118.11) (xy 152.4 153.67)
 		)
 		(stroke
@@ -590,16 +794,6 @@
 	)
 	(wire
 		(pts
-			(xy 179.07 66.04) (xy 203.2 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "441fa4f9-adc8-4d8c-9777-28d0f243d8e0")
-	)
-	(wire
-		(pts
 			(xy 165.1 66.04) (xy 165.1 31.75)
 		)
 		(stroke
@@ -607,6 +801,16 @@
 			(type default)
 		)
 		(uuid "4aee3c03-b0a4-46ec-8760-e03d7f4bbaa0")
+	)
+	(wire
+		(pts
+			(xy 152.4 53.34) (xy 152.4 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4bf3948d-b417-4864-8711-f5edddce8009")
 	)
 	(wire
 		(pts
@@ -630,6 +834,26 @@
 	)
 	(wire
 		(pts
+			(xy 177.8 66.04) (xy 203.2 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5106a45f-7f91-472b-8fb8-7b32fb3d4d87")
+	)
+	(wire
+		(pts
+			(xy 114.3 151.13) (xy 114.3 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5325266c-8774-479d-b15e-db26218c4887")
+	)
+	(wire
+		(pts
 			(xy 152.4 153.67) (xy 203.2 153.67)
 		)
 		(stroke
@@ -637,6 +861,16 @@
 			(type default)
 		)
 		(uuid "538fac7e-b167-4546-8890-2a0b6419f08c")
+	)
+	(wire
+		(pts
+			(xy 152.4 62.23) (xy 152.4 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "57463c5b-58fd-4acd-a3b3-5c1318f8dff2")
 	)
 	(wire
 		(pts
@@ -670,7 +904,17 @@
 	)
 	(wire
 		(pts
-			(xy 179.07 62.23) (xy 179.07 66.04)
+			(xy 190.5 68.58) (xy 203.2 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7c20da67-e31f-46af-ad70-d1c1d80f0aac")
+	)
+	(wire
+		(pts
+			(xy 177.8 62.23) (xy 177.8 66.04)
 		)
 		(stroke
 			(width 0)
@@ -690,7 +934,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 29.21) (xy 152.4 63.5)
+			(xy 158.75 29.21) (xy 158.75 63.5)
 		)
 		(stroke
 			(width 0)
@@ -740,7 +984,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 29.21) (xy 152.4 29.21)
+			(xy 203.2 29.21) (xy 158.75 29.21)
 		)
 		(stroke
 			(width 0)
@@ -757,6 +1001,16 @@
 			(type default)
 		)
 		(uuid "9c5b4f82-b090-4022-9e06-3aab22f96410")
+	)
+	(wire
+		(pts
+			(xy 152.4 63.5) (xy 158.75 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9cd1a37e-ea81-44ce-9fc3-3de94decc3bd")
 	)
 	(wire
 		(pts
@@ -950,7 +1204,7 @@
 	)
 	(wire
 		(pts
-			(xy 191.77 62.23) (xy 191.77 68.58)
+			(xy 190.5 62.23) (xy 190.5 68.58)
 		)
 		(stroke
 			(width 0)
@@ -980,7 +1234,7 @@
 	)
 	(wire
 		(pts
-			(xy 167.64 68.58) (xy 191.77 68.58)
+			(xy 167.64 68.58) (xy 190.5 68.58)
 		)
 		(stroke
 			(width 0)
@@ -989,17 +1243,17 @@
 		(uuid "fb775e20-4ec0-4b83-b0f1-164b9334bc37")
 	)
 	(symbol
-		(lib_id "Device:R_US")
-		(at 179.07 58.42 0)
-		(mirror y)
+		(lib_id "Connector:TestPoint")
+		(at 101.6 151.13 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "28b1e68f-60fa-410d-91eb-539b9d878508")
-		(property "Reference" "R1"
-			(at 177.8 57.15 0)
+		(fields_autoplaced yes)
+		(uuid "228dc06f-36c7-4a7f-b944-4a1ff74d1b39")
+		(property "Reference" "TP5"
+			(at 104.14 146.5579 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1007,8 +1261,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.7k"
-			(at 177.8 59.69 0)
+		(property "Value" "GND"
+			(at 104.14 149.0979 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1016,8 +1270,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 178.054 58.674 90)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
+			(at 106.68 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1026,7 +1280,74 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 179.07 58.42 0)
+			(at 106.68 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 101.6 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b6908c83-87b4-4949-a13b-e51cd1197ceb")
+		)
+		(instances
+			(project "oe-commutator-controller"
+				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
+					(reference "TP5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 177.8 58.42 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "28b1e68f-60fa-410d-91eb-539b9d878508")
+		(property "Reference" "R1"
+			(at 176.53 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 176.53 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 176.784 58.674 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 177.8 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1035,7 +1356,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 179.07 58.42 0)
+			(at 177.8 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1123,17 +1444,16 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 179.07 53.34 0)
+		(lib_id "power:GND")
+		(at 114.3 152.4 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3b2cd957-81fe-43a3-b44e-972424d19cdb")
-		(property "Reference" "#PWR01"
-			(at 179.07 57.15 0)
+		(uuid "35dff46e-9456-4c20-bafc-879f5f775cad")
+		(property "Reference" "#PWR078"
+			(at 114.3 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1141,8 +1461,8 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.3V"
-			(at 179.07 48.26 0)
+		(property "Value" "GND"
+			(at 114.3 156.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1150,7 +1470,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 179.07 53.34 0)
+			(at 114.3 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1159,7 +1479,143 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 179.07 53.34 0)
+			(at 114.3 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 114.3 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0dffeff2-54c7-49e4-877f-bb34b2597371")
+		)
+		(instances
+			(project "oe-commutator-controller"
+				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
+					(reference "#PWR078")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 152.4 58.42 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "37cf1e0d-87a1-4990-b012-51b6895ec5df")
+		(property "Reference" "R25"
+			(at 151.13 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 151.13 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 151.384 58.674 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 152.4 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b24b7611-86a2-42e8-befd-e3dfc014b8b5")
+		)
+		(pin "2"
+			(uuid "7533b87a-f70d-4200-9f28-165a59628175")
+		)
+		(instances
+			(project "oe-commutator-controller"
+				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
+					(reference "R25")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 177.8 53.34 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3b2cd957-81fe-43a3-b44e-972424d19cdb")
+		(property "Reference" "#PWR01"
+			(at 177.8 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 177.8 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 177.8 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 177.8 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1168,7 +1624,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 179.07 53.34 0)
+			(at 177.8 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1189,8 +1645,75 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 114.3 151.13 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4b34cfd9-2bf6-4b39-b6c8-def0ac3d1935")
+		(property "Reference" "TP6"
+			(at 116.84 146.5579 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "GND"
+			(at 116.84 149.0979 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
+			(at 119.38 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 119.38 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 114.3 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "682c2e36-9979-4903-8637-f2db799f4eba")
+		)
+		(instances
+			(project "oe-commutator-controller"
+				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
+					(reference "TP6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
-		(at 191.77 53.34 0)
+		(at 190.5 53.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1199,7 +1722,7 @@
 		(fields_autoplaced yes)
 		(uuid "6fc57b5c-aef7-4c6c-be51-ea06a8d0efaf")
 		(property "Reference" "#PWR076"
-			(at 191.77 57.15 0)
+			(at 190.5 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1208,7 +1731,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 191.77 48.26 0)
+			(at 190.5 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1216,7 +1739,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 191.77 53.34 0)
+			(at 190.5 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1225,7 +1748,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 191.77 53.34 0)
+			(at 190.5 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1234,7 +1757,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 191.77 53.34 0)
+			(at 190.5 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1249,6 +1772,71 @@
 			(project "oe-commutator-controller"
 				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
 					(reference "#PWR076")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 101.6 152.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8af10833-8b37-46a6-8314-c1ef31f1d382")
+		(property "Reference" "#PWR077"
+			(at 101.6 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 101.6 156.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 101.6 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4e12f311-ba55-44ea-8bf2-3402e6837009")
+		)
+		(instances
+			(project "oe-commutator-controller"
+				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
+					(reference "#PWR077")
 					(unit 1)
 				)
 			)
@@ -1320,7 +1908,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_US")
-		(at 191.77 58.42 0)
+		(at 190.5 58.42 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -1329,7 +1917,7 @@
 		(dnp no)
 		(uuid "99c7710d-84c7-4af0-b6f8-dc7c1bd93d5e")
 		(property "Reference" "R2"
-			(at 190.5 57.15 0)
+			(at 189.23 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1337,8 +1925,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "4.7k"
-			(at 190.5 59.69 0)
+		(property "Value" "10k"
+			(at 189.23 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1347,7 +1935,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 190.754 58.674 90)
+			(at 189.484 58.674 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1356,7 +1944,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 191.77 58.42 0)
+			(at 190.5 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1365,7 +1953,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 191.77 58.42 0)
+			(at 190.5 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1447,6 +2035,72 @@
 			(project "oe-commutator-controller"
 				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
 					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 152.4 53.34 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "de57ac0c-118f-40a5-957b-87e0671654ed")
+		(property "Reference" "#PWR029"
+			(at 152.4 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 152.4 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 152.4 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1709ad5a-2cab-41ed-81d8-086ab522bd37")
+		)
+		(instances
+			(project "oe-commutator-controller"
+				(path "/f8e1d654-dc44-4fb2-953c-f5982945ff40"
+					(reference "#PWR029")
 					(unit 1)
 				)
 			)
