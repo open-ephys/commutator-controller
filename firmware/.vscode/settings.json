@@ -114,6 +114,7 @@
         "xtr1common": "cpp",
         "*.tcc": "cpp",
         "memory_resource": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "accelstepper.h": "c"
     }
 }

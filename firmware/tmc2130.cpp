@@ -1,6 +1,6 @@
 #include "pico/stdlib.h"
-#include "pindefs.h"
 #include "hardware/spi.h"
+
 #include "tmc2130.h"
 
 #define WRITE_FLAG              (1<<7)

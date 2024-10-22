@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pindefs.h"
+
 #define TMC2130_SPI_PORT        spi0
 
 // TMC2130 registers

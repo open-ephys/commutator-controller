@@ -3,13 +3,40 @@
 #include "hardware/i2c.h"
 #include "is32fl3193.h"
 
-void rgb_set_color(uint8_t r, uint8_t g, uint8_t b)
+static void rgb_set_rgb(uint8_t r, uint8_t g, uint8_t b)
 {
     uint8_t rgb[4] = {0x04, r, g, b};
     i2c_write_blocking(I2C_PORT, IS31_ADDR, rgb, 4, false);
 
     const uint8_t pwm_data[2]  = {0x07, 0x00};
     i2c_write_blocking(I2C_PORT, IS31_ADDR, pwm_data, 2, false);
+}
+
+void rgb_set_blue() { rgb_set_rgb(0, 0, 255); }
+void rgb_set_red() { rgb_set_rgb(255, 0, 0); }
+void rgb_set_green() { rgb_set_rgb(1, 20, 7); }
+
+void rgb_set_auto(const Context &ctx)
+{
+    if (ctx.led_on)
+    {
+        // Enable current driver
+        const uint8_t en_curr[2]  = {0x00, 0x20};
+        i2c_write_blocking(I2C_PORT, IS31_ADDR, en_curr, 2, false);
+    } else 
+    {
+        // Disable current driver
+        const uint8_t en_curr[2]  = {0x00, 0x00};
+        i2c_write_blocking(I2C_PORT, IS31_ADDR, en_curr, 2, false);
+    }
+
+    if (ctx.commutator_en)
+    {
+        rgb_set_green();
+    } else
+    {
+        rgb_set_red();
+    }
 }
 
 void rgb_set_breathing(bool breathing)
@@ -25,7 +52,7 @@ void rgb_set_breathing(bool breathing)
     }
 }
 
-void rgb_init()
+void rgb_init(const Context &ctx)
 {
     gpio_init(IS31_POW_EN);
     gpio_set_dir(IS31_POW_EN, GPIO_OUT);
@@ -42,6 +69,6 @@ void rgb_init()
     i2c_write_blocking(I2C_PORT, IS31_ADDR, max_curr, 2, false);
 
     // Enable current driver
-    const uint8_t en_curr[2]  = {0x00, 0x20};
-    i2c_write_blocking(I2C_PORT, IS31_ADDR, en_curr, 2, false);
+    rgb_set_auto(ctx);
 }
+

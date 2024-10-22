@@ -13,3 +13,4 @@ static inline float ltc4425_charge_current()
 }
 
 void ltc4425_init();
+inline bool ltc4425_power_good() {return gpio_get(LTC4425_nPOW_FAIL);}

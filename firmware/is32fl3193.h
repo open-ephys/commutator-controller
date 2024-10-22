@@ -1,9 +1,12 @@
 #pragma once
 
-#define IS31_ADDR               0x68
-#define RGB_SET_RED             rgb_set_color(255, 0, 0);
-#define RGB_SET_GREEN           rgb_set_color(1, 20, 7);
+#include "defs.h"
 
+#define IS31_ADDR               0x68
+
+void rgb_init(const Context &ctx);
 void rgb_set_breathing(bool breathing); 
-void rgb_set_color(uint8_t r, uint8_t g, uint8_t b);
-void rgb_init();
+void rgb_set_blue();
+void rgb_set_red(); 
+void rgb_set_green();
+void rgb_set_auto(const Context &ctx);

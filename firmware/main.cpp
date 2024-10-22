@@ -1,140 +1,176 @@
 #include <stdio.h>
-#include <math.h>
+#include <iostream>
+#include <cmath>
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
 #include "hardware/gpio.h"
 
+#include <ArduinoJson.h>
+
+#include "defs.h"
 #include "pindefs.h"
 #include "ltc4425.h"
 #include "is32fl3193.h"
-#include "tmc2130.h"
-#include "parser.h"
+#include "motor.h"
+#include "save.h"  // TODO: Does not work properly. Use debug to figure out whats happening
 
-#include "accelstepper/AccelStepper.h"
-#include "tinyjson/tiny-json.h"
-
-
-// Firmware Version
+// Versions
 #define FIRMWARE_VER        "0.1.0"
-
-// 1. Uncomment to continuously dump button press data over Serial
-//#define DEBUG
+#define BOARD_REV           "D"
 
 // 3. Select a commutator type by uncommenting one of the following
-//#define COMMUTATOR_TYPE     "SPI Rev. A"
-//#define GEAR_RATIO          1.77777777778
+//#define COMMUTATOR_TYPE     "SPI"
+//const double GEAR_RATIO     = 1.77777777778
 
-#define COMMUTATOR_TYPE     "Single Channel Coax Rev. A"
-#define GEAR_RATIO          2.0
+#define COMMUTATOR_TYPE     "Single Channel Coax"
+const double GEAR_RATIO     = 2.0;
 
-//#define COMMUTATOR_TYPE     "Dual Channel Coax Rev. A"
-//#define GEAR_RATIO          3.06666666667
+//#define COMMUTATOR_TYPE     "Dual Channel Coax"
+//const double GEAR_RATIO     = 3.06666666667
 
-// Stepper parameters
-#define DETENTS             200
-#define USTEPS_PER_STEP     8
-#define USTEPS_PER_REV      (DETENTS * USTEPS_PER_STEP)
-#define MAX_TURNS           (2147483647 / USTEPS_PER_REV / GEAR_RATIO)
-
-// Turn speed and acceleration
-#define SPEED_RPM           100
-#define ACCEL_RPMM          150
-#define MAX_SPEED_SPS       ((float)USTEPS_PER_REV * GEAR_RATIO * SPEED_RPM / 60.0)
-#define MAX_ACCEL_SPSS      ((float)USTEPS_PER_REV * GEAR_RATIO * ACCEL_RPMM / 60.0)
-
-
-
-AccelStepper motor(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR);
-double target_turns = 0;
-
-
-void soft_stop()
-{
-    motor.setCurrentPosition(0);
-    target_turns = 0.0;
-}
-
-void turn_motor(double turns)
-{
-    // Invalid request
-    if (abs(turns) > MAX_TURNS)
-        return; // Failure, cant turn this far
-
-    // Relative move
-    target_turns += turns;
-
-    if (abs(target_turns) < MAX_TURNS)
-    {
-        motor.moveTo(lround(target_turns * (double)USTEPS_PER_REV * GEAR_RATIO));
-    } else {
-        // Deal with very unlikely case of overflow
-        soft_stop();
-        turn_motor(turns); // Restart this routine now that position has been zeroed
-    }
-}
-
+// Holds the current state
+Context ctx;
+MotorContext mot_ctx {.motor = AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), .target_turns = 0.0};
 
 void core1_entry() 
 {
     while (true)
     {
-        motor.run();
+        mot_ctx.motor.run();
     }
 }
 
+std::string ignore_until_open_curly()
+{
+    std::string invalid;
+    for (auto next = std::cin.peek(); next != '{' && !std::cin.eof(); next = std::cin.peek())
+    {
+        invalid += std::cin.get();
+    }
 
+    return invalid;
+}
 
 int main() 
 {
     // Initialize chips
     stdio_init_all();
-    ltc4425_init();
-    rgb_init();
-    tmc2130_init();
+    motor_enable(false);
 
+    // Load saved state
+    //load(ctx);
+
+    rgb_init(ctx);
+    ltc4425_init();
+    
     // Wait for chips to wake up
     sleep_ms(10);
 
     // Wait for supercaps to charge
-    RGB_SET_RED
+    rgb_set_red();
     rgb_set_breathing(true);
-    while(!gpio_get(LTC4425_nPOW_FAIL))
+    while(!ltc4425_power_good())
     {
-        printf("Charge current: %f A\n", ltc4425_charge_current());
         sleep_ms(10);
     }
     rgb_set_breathing(false);
-    RGB_SET_GREEN
+    rgb_set_auto(ctx);
 
-    // Stepper motor configuration
-    double target_turns = 0;
-    motor.setMaxSpeed(MAX_SPEED_SPS);
-    motor.setAcceleration(MAX_ACCEL_SPSS);
-    motor.setMinPulseWidth(20);
-    tmc2130_enable(1);
+    // Initialize motor
+    motor_init(ctx, mot_ctx);
 
     // Start the second core with motor.run() as its only task
     multicore_launch_core1(core1_entry);
 
-    // When using serial monitor
-    // -- set ending to CR
-    // -- send this {"turn":1.0} and it will turn
+    // Decode commands and buttons
     while (true)
     {
-        json_t const *root = NULL;
-        int rc = read_json_from_stdin(root);
-        if (rc)
-        {
-            printf("Invalid JSON formatting: %d\n", rc);
+        JsonDocument receive;
+        auto e = deserializeJson(receive, std::cin);
+
+        if (e) {
+            auto invalid = ignore_until_open_curly();
+            JsonDocument doc;
+            doc["error"] = e.c_str();
+            doc["invalid_str"] = invalid.c_str();
+            serializeJson(doc, std::cout);
             continue;
         }
 
-        double turns = 0;
-        rc = parse_turns(root, &turns);
-        if (!rc && !isnan(turns)) {
-            turn_motor(turns);
-        } else {
-            printf("Invalid JSON formatting: %d\n", rc);
+        auto enable = receive["enable"];
+        auto turns = receive["turn"];
+        auto led = receive["led"];
+        auto print = receive["print"];
+
+        // Enable command
+        if (enable.is<bool>()) 
+        {
+            ctx.commutator_en = enable;
+
+            if (!ctx.commutator_en)
+            {
+                motor_hard_stop(mot_ctx);
+            } else {
+                motor_enable(true);
+            }
+
+            rgb_set_auto(ctx);
+            //save(ctx);
+        }
+
+        // Turn command
+        if (turns.is<double>()) 
+        {
+            double t = turns.as<double>();
+            if (!ctx.commutator_en)
+            {
+                JsonDocument doc;
+                doc["error"] = "Cannot move when commutator is disabled";
+                serializeJson(doc, std::cout);
+            }
+            else if (std::isnan(t))
+            {
+                JsonDocument doc;
+                doc["error"] = "Turn command was NaN";
+                serializeJson(doc, std::cout);
+            }
+            else if (std::isinf(t))
+            {
+                JsonDocument doc;
+                doc["error"] = "Turn command was Inf";
+                serializeJson(doc, std::cout);
+            }
+            else 
+            {
+                motor_turn(mot_ctx, t);
+            }
+        }
+
+        // LED command
+        if (led.is<bool>()) 
+        {
+            ctx.led_on = led;
+            rgb_set_auto(ctx);
+            //save(ctx);
+        }
+
+        // Print command
+        if (receive["print"].is<JsonVariant>()) 
+        {
+            JsonDocument doc;
+            doc["type"] = COMMUTATOR_TYPE;
+            doc["board_rev"] = BOARD_REV;
+            doc["firmware"] = FIRMWARE_VER;
+            doc["enable"] = ctx.commutator_en;
+            doc["led"] = ctx.led_on;
+            doc["steps_to_go"] = mot_ctx.motor.distanceToGo();
+            doc["target_steps"] = mot_ctx.motor.targetPosition();
+            doc["target_turns"] = mot_ctx.target_turns;
+            doc["max_turns"] = MAX_TURNS;
+            doc["motor_running"] = mot_ctx.motor.distanceToGo() != 0;
+            doc["charge_current"] = ltc4425_charge_current();
+            doc["power_good"] = ltc4425_power_good();
+            serializeJson(doc, std::cout);
         }
     }
 

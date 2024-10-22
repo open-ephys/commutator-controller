@@ -34,7 +34,7 @@ project(commutator C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp parser.cpp accelstepper/AccelStepper.cpp tinyjson/tiny-json.c)
+add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp motor.cpp save.cpp accelstepper/AccelStepper.cpp)
 
 pico_set_program_name(commutator "open-ephys-commutator")
 pico_set_program_version(commutator "0.1")
@@ -51,24 +51,16 @@ target_link_libraries(commutator PRIVATE
     hardware_adc 
     hardware_i2c 
     hardware_spi
-    hardware_pio
-    hardware_dma)
+    hardware_flash
+    ArduinoJson)
 
 # Add the standard include files to the build
 target_include_directories(commutator PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
   ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
    accelstepper 
-   tinyjson
 )
 
-# target_sources(commutator PRIVATE 
-#     accelstepper/accelstepper.cpp
-# )
-
-# # Compile the PIO-programs and include it into the project
-# pico_add_extra_outputs(commutator)
-# pico_generate_pio_header(commutator ${CMAKE_CURRENT_LIST_DIR}/picostepper/driver/four_wire.pio)
-# pico_generate_pio_header(commutator ${CMAKE_CURRENT_LIST_DIR}/picostepper/driver/two_wire.pio)
+add_subdirectory(arduinojson)
 
 
