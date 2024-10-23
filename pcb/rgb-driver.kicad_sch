@@ -6,8 +6,10 @@
 	(paper "A5")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "D")
+		(rev "E")
 		(company "Open Ephys, Inc.")
+		(comment 1 "Cris Sharp")
+		(comment 2 "Jonathan P. Newman")
 	)
 	(lib_symbols
 		(symbol "Device:C"
