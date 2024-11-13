@@ -247,35 +247,8 @@ void turn_motor(uint8_t direction, struct Context context)
     if (!direction){printf("ccw\n");}
 }
 
-// int find_first_empty_page()
-// {
-//     uint8_t page, *addr;
-//     for (page = 0; page < FLASH_SECTOR_SIZE/FLASH_PAGE_SIZE; page++)
-//     {
-//         *addr = XIP_BASE + FLASH_TARGET_OFFSET + (page * FLASH_PAGE_SIZE);
-//         for (uint8_t i = 0; i < sizeof(struct Context); i++)
-//         {
-//             if (*(addr + i) != 0xff)
-//             {
-//                 return page;
-//             }
-//         }
-//     }
-// }
-
 void write_flash_context()
 {
-    // int first_empty_page = find_first_empty_page();    
-    // uint8_t *context_as_bytes = (uint8_t *) &context;
-    // const uint32_t interrupts = save_and_disable_interrupts();
-    // if (first_empty_page < 0)
-    // {
-    //     flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
-    //     first_empty_page = 0;
-    // }
-    // flash_range_program(FLASH_TARGET_OFFSET + (first_empty_page*FLASH_PAGE_SIZE), (const uint8_t *)context_as_bytes, FLASH_PAGE_SIZE);
-    // restore_interrupts(interrupts);
-
     // these two flash functions are unsafe. we must disable interrupts.
     uint8_t *context_as_bytes = (uint8_t *) &ctx;
     uint32_t interrupts = save_and_disable_interrupts();
@@ -286,14 +259,11 @@ void write_flash_context()
 
 void read_flash_context()
 {
-    // int first_empty_page = find_first_empty_page();
-    // return *(struct Context *)(XIP_BASE + FLASH_TARGET_OFFSET);
     memcpy(&ctx, (const uint8_t *)(XIP_BASE + FLASH_TARGET_OFFSET), sizeof(struct Context));
 }
 
 int main() 
 {
-    // struct Context ctx;
     ctx.enable = 0;
     uint8_t touch_status_buffer[1];
     uint8_t current_touch_data, previous_touch_data;
@@ -308,7 +278,6 @@ int main()
     uint8_t button_counter;
     print_diagnostics();
     #endif
-    // ctx = read_flash_context();
     read_flash_context();
     update_rgb(ctx);
     i2c_write_blocking(I2C_PORT, CAP1296_ADDR, cap1298_clear_alert, 2, false); // Clear touch status register after initialization
