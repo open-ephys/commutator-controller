@@ -34,8 +34,7 @@ project(commutator C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-
-add_executable(commutator commutator.c )
+add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp motor.cpp cap1296.cpp io.cpp accelstepper/AccelStepper.cpp)
 
 pico_set_program_name(commutator "open-ephys-commutator")
 pico_set_program_version(commutator "0.1")
@@ -43,15 +42,26 @@ pico_set_program_version(commutator "0.1")
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(commutator 0)
 pico_enable_stdio_usb(commutator 1)
-
+ 
 # Add the standard library to the build
-target_link_libraries(commutator pico_stdlib hardware_adc hardware_i2c)
+target_link_libraries(commutator PRIVATE
+    pico_stdlib
+    pico_time
+    pico_multicore
+    hardware_adc 
+    hardware_i2c 
+    hardware_spi
+    hardware_flash
+    hardware_sync
+    ArduinoJson)
 
 # Add the standard include files to the build
 target_include_directories(commutator PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
   ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
+   accelstepper 
 )
 
-pico_add_extra_outputs(commutator)
+add_subdirectory(arduinojson)
+
 
