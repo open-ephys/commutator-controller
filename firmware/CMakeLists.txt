@@ -42,18 +42,19 @@ pico_set_program_version(commutator "0.1")
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(commutator 0)
 pico_enable_stdio_usb(commutator 1)
- 
+
 # Add the standard library to the build
 target_link_libraries(commutator PRIVATE
     pico_stdlib
-    pico_time
     pico_multicore
+    pico_time
     hardware_adc 
+    hardware_flash
     hardware_i2c 
     hardware_spi
-    hardware_flash
     hardware_sync
-    ArduinoJson)
+    ArduinoJson
+)
 
 # Add the standard include files to the build
 target_include_directories(commutator PRIVATE
@@ -63,5 +64,4 @@ target_include_directories(commutator PRIVATE
 )
 
 add_subdirectory(arduinojson)
-
 

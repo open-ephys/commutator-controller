@@ -51,6 +51,8 @@ void rgb_set_breathing(bool breathing)
 
 void rgb_init()
 {
+    rgb_set_breathing(true);
+    rgb_set_red();
     gpio_put(IS31FL3193_SDB, 1);
     const uint8_t max_curr[2] = {0x03, 0x08}; // Set max current to 5 mA
     i2c_write_blocking(I2C_PORT, IS31FL3193_ADDR, max_curr, 2, false);

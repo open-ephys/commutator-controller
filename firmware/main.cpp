@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <ArduinoJson.h>
 #include <cmath>
 #include <iostream>
@@ -16,7 +17,7 @@
 #include "motor.h"
 #include "pindefs.h"
 
-#define DEBUG
+// #define DEBUG
 
 // Versions
 #define FIRMWARE_VER "0.1.0"
@@ -32,11 +33,17 @@ const double GEAR_RATIO = 2.0;
 // #define COMMUTATOR_TYPE     "Dual Channel Coax"
 // const double GEAR_RATIO     = 3.06666666667
 
+#define MAX_MESSAGE_LENGTH 1024
+
 volatile uint8_t alert_flag;
 Context ctx;
 MotorContext mot_ctx{.motor = AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), .target_turns = 0.0};
 
 void print_diagnostics();
+void print_context(Context context, MotorContext motor_context);
+void turn_cmd(Context context, MotorContext motor_context, double t);
+void write_context_to_flash(Context context);
+void update_context(Context context, MotorContext motor_context);
 
 // void __no_inline_not_in_flash_func(core1_entry)()
 void core1_entry()
@@ -47,16 +54,6 @@ void core1_entry()
         mot_ctx.motor.run();
     }
 }
-
-// std::string ignore_until_open_curly()
-// {
-//     std::string invalid;
-//     for (auto next = std::cin.peek(); next != '{' && !std::cin.eof(); next = std::cin.peek())
-//     {
-//         invalid += std::cin.get();
-//     }
-//     return invalid;
-// }
 
 uint8_t extract_touch_data(uint8_t previous_button_press, uint8_t touch_status_register)
 {
@@ -74,39 +71,75 @@ uint8_t extract_touch_data(uint8_t previous_button_press, uint8_t touch_status_r
 int main()
 {
     // Declare or define local variables
-    uint8_t touch_status_register, previous_button_press, current_button_press, context_flag, turn_flag, write_context_flag;
-    uint32_t interrupts;
+    uint8_t touch_status_register, previous_button_press, current_button_press; // for button logic
+    uint8_t context_flag, turn_flag, write_context_flag;                        // flags
+    uint8_t contains_open_bracket, error_code;                                  // for parsing incoming data
+    char message[MAX_MESSAGE_LENGTH] = {0};
+    uint16_t message_index;
     double t;
+    JsonDocument receive_doc;
     // Initialize hardware
-    io_init(); // RP2040 io
-    rgb_set_breathing(true);
-    rgb_set_red();
+    io_init();      // RP2040 io
     rgb_init();     // (IS3FL3193) RGB LED driver
     ltc4425_init(); // Super capacitor charger
     cap1296_init(); // Capacitative touch sensor
+    ctx = *(Context *)(XIP_BASE + FLASH_TARGET_OFFSET); // Read context from flash
+    motor_init(ctx, mot_ctx);                           // (TMC2130) motor driver
+    sleep_ms(10);                                       // Wait for chips to wake up
+    rgb_set_breathing(false);
+    rgb_update(ctx);
+    multicore_launch_core1(core1_entry); // Start the second core with motor.run() as its only task
+    cap1296_clear_touch_status();
 #ifdef DEBUG
+    while (!tud_cdc_connected()){}
     uint8_t button_counter;
     print_diagnostics();
 #endif
-    // Start the second core with motor.run() as its only task
-    rgb_set_breathing(false);
-    ctx = *(Context *)(XIP_BASE + FLASH_TARGET_OFFSET); // Read context from flash
-    motor_init(ctx, mot_ctx); // (TMC2130) motor driver
-    motor_enable(ctx.enable, mot_ctx);
-    sleep_ms(10); // Wait for chips to wake up
-    rgb_update(ctx);
-    multicore_launch_core1(core1_entry);
-    cap1296_clear_touch_status();
     // Decode commands and buttons
     while (true)
     {
+
+        // If data is available in the serial port
         if (tud_cdc_available())
-        {
-            JsonDocument doc;
-            auto error = deserializeJson(doc, std::cin);
-            if (error.code() == DeserializationError::Ok)
+        { 
+            if (message_index < MAX_MESSAGE_LENGTH - 1)
             {
-                for (JsonPair kv : doc.as<JsonObject>())
+                message[message_index++] = getchar();
+            }
+            else
+            {
+                printf("Invalid, too large");
+                message_index = 0;
+            }
+            auto error = deserializeJson(receive_doc, message);
+            contains_open_bracket = 0;
+            for (uint16_t i = 0; i < message_index; i++)
+            {
+                if (message[i] == '{')
+                {
+                    contains_open_bracket = 1;
+                }
+            }
+            if (contains_open_bracket == 0)
+            {
+                error_code = 3;
+            }
+            else
+            {
+                error_code = error.code();
+            }
+#ifdef DEBUG
+            printf("message: %.*s\n", message_index, message);
+            printf("error: %d\n", error_code);
+#endif
+            if (error_code == DeserializationError::Ok)
+            {
+#ifdef DEBUG
+                printf("Valid JSON: %.*s\n", message_index, message);
+#endif
+                memset(message, 0, message_index);
+                message_index = 0;
+                for (JsonPair kv : receive_doc.as<JsonObject>())
                 {
                     if (!strcmp(kv.key().c_str(), "turn"))
                     {
@@ -114,9 +147,7 @@ int main()
                         {
                             t = kv.value();
                             turn_flag = 1;
-#ifdef DEBUG 
                             printf("%s: %g\n", kv.key().c_str(), t);
-#endif
                         }
                         else
                         {
@@ -130,9 +161,7 @@ int main()
                         {
                             ctx.led = kv.value();
                             context_flag = 1;
-#ifdef DEBUG 
                             printf("%s: %d\n", kv.key().c_str(), ctx.led);
-#endif
                         }
                         else
                         {
@@ -146,9 +175,7 @@ int main()
                         {
                             ctx.enable = kv.value();
                             context_flag = 1;
-#ifdef DEBUG 
                             printf("%s: %d\n", kv.key().c_str(), ctx.enable);
-#endif
                         }
                         else
                         {
@@ -158,23 +185,7 @@ int main()
                     }
                     else if (!strcmp(kv.key().c_str(), "print"))
                     {
-                        if (doc["print"].is<JsonVariant>())
-                        {
-                            JsonDocument doc;
-                            doc["type"] = COMMUTATOR_TYPE;
-                            doc["board_rev"] = BOARD_REV;
-                            doc["firmware"] = FIRMWARE_VER;
-                            doc["enable"] = ctx.enable;
-                            doc["led"] = ctx.led;
-                            doc["steps_to_go"] = mot_ctx.motor.distanceToGo();
-                            doc["target_steps"] = mot_ctx.motor.targetPosition();
-                            doc["target_turns"] = mot_ctx.target_turns;
-                            doc["max_turns"] = MAX_TURNS;
-                            doc["motor_running"] = mot_ctx.motor.distanceToGo() != 0;
-                            doc["charge_current"] = ltc4425_read_charge_current();
-                            doc["power_good"] = ltc4425_power_good();
-                            serializeJson(doc, std::cout);
-                        }
+                        print_context(ctx, mot_ctx);
                     }
                     else
                     {
@@ -182,25 +193,33 @@ int main()
                     }
                 }
             }
-            else if (error.code() == DeserializationError::InvalidInput)
+            else if (error_code == DeserializationError::InvalidInput)
             {
-                JsonDocument error_doc;
-                error_doc["error"] = error.c_str();
-                // doc["invalid_str"] = invalid.c_str();
-                // serializeJson(error_doc, std::cout);
-                printf("Invalid JSON\n");
+                std::string message_string(message);
+                message_string.erase(std::remove_if(message_string.begin(), message_string.end(), isspace) - 1, message_string.end());
+                if (!strcmp(message_string.c_str(), "{print:"))
+                {
+                    print_context(ctx, mot_ctx);
+                }
+                else
+                {
+                    printf("Invalid JSON: %.*s\n", message_index, message);
+                }
+                memset(message, 0, message_index);
+                message_index = 0;
             }
         }
 
+        // If alert_flag is set by interrupt callback when a button is touched
         if (alert_flag == 1)
-        {
+        {   
             alert_flag = 0;
             touch_status_register = cap1296_read_touch_status();
             cap1296_clear_touch_status();
             current_button_press = extract_touch_data(previous_button_press, touch_status_register);
             previous_button_press = current_button_press;
 #ifdef DEBUG
-            printf("state: %02hhx, button: %02hhx, count: %u\n", touch_status_register, current_button_press, ++button_counter);
+            printf("State: %02hhx, Button: %02hhx, Count: %u\n", touch_status_register, current_button_press, ++button_counter);
 #endif
             switch (current_button_press)
             {
@@ -223,61 +242,114 @@ int main()
             }
         }
 
+        // If commutator state requires change
         if (context_flag > 0)
-        {   // If context was updated
+        { 
             context_flag = 0;
-            motor_enable(ctx.enable, mot_ctx);
-            rgb_update(ctx);
+            update_context(ctx, mot_ctx);
             write_context_flag = 1;
         }
 
+        // If context needs to be written to flash
         if (write_context_flag > 0 && !mot_ctx.motor.isRunning())
-        {   // If context needs to be written to flash
-            // The two flash functions are unsafe
-            // XIP instructions in the other core and interrupts must be disabled 
+        { 
             write_context_flag = 0;
-            interrupts = save_and_disable_interrupts(); 
-            multicore_lockout_start_blocking();
-            flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
-            flash_range_program(FLASH_TARGET_OFFSET, (const uint8_t *)&ctx, FLASH_PAGE_SIZE);
-            multicore_lockout_end_blocking();
-            restore_interrupts(interrupts);
-#ifdef DEBUG
-            printf("context written to flash\n");
-#endif
+            write_context_to_flash(ctx);
         }
 
+        // If turn or enable cmd/button press is detected
         if (turn_flag > 0)
-        {   // if turn or enable cmd/button press is detected
+        { 
             turn_flag = 0;
-            if (ctx.enable)
-            {
-                if (std::isnan(t))
-                {
-                    JsonDocument doc;
-                    doc["error"] = "Turn command was NaN";
-                    serializeJson(doc, std::cout);
-                }
-                else if (std::isinf(t))
-                {
-                    JsonDocument doc;
-                    doc["error"] = "Turn command was Inf";
-                    serializeJson(doc, std::cout);
-                }
-                else
-                {
-                    motor_turn(mot_ctx, t);
-                }
-            }
-            else if (!ctx.enable)
-            {
-                JsonDocument doc;
-                doc["error"] = "Cannot move when commutator is disabled";
-                serializeJson(doc, std::cout);
-            }
+            turn_cmd(ctx, mot_ctx, t);
         }
     }
     return 0;
+}
+
+void print_context(Context context, MotorContext motor_context)
+{
+    JsonDocument print_doc;
+#ifdef DEBUG
+    printf("print\n");
+#endif
+    print_doc["type"] = COMMUTATOR_TYPE;
+    print_doc["board_rev"] = BOARD_REV;
+    print_doc["firmware"] = FIRMWARE_VER;
+    print_doc["enable"] = context.enable;
+    print_doc["led"] = context.led;
+    print_doc["steps_to_go"] = motor_context.motor.distanceToGo();
+    print_doc["target_steps"] = motor_context.motor.targetPosition();
+    print_doc["target_turns"] = motor_context.target_turns;
+    print_doc["max_turns"] = MAX_TURNS;
+    print_doc["motor_running"] = motor_context.motor.distanceToGo() != 0;
+    print_doc["charge_current"] = ltc4425_read_charge_current();
+    print_doc["power_good"] = ltc4425_power_good();
+    std::string print_string;
+    serializeJson(print_doc, print_string);
+    printf("%s\n", print_string.c_str());
+}
+
+void turn_cmd(Context context, MotorContext motor_context, double t)
+{
+    if (context.enable)
+    {
+        if (std::isnan(t))
+        {
+            printf("Turn command was NaN\n");
+        }
+        else if (std::isinf(t))
+        {
+            printf("Turn command was Inf\n");
+        }
+        else
+        {
+            motor_turn(motor_context, t);
+#ifdef DEBUG
+            printf("Motor turning\n");
+#endif
+        }
+    }
+    else if (!context.enable)
+    {
+        printf("Cannot move when commutator is disabled\n");
+    }
+}
+
+void write_context_to_flash(Context context)
+{
+#ifdef DEBUG
+    printf("Writing context to flash...\n");
+#endif
+    // The two flash functions are unsafe
+    // XIP instructions in the other core and interrupts must be disabled
+    uint32_t interrupts = save_and_disable_interrupts();
+    multicore_lockout_start_blocking();
+    flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
+    flash_range_program(FLASH_TARGET_OFFSET, (const uint8_t *)&context, FLASH_PAGE_SIZE);
+    multicore_lockout_end_blocking();
+    restore_interrupts(interrupts);
+#ifdef DEBUG
+    printf("Context written to flash\n");
+#endif
+}
+
+void update_context(Context context, MotorContext motor_context)
+{
+    motor_enable(context.enable, motor_context);
+    rgb_update(context);
+    // /////////////////////////////////////////////////////////////////////////////
+    // #ifdef DEBUG
+    //             printf("Writing context to flash...\n");
+    // #endif
+    //             interrupts = save_and_disable_interrupts();
+    //             flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
+    //             flash_range_program(FLASH_TARGET_OFFSET, (const uint8_t *)&ctx, FLASH_PAGE_SIZE);
+    //             restore_interrupts(interrupts);
+    // #ifdef DEBUG
+    //             printf("Context written to flash\n");
+    // #endif
+    // /////////////////////////////////////////////////////////////////////////////
 }
 
 void print_diagnostics()
