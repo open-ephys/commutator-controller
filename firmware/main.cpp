@@ -97,6 +97,7 @@ int main()
                 doc["error"] = e.c_str();
                 doc["invalid_str"] = invalid.c_str();
                 serializeJson(doc, std::cout);
+                std::cout << std::endl;
                 continue;
             }
 
@@ -130,18 +131,21 @@ int main()
                     JsonDocument doc;
                     doc["error"] = "Cannot move when commutator is disabled";
                     serializeJson(doc, std::cout);
+                    std::cout << std::endl;
                 }
                 else if (std::isnan(t))
                 {
                     JsonDocument doc;
                     doc["error"] = "Turn command was NaN";
                     serializeJson(doc, std::cout);
+                    std::cout << std::endl;
                 }
                 else if (std::isinf(t))
                 {
                     JsonDocument doc;
                     doc["error"] = "Turn command was Inf";
                     serializeJson(doc, std::cout);
+                    std::cout << std::endl;
                 }
                 else 
                 {
@@ -174,6 +178,7 @@ int main()
                 doc["charge_current"] = ltc4425_charge_current();
                 doc["power_good"] = ltc4425_power_good();
                 serializeJson(doc, std::cout);
+                std::cout << std::endl;
             }
         }
     }
