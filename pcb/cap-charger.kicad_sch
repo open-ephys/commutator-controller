@@ -579,7 +579,7 @@
 				)
 			)
 		)
-		(symbol "oe:LTC4425"
+		(symbol "open-ephys:LTC4425"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -885,7 +885,7 @@
 				)
 			)
 		)
-		(symbol "oe:PTN04050CAZ"
+		(symbol "open-ephys:PTN04050CAZ"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2907,7 +2907,7 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:PTN04050CAZ")
+		(lib_id "open-ephys:PTN04050CAZ")
 		(at 218.44 54.61 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2932,7 +2932,7 @@
 				)
 			)
 		)
-		(property "Footprint" "oe:TI_R-PDSS_B4_SMD"
+		(property "Footprint" "open-ephys:TI_R-PDSS_B4_SMD"
 			(at 218.44 55.88 0)
 			(effects
 				(font
@@ -4054,7 +4054,7 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:LTC4425")
+		(lib_id "open-ephys:LTC4425")
 		(at 115.57 76.2 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4097,7 +4097,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Linear SuperCap charger with current-limited ideal diode and V/I monitor "
+		(property "Description" "Linear SuperCap charger with current-limited ideal diode and V/I monitor"
 			(at 115.57 76.2 0)
 			(effects
 				(font

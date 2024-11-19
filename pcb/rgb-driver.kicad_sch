@@ -818,7 +818,7 @@
 				)
 			)
 		)
-		(symbol "oe:IS31FL3193"
+		(symbol "open-ephys:IS31FL3193"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2402,7 +2402,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "oe:SUNLED_PLCC4-INV_3.2x2.8x1.9mm"
+		(property "Footprint" "open-ephys:SUNLED_PLCC4-INV_3.2x2.8x1.9mm"
 			(at 66.04 44.45 0)
 			(effects
 				(font
@@ -2582,7 +2582,7 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:IS31FL3193")
+		(lib_id "open-ephys:IS31FL3193")
 		(at 88.9 69.85 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2624,7 +2624,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "3-CHANNEL LED DRIVER "
+		(property "Description" "3-CHANNEL LED DRIVER"
 			(at 88.9 69.85 0)
 			(effects
 				(font

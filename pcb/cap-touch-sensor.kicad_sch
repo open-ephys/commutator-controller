@@ -318,7 +318,7 @@
 				)
 			)
 		)
-		(symbol "oe:CAP1296-x-AIA"
+		(symbol "open-ephys:CAP1296-x-AIA"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -597,12 +597,12 @@
 				)
 			)
 		)
-		(symbol "oe:TOUCH"
+		(symbol "open-ephys:TOUCH"
 			(exclude_from_sim no)
-			(in_bom yes)
+			(in_bom no)
 			(on_board yes)
 			(property "Reference" "S"
-				(at 0 0 0)
+				(at 0 3.81 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -635,7 +635,16 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
+			(property "Description" "Printed capactitive touch sensor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "PCB capactitive touch sensor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1569,12 +1578,12 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:TOUCH")
+		(lib_id "open-ephys:TOUCH")
 		(at 76.2 59.69 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "5733bf26-e061-4f21-a5fd-dc6a85e653ce")
@@ -1594,7 +1603,7 @@
 				)
 			)
 		)
-		(property "Footprint" "oe:Touch_Center_2mm"
+		(property "Footprint" "open-ephys:Touch_Center_2mm"
 			(at 76.2 59.69 0)
 			(effects
 				(font
@@ -1612,7 +1621,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Printed capactitive touch sensor"
 			(at 76.2 59.69 0)
 			(effects
 				(font
@@ -1634,12 +1643,12 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:TOUCH")
+		(lib_id "open-ephys:TOUCH")
 		(at 76.2 62.23 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "69110f97-bcd1-4b24-972c-14b58868fbc8")
@@ -1659,7 +1668,7 @@
 				)
 			)
 		)
-		(property "Footprint" "oe:Touch_Center_2mm"
+		(property "Footprint" "open-ephys:Touch_Center_2mm"
 			(at 76.2 62.23 0)
 			(effects
 				(font
@@ -1677,7 +1686,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Printed capactitive touch sensor"
 			(at 76.2 62.23 0)
 			(effects
 				(font
@@ -1766,12 +1775,12 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:TOUCH")
+		(lib_id "open-ephys:TOUCH")
 		(at 76.2 57.15 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "7b5a4b59-8071-484d-97b1-685ebcfdde38")
@@ -1791,7 +1800,7 @@
 				)
 			)
 		)
-		(property "Footprint" "oe:Touch_Center_2mm"
+		(property "Footprint" "open-ephys:Touch_Center_2mm"
 			(at 76.2 57.15 0)
 			(effects
 				(font
@@ -1809,7 +1818,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Printed capactitive touch sensor"
 			(at 76.2 57.15 0)
 			(effects
 				(font
@@ -1897,7 +1906,7 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:CAP1296-x-AIA")
+		(lib_id "open-ephys:CAP1296-x-AIA")
 		(at 101.6 64.77 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2059,12 +2068,12 @@
 		)
 	)
 	(symbol
-		(lib_id "oe:TOUCH")
+		(lib_id "open-ephys:TOUCH")
 		(at 76.2 64.77 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
 		(uuid "fe63f348-92af-4163-82d2-8773a47cd077")
@@ -2084,7 +2093,7 @@
 				)
 			)
 		)
-		(property "Footprint" "oe:Touch_Center_2mm"
+		(property "Footprint" "open-ephys:Touch_Center_2mm"
 			(at 76.2 64.77 0)
 			(effects
 				(font
@@ -2102,7 +2111,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Printed capactitive touch sensor"
 			(at 76.2 64.77 0)
 			(effects
 				(font
