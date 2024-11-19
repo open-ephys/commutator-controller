@@ -41,17 +41,6 @@ void core1_entry()
     }
 }
 
-std::string ignore_until_open_curly()
-{
-    std::string invalid;
-    for (auto next = std::cin.peek(); next != '{' && !std::cin.eof(); next = std::cin.peek())
-    {
-        invalid += std::cin.get();
-    }
-
-    return invalid;
-}
-
 int main() 
 {
     // Initialize chips
@@ -92,12 +81,6 @@ int main()
             auto e = deserializeJson(receive, std::cin);
 
             if (e) {
-                auto invalid = ignore_until_open_curly();
-                JsonDocument doc;
-                doc["error"] = e.c_str();
-                doc["invalid_str"] = invalid.c_str();
-                serializeJson(doc, std::cout);
-                std::cout << std::endl;
                 continue;
             }
 
