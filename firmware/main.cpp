@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cmath>
+#include <tusb.h>
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
 #include "hardware/gpio.h"
@@ -85,94 +86,96 @@ int main()
     // Decode commands and buttons
     while (true)
     {
-        JsonDocument receive;
-        auto e = deserializeJson(receive, std::cin);
-
-        if (e) {
-            auto invalid = ignore_until_open_curly();
-            JsonDocument doc;
-            doc["error"] = e.c_str();
-            doc["invalid_str"] = invalid.c_str();
-            serializeJson(doc, std::cout);
-            continue;
-        }
-
-        auto enable = receive["enable"];
-        auto turns = receive["turn"];
-        auto led = receive["led"];
-        auto print = receive["print"];
-
-        // Enable command
-        if (enable.is<bool>()) 
+        if (tud_cdc_available())
         {
-            ctx.commutator_en = enable;
+            JsonDocument receive;
+            auto e = deserializeJson(receive, std::cin);
 
-            if (!ctx.commutator_en)
-            {
-                motor_hard_stop(mot_ctx);
-            } else {
-                motor_enable(true);
+            if (e) {
+                auto invalid = ignore_until_open_curly();
+                JsonDocument doc;
+                doc["error"] = e.c_str();
+                doc["invalid_str"] = invalid.c_str();
+                serializeJson(doc, std::cout);
+                continue;
             }
 
-            rgb_set_auto(ctx);
-            //save(ctx);
-        }
+            auto enable = receive["enable"];
+            auto turns = receive["turn"];
+            auto led = receive["led"];
+            auto print = receive["print"];
 
-        // Turn command
-        if (turns.is<double>()) 
-        {
-            double t = turns.as<double>();
-            if (!ctx.commutator_en)
+            // Enable command
+            if (enable.is<bool>()) 
+            {
+                ctx.commutator_en = enable;
+
+                if (!ctx.commutator_en)
+                {
+                    motor_hard_stop(mot_ctx);
+                } else {
+                    motor_enable(true);
+                }
+
+                rgb_set_auto(ctx);
+                //save(ctx);
+            }
+
+            // Turn command
+            if (turns.is<double>()) 
+            {
+                double t = turns.as<double>();
+                if (!ctx.commutator_en)
+                {
+                    JsonDocument doc;
+                    doc["error"] = "Cannot move when commutator is disabled";
+                    serializeJson(doc, std::cout);
+                }
+                else if (std::isnan(t))
+                {
+                    JsonDocument doc;
+                    doc["error"] = "Turn command was NaN";
+                    serializeJson(doc, std::cout);
+                }
+                else if (std::isinf(t))
+                {
+                    JsonDocument doc;
+                    doc["error"] = "Turn command was Inf";
+                    serializeJson(doc, std::cout);
+                }
+                else 
+                {
+                    motor_turn(mot_ctx, t);
+                }
+            }
+
+            // LED command
+            if (led.is<bool>()) 
+            {
+                ctx.led_on = led;
+                rgb_set_auto(ctx);
+                //save(ctx);
+            }
+
+            // Print command
+            if (receive["print"].is<JsonVariant>()) 
             {
                 JsonDocument doc;
-                doc["error"] = "Cannot move when commutator is disabled";
+                doc["type"] = COMMUTATOR_TYPE;
+                doc["board_rev"] = BOARD_REV;
+                doc["firmware"] = FIRMWARE_VER;
+                doc["enable"] = ctx.commutator_en;
+                doc["led"] = ctx.led_on;
+                doc["steps_to_go"] = mot_ctx.motor.distanceToGo();
+                doc["target_steps"] = mot_ctx.motor.targetPosition();
+                doc["target_turns"] = mot_ctx.target_turns;
+                doc["max_turns"] = MAX_TURNS;
+                doc["motor_running"] = mot_ctx.motor.distanceToGo() != 0;
+                doc["charge_current"] = ltc4425_charge_current();
+                doc["power_good"] = ltc4425_power_good();
                 serializeJson(doc, std::cout);
             }
-            else if (std::isnan(t))
-            {
-                JsonDocument doc;
-                doc["error"] = "Turn command was NaN";
-                serializeJson(doc, std::cout);
-            }
-            else if (std::isinf(t))
-            {
-                JsonDocument doc;
-                doc["error"] = "Turn command was Inf";
-                serializeJson(doc, std::cout);
-            }
-            else 
-            {
-                motor_turn(mot_ctx, t);
-            }
-        }
-
-        // LED command
-        if (led.is<bool>()) 
-        {
-            ctx.led_on = led;
-            rgb_set_auto(ctx);
-            //save(ctx);
-        }
-
-        // Print command
-        if (receive["print"].is<JsonVariant>()) 
-        {
-            JsonDocument doc;
-            doc["type"] = COMMUTATOR_TYPE;
-            doc["board_rev"] = BOARD_REV;
-            doc["firmware"] = FIRMWARE_VER;
-            doc["enable"] = ctx.commutator_en;
-            doc["led"] = ctx.led_on;
-            doc["steps_to_go"] = mot_ctx.motor.distanceToGo();
-            doc["target_steps"] = mot_ctx.motor.targetPosition();
-            doc["target_turns"] = mot_ctx.target_turns;
-            doc["max_turns"] = MAX_TURNS;
-            doc["motor_running"] = mot_ctx.motor.distanceToGo() != 0;
-            doc["charge_current"] = ltc4425_charge_current();
-            doc["power_good"] = ltc4425_power_good();
-            serializeJson(doc, std::cout);
         }
     }
-
     return 0;
 }
