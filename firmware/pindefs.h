@@ -9,8 +9,8 @@
 #define LTC4425_CHARGE_CURR     28 // ADC 1
 
 // IS31FL3193 RGB LED driver
-#define IS31_POW_EN             0
-#define IS31_POW_BW             1
+#define IS31_POW_EN             4
+#define IS31_POW_BW             5
 
 // I2C
 #define I2C_PORT                i2c1

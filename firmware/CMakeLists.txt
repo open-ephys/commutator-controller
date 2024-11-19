@@ -34,7 +34,7 @@ project(commutator C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp motor.cpp save.cpp accelstepper/AccelStepper.cpp)
+add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp motor.cpp cap1296.cpp accelstepper/AccelStepper.cpp)
 
 pico_set_program_name(commutator "open-ephys-commutator")
 pico_set_program_version(commutator "0.1")

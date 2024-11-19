@@ -11,7 +11,7 @@ void motor_init(Context &ctx, MotorContext &mot_ctx)
     mot_ctx.motor.setMaxSpeed(MAX_SPEED_SPS);
     mot_ctx.motor.setAcceleration(MAX_ACCEL_SPSS);
     mot_ctx.motor.setMinPulseWidth(20);
-    motor_enable(ctx.commutator_en);
+    motor_enable(ctx.enable);
 }
 
 void motor_soft_stop(MotorContext &mot_ctx)

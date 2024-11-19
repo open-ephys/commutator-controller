@@ -16,24 +16,26 @@ void rgb_set_blue() { rgb_set_rgb(0, 0, 255); }
 void rgb_set_red() { rgb_set_rgb(255, 0, 0); }
 void rgb_set_green() { rgb_set_rgb(1, 20, 7); }
 
-void rgb_set_auto(const Context &ctx)
+void rgb_set_auto(Context context)
 {
-    if (ctx.led_on)
+    if (context.led)
     {
         // Enable current driver
         const uint8_t en_curr[2]  = {0x00, 0x20};
         i2c_write_blocking(I2C_PORT, IS31_ADDR, en_curr, 2, false);
-    } else 
+    } 
+    else 
     {
         // Disable current driver
         const uint8_t en_curr[2]  = {0x00, 0x00};
         i2c_write_blocking(I2C_PORT, IS31_ADDR, en_curr, 2, false);
     }
 
-    if (ctx.commutator_en)
+    if (context.enable)
     {
         rgb_set_green();
-    } else
+    } 
+    else
     {
         rgb_set_red();
     }
@@ -52,7 +54,7 @@ void rgb_set_breathing(bool breathing)
     }
 }
 
-void rgb_init(const Context &ctx)
+void rgb_init(Context context)
 {
     gpio_init(IS31_POW_EN);
     gpio_set_dir(IS31_POW_EN, GPIO_OUT);
@@ -69,6 +71,6 @@ void rgb_init(const Context &ctx)
     i2c_write_blocking(I2C_PORT, IS31_ADDR, max_curr, 2, false);
 
     // Enable current driver
-    rgb_set_auto(ctx);
+    rgb_set_auto(context);
 }
 
