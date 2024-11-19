@@ -3208,7 +3208,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+		(property "Footprint" "open-ephys:HV0820-2R7305-R"
 			(at 137.16 72.39 0)
 			(effects
 				(font
@@ -4522,7 +4522,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
+		(property "Footprint" "open-ephys:HV0820-2R7305-R"
 			(at 137.16 59.69 0)
 			(effects
 				(font
