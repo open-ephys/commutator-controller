@@ -47,6 +47,7 @@ void tmc2130_init()
     gpio_put(TMC2130_STEP, 0);
 
     gpio_init(TMC2130_CFG6_EN);
+    gpio_set_outover(TMC2130_CFG6_EN, gpio_override::GPIO_OVERRIDE_INVERT);
     gpio_set_dir(TMC2130_CFG6_EN, GPIO_OUT);
 
     // voltage on AIN is current reference

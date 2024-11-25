@@ -6,8 +6,12 @@
 #include "defs.h"
 
 #define CAP1296_ADDR 0x28
-#define CAP1296_ALERT 11
+#define BUTTON_RELEASE 0
+#define CW_BUTTON_PRESS (1 << 0)
+#define ENABLE_BUTTON_PRESS (1 << 1)
+#define LED_BUTTON_PRESS (1 << 2)
+#define CCW_BUTTON_PRESS (1 << 3)
 
 void cap1296_init();
-void cap1296_clear_touch_status();
-uint8_t cap1296_read_touch_status();
+void cap1296_clear_int_bit_in_main_control_register();
+uint8_t cap1296_read_sensor_input_status_register();

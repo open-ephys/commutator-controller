@@ -14,10 +14,9 @@
 #define REG_DRVSTATUS           0x6F
 #define REG_PWMCONF             0x70
 
-
 static inline void tmc2130_enable(int enable)
 {
-    gpio_put(TMC2130_CFG6_EN, enable ? 0 : 1); // Inactivate driver (LOW active)
+    gpio_put(TMC2130_CFG6_EN, enable);
 }
 
 void tmc2130_init();

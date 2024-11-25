@@ -54,7 +54,7 @@ void rgb_set_breathing(bool breathing)
     }
 }
 
-void rgb_init(Context context)
+void rgb_init()
 {
     gpio_init(IS31_POW_EN);
     gpio_set_dir(IS31_POW_EN, GPIO_OUT);
@@ -71,6 +71,7 @@ void rgb_init(Context context)
     i2c_write_blocking(I2C_PORT, IS31_ADDR, max_curr, 2, false);
 
     // Enable current driver
-    rgb_set_auto(context);
+    rgb_set_red();
+    rgb_set_breathing(true);
 }
 

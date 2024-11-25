@@ -26,3 +26,6 @@
 #define TMC2130_CFG3_CS         21
 #define TMC2130_CFG6_EN         17
 
+// Capacitative touch sensor pin
+#define CAP1296_ALERT 11
+

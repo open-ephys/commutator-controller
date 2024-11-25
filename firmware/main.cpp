@@ -1,26 +1,23 @@
-#include <stdio.h>
-#include <iostream>
-#include <cmath>
-#include <tusb.h>
-#include "pico/stdlib.h"
-#include "pico/multicore.h"
-#include "hardware/flash.h"
-#include "hardware/gpio.h"
-
 #include <ArduinoJson.h>
-
-#include "defs.h"
-#include "pindefs.h"
-#include "ltc4425.h"
-#include "is32fl3193.h"
-#include "motor.h"
+#include <climits>
+#include <cmath>
+#include <ios>
+#include <iostream>
+#include <stdio.h>
+#include <tusb.h>
+#include "hardware/gpio.h"
+#include "pico/multicore.h"
+#include "pico/stdlib.h"
 #include "cap1296.h"
-
-#define DEBUG
+#include "defs.h"
+#include "is32fl3193.h"
+#include "ltc4425.h"
+#include "motor.h"
+#include "pindefs.h"
 
 // Versions
 #define FIRMWARE_VER "0.1.0"
-#define BOARD_REV "E"
+#define BOARD_REV "F"
 
 // 3. Select a commutator type by uncommenting one of the following
 // #define COMMUTATOR_TYPE     "SPI"
@@ -31,54 +28,37 @@ const double GEAR_RATIO = 2.0;
 
 // #define COMMUTATOR_TYPE     "Dual Channel Coax"
 // const double GEAR_RATIO     = 3.06666666667
-volatile uint8_t alert_flag;
-void serial_input();
-uint8_t button_input(uint8_t previous_button_press);
-void write_context_to_flash(Context context);
-void io_alert_irq_callback(unsigned int gpio, long unsigned int events) { alert_flag = 1; }
 
-// Holds the current state
-Context ctx;
+#define DEBUG
+
+#define MAX_MESSAGE_LENGTH 1024
+
+volatile bool alert_flag;
+uint8_t message[MAX_MESSAGE_LENGTH];
+uint16_t message_index = 0;
+Context ctx{.enable = false, .led = true};
 MotorContext mot_ctx{.motor = AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), .target_turns = 0.0};
+#ifdef DEBUG
+uint16_t button_counter = 0;
+#endif
 
-void core1_entry()
-{
-    multicore_lockout_victim_init();
-    while (true)
-    {
-        mot_ctx.motor.run();
-    }
-}
-
-uint8_t extract_touch_data(uint8_t previous_button_press, uint8_t touch_status_register)
-{
-    // This logic is required to deal with the fact that the release from the previously touched button is not cleared
-    if (touch_status_register & (touch_status_register - 1))
-    { // If more than one bit is set, mask out the bit that corresponds to the previously button
-        return (previous_button_press ^ touch_status_register) & touch_status_register;
-    }
-    else
-    { // If one bit is set, then the current button press is the same as the previous button press
-        return touch_status_register;
-    }
-}
+static void process_serial_input(uint8_t sensor_input_status);
+static uint8_t process_button_input(uint8_t sensor_input_status);
+static void turn_motor_if_enabled(double turns);
+static bool check_for_curly_bracket();
+static void core1_entry();
+static void io_alert_irq_callback(unsigned int gpio, long unsigned int events) { alert_flag = true; }
 
 int main()
 {
-    uint8_t button_press; // for button logic
     // Initialize chips
+    uint8_t sensor_input_status;
     stdio_init_all();
-    motor_enable(false);
-    ctx = *(Context *)(XIP_BASE + FLASH_TARGET_OFFSET); // Read context from flash
-    rgb_init(ctx);
+    motor_enable(mot_ctx, ctx.enable);
+    rgb_init();
     ltc4425_init();
-
-    // Wait for chips to wake up
-    sleep_ms(10);
-
+    cap1296_init(); // Capacitative touch sensor
     // Wait for supercaps to charge
-    rgb_set_red();
-    rgb_set_breathing(true);
     while (!ltc4425_power_good())
     {
         sleep_ms(10);
@@ -86,109 +66,112 @@ int main()
 
     rgb_set_breathing(false);
     rgb_set_auto(ctx);
-
-    cap1296_init(); // Capacitative touch sensor
-
-    // Initialize motor
-    motor_init(ctx, mot_ctx);
-
+    motor_init(ctx, mot_ctx); // Initialize motor
     // Start the second core with motor.run() as its only task
     multicore_launch_core1(core1_entry);
-    cap1296_clear_touch_status();
     gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
+    cap1296_clear_int_bit_in_main_control_register();
     // Decode commands and buttons
     while (true)
     {
-        // if data is available in serial buffer
         if (tud_cdc_available())
         {
-            serial_input();
+            process_serial_input(sensor_input_status);
         }
-        // if a button is pressed or released
-        if (alert_flag > 0)
+        if (alert_flag)
         {
-            alert_flag = 0;
-            button_press = button_input(button_press);
+            alert_flag = false;
+            sensor_input_status = process_button_input(sensor_input_status);
         }
     }
     return 0;
 }
 
-void serial_input()
+void process_serial_input(uint8_t sensor_input_status)
 {
+    if (message_index < MAX_MESSAGE_LENGTH - 1)
+    {
+        uint8_t temp_buf = getchar();
+        bool message_already_has_open_curly = false;
+        for (uint16_t i = 0; i < message_index ; i++)
+        {
+            if (message[i] == '{')
+            {
+                message_already_has_open_curly = true;
+            }
+        }
+        if (temp_buf == '{' | message_already_has_open_curly)
+        {
+            message[message_index++] = temp_buf;
+        }
+        else
+        {
+            return;
+        }
+        
+    }
+    else
+    {
+        printf("{error: input buffer overflow}\n");
+        memset(message, 0, MAX_MESSAGE_LENGTH);
+        message_index = 0;
+    }
+
     JsonDocument receive;
-    auto error = deserializeJson(receive, std::cin);
-    if (error)
+    auto error = deserializeJson(receive, message, message_index);
+
+    if (error.code())
     {
         return;
     }
-
-    auto enable = receive["enable"];
-    auto turns = receive["turn"];
-    auto led = receive["led"];
-    auto print = receive["print"];
+    memset(message, 0, message_index);
+    message_index = 0;
 
     // Enable command
-    if (enable.is<bool>())
+    if (receive["enable"].is<bool>())
     {
-        ctx.enable = enable;
-        // write_context_to_flash(ctx);
-        if (!ctx.enable)
-        {
-            motor_hard_stop(mot_ctx);
-        }
-        else
-        {
-            motor_enable(true);
-        }
+        ctx.enable = receive["enable"];
+        motor_enable(mot_ctx, ctx.enable);
+        rgb_set_auto(ctx);
 #ifdef DEBUG
         printf("{enable: %d}\n", ctx.enable);
 #endif
-        rgb_set_auto(ctx);
     }
 
     // LED command
-    if (led.is<bool>())
+    if (receive["led"].is<bool>())
     {
-        ctx.led = led;
-        // write_context_to_flash(ctx);
+        ctx.led = receive["led"];
+        rgb_set_auto(ctx);
 #ifdef DEBUG
         printf("{led: %d}\n", ctx.led);
 #endif
-        rgb_set_auto(ctx);
     }
 
-    // Turn command
-    if (turns.is<double>())
+    // Turn command, but don't let this command override current button presses
+    if (receive["turn"].is<double>() & !(sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS)))
     {
-        double t = turns.as<double>();
-        if (!ctx.enable)
+        double turns = receive["turn"];
+        if (std::isnan(turns))
         {
             JsonDocument doc;
-            doc["error"] = "Cannot move when commutator is disabled";
+            doc["error"] = "NaN turn command";
             serializeJson(doc, std::cout);
             std::cout << std::endl;
         }
-        else if (std::isnan(t))
+        else if (std::isinf(turns))
         {
             JsonDocument doc;
-            doc["error"] = "Turn command was NaN";
-            serializeJson(doc, std::cout);
-            std::cout << std::endl;
-        }
-        else if (std::isinf(t))
-        {
-            JsonDocument doc;
-            doc["error"] = "Turn command was Inf";
+            doc["error"] = "Inf turn command";
             serializeJson(doc, std::cout);
             std::cout << std::endl;
         }
         else
         {
-            motor_turn(mot_ctx, t);
+            turn_motor_if_enabled(turns);
         }
 #ifdef DEBUG
-        printf("{turn: %g}\n", t);
+        printf("{turn: %g}\n", turns);
 #endif
     }
 
@@ -213,50 +196,71 @@ void serial_input()
     }
 }
 
-uint8_t button_input(uint8_t previous_button_press)
+uint8_t process_button_input(uint8_t previous_sensor_input_status)
 {
-    uint8_t touch_status_register = cap1296_read_touch_status();
-    cap1296_clear_touch_status();
-    uint8_t button_press = extract_touch_data(previous_button_press, touch_status_register);
+    cap1296_clear_int_bit_in_main_control_register();
+    uint8_t sensor_input_status = cap1296_read_sensor_input_status_register();
+
 #ifdef DEBUG
-    printf("State: %02hhx, Button: %02hhx\n", touch_status_register, button_press);
-#endif
-    switch (button_press)
+    if (sensor_input_status)
     {
-    case 0x04: // top button
+        button_counter++;
+    }
+    printf("{button: %02hhx, counter: %i}\n", sensor_input_status, button_counter);
+#endif
+
+    switch (sensor_input_status)
+    {
+    case LED_BUTTON_PRESS:
         ctx.led = !ctx.led;
-        // write_context_to_flash(ctx);
         rgb_set_auto(ctx);
         break;
-    case 0x02: // bottom button
+    case ENABLE_BUTTON_PRESS:
         ctx.enable = !ctx.enable;
-        // write_context_to_flash(ctx);
+        motor_enable(mot_ctx, ctx.enable);
         rgb_set_auto(ctx);
         break;
-    case 0x01: // left button
-        motor_turn(mot_ctx, 1);
+    case CW_BUTTON_PRESS:
+        mot_ctx.target_turns = 0;
+        turn_motor_if_enabled(1000);
         break;
-    case 0x08: // right button
-        motor_turn(mot_ctx, -1);
+    case CCW_BUTTON_PRESS:
+        mot_ctx.target_turns = 0;
+        turn_motor_if_enabled(-1000);
+        break;
+    case BUTTON_RELEASE:
+        if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
+        {
+            mot_ctx.motor.stop();
+        }
         break;
     }
-    return button_press;
+    return sensor_input_status;
 }
 
-void write_context_to_flash(Context context)
+void turn_motor_if_enabled(double turns)
 {
-#ifdef DEBUG
-    printf("Writing context to flash...\n");
-#endif
-    // The two flash functions are unsafe
-    // XIP instructions in the other core and interrupts must be disabled
-    uint32_t interrupts = save_and_disable_interrupts();
-    multicore_lockout_start_blocking();
-    flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
-    flash_range_program(FLASH_TARGET_OFFSET, (const uint8_t *)&context, FLASH_PAGE_SIZE);
-    multicore_lockout_end_blocking();
-    restore_interrupts(interrupts);
-#ifdef DEBUG
-    printf("Context written to flash\n");
-#endif
+    if (ctx.enable)
+    {
+        if (!mot_ctx.motor.isRunning())
+        {
+            motor_soft_stop(mot_ctx); // avoid overflow condition
+        }
+        motor_turn(mot_ctx, turns);
+    }
+    else
+    {
+        JsonDocument doc;
+        doc["error"] = "Turn command received while disabled";
+        serializeJson(doc, std::cout);
+        std::cout << std::endl;
+    }
+}
+
+static void core1_entry()
+{
+    while (true)
+    {
+        mot_ctx.motor.run();
+    }
 }

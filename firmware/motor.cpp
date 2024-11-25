@@ -11,7 +11,6 @@ void motor_init(Context &ctx, MotorContext &mot_ctx)
     mot_ctx.motor.setMaxSpeed(MAX_SPEED_SPS);
     mot_ctx.motor.setAcceleration(MAX_ACCEL_SPSS);
     mot_ctx.motor.setMinPulseWidth(20);
-    motor_enable(ctx.enable);
 }
 
 void motor_soft_stop(MotorContext &mot_ctx)
@@ -24,11 +23,17 @@ void motor_hard_stop(MotorContext &mot_ctx)
 {
     mot_ctx.motor.setAcceleration(1e6);
     mot_ctx.motor.stop();
-    mot_ctx.motor.runToPosition();
-    mot_ctx.motor.setCurrentPosition(0);
-    mot_ctx.target_turns = 0.0;
+    motor_soft_stop(mot_ctx);
     mot_ctx.motor.setAcceleration(MAX_ACCEL_SPSS);
-    motor_enable(false);
+}
+
+void motor_enable(MotorContext &mot_ctx, bool enable) 
+{ 
+    if (!enable) 
+    {
+        motor_hard_stop(mot_ctx);
+    }
+    tmc2130_enable(enable);
 }
 
 void motor_turn(MotorContext &mot_ctx, double turns)

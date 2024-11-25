@@ -6,8 +6,8 @@
 
 // Controller state
 struct Context {
-    bool led = true;
     bool enable = true;
+    bool led = true;
 };
 
 struct MotorContext 
