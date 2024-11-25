@@ -2744,7 +2744,7 @@
 		)
 		(uuid "39a2dc1e-c44d-4bee-b9be-ff2ee35f783d")
 	)
-	(hierarchical_label "TMC_{EN}"
+	(hierarchical_label "TMC_{~{EN}}"
 		(shape input)
 		(at 97.79 113.03 180)
 		(fields_autoplaced yes)

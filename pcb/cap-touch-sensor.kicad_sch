@@ -969,7 +969,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 74.93) (xy 73.66 74.93)
+			(xy 58.42 74.93) (xy 67.31 74.93)
 		)
 		(stroke
 			(width 0)
@@ -997,6 +997,16 @@
 		)
 		(uuid "21c1cf62-99dd-4fe9-8afc-42b5b432d456")
 	)
+	(polyline
+		(pts
+			(xy 71.12 77.47) (xy 71.12 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21ca0ce2-49ae-421a-8da4-01580ae9c54e")
+	)
 	(wire
 		(pts
 			(xy 101.6 39.37) (xy 101.6 40.64)
@@ -1019,7 +1029,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 59.69) (xy 83.82 59.69)
+			(xy 74.93 59.69) (xy 83.82 59.69)
 		)
 		(stroke
 			(width 0)
@@ -1039,7 +1049,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 64.77) (xy 83.82 64.77)
+			(xy 74.93 64.77) (xy 83.82 64.77)
 		)
 		(stroke
 			(width 0)
@@ -1069,7 +1079,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 59.69) (xy 73.66 59.69)
+			(xy 58.42 59.69) (xy 67.31 59.69)
 		)
 		(stroke
 			(width 0)
@@ -1089,7 +1099,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 74.93) (xy 83.82 74.93)
+			(xy 74.93 74.93) (xy 83.82 74.93)
 		)
 		(stroke
 			(width 0)
@@ -1099,7 +1109,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 64.77) (xy 73.66 64.77)
+			(xy 58.42 64.77) (xy 67.31 64.77)
 		)
 		(stroke
 			(width 0)
@@ -1109,7 +1119,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 69.85) (xy 73.66 69.85)
+			(xy 58.42 69.85) (xy 67.31 69.85)
 		)
 		(stroke
 			(width 0)
@@ -1159,7 +1169,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 69.85) (xy 83.82 69.85)
+			(xy 74.93 69.85) (xy 83.82 69.85)
 		)
 		(stroke
 			(width 0)
@@ -1277,8 +1287,19 @@
 		)
 		(uuid "f874897f-118b-4b7c-8248-fd8421f430a6")
 	)
+	(text "These jumpers can be replaced\nwith tuning capacitors to \ndecrease touch pad capacitance."
+		(exclude_from_sim no)
+		(at 55.118 84.074 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "ad16d057-0666-4d26-befb-11806a4e8096")
+	)
 	(label "MODE"
-		(at 67.31 69.85 0)
+		(at 58.42 69.85 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1289,7 +1310,7 @@
 		(uuid "24e1eb29-28e4-4bb5-8d94-4406a61a87fb")
 	)
 	(label "CW"
-		(at 67.31 74.93 0)
+		(at 58.42 74.93 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1300,7 +1321,7 @@
 		(uuid "3d8f2dc5-01e7-446c-b88a-5ab8e86eb70c")
 	)
 	(label "CCW"
-		(at 67.31 59.69 0)
+		(at 58.42 59.69 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1311,7 +1332,7 @@
 		(uuid "93f173be-89c0-4c93-a538-0566c5cc771e")
 	)
 	(label "STOP"
-		(at 67.31 64.77 0)
+		(at 58.42 64.77 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1630,7 +1651,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_US")
-		(at 77.47 59.69 90)
+		(at 71.12 59.69 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1638,7 +1659,7 @@
 		(dnp no)
 		(uuid "221f5978-163f-4dc2-b631-4fb32f9e55de")
 		(property "Reference" "R32"
-			(at 75.184 57.404 90)
+			(at 68.834 57.404 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1646,7 +1667,7 @@
 			)
 		)
 		(property "Value" "0"
-			(at 80.01 57.404 90)
+			(at 73.66 57.404 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1654,7 +1675,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 77.724 58.674 90)
+			(at 71.374 58.674 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1663,7 +1684,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 77.47 59.69 0)
+			(at 71.12 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1672,7 +1693,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 77.47 59.69 0)
+			(at 71.12 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1766,7 +1787,7 @@
 	)
 	(symbol
 		(lib_id "open-ephys:TOUCH")
-		(at 64.77 64.77 90)
+		(at 55.88 64.77 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -1775,7 +1796,7 @@
 		(dnp no)
 		(uuid "5733bf26-e061-4f21-a5fd-dc6a85e653ce")
 		(property "Reference" "S4"
-			(at 60.706 64.516 90)
+			(at 51.816 64.516 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1783,7 +1804,7 @@
 			)
 		)
 		(property "Value" "~"
-			(at 63.5 62.23 90)
+			(at 54.61 62.23 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1791,7 +1812,7 @@
 			)
 		)
 		(property "Footprint" "open-ephys:Touch_Center_2mm"
-			(at 64.77 64.77 0)
+			(at 55.88 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1800,7 +1821,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 64.77 64.77 0)
+			(at 55.88 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1809,7 +1830,7 @@
 			)
 		)
 		(property "Description" "Printed capactitive touch sensor"
-			(at 64.77 64.77 0)
+			(at 55.88 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1831,7 +1852,7 @@
 	)
 	(symbol
 		(lib_id "open-ephys:TOUCH")
-		(at 64.77 69.85 90)
+		(at 55.88 69.85 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -1840,7 +1861,7 @@
 		(dnp no)
 		(uuid "69110f97-bcd1-4b24-972c-14b58868fbc8")
 		(property "Reference" "S2"
-			(at 60.706 69.85 90)
+			(at 51.816 69.85 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1848,7 +1869,7 @@
 			)
 		)
 		(property "Value" "~"
-			(at 63.5 67.31 90)
+			(at 54.61 67.31 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1856,7 +1877,7 @@
 			)
 		)
 		(property "Footprint" "open-ephys:Touch_Center_2mm"
-			(at 64.77 69.85 0)
+			(at 55.88 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1865,7 +1886,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 64.77 69.85 0)
+			(at 55.88 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1874,7 +1895,7 @@
 			)
 		)
 		(property "Description" "Printed capactitive touch sensor"
-			(at 64.77 69.85 0)
+			(at 55.88 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1963,7 +1984,7 @@
 	)
 	(symbol
 		(lib_id "open-ephys:TOUCH")
-		(at 64.77 59.69 90)
+		(at 55.88 59.69 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -1972,7 +1993,7 @@
 		(dnp no)
 		(uuid "7b5a4b59-8071-484d-97b1-685ebcfdde38")
 		(property "Reference" "S3"
-			(at 60.706 59.69 90)
+			(at 51.816 59.69 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1980,7 +2001,7 @@
 			)
 		)
 		(property "Value" "~"
-			(at 63.5 57.15 90)
+			(at 54.61 57.15 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1988,7 +2009,7 @@
 			)
 		)
 		(property "Footprint" "open-ephys:Touch_Center_2mm"
-			(at 64.77 59.69 0)
+			(at 55.88 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1997,7 +2018,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 64.77 59.69 0)
+			(at 55.88 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2006,7 +2027,7 @@
 			)
 		)
 		(property "Description" "Printed capactitive touch sensor"
-			(at 64.77 59.69 0)
+			(at 55.88 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2028,7 +2049,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_US")
-		(at 77.47 74.93 90)
+		(at 71.12 74.93 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2036,7 +2057,7 @@
 		(dnp no)
 		(uuid "9190794e-3d08-4c7c-8a34-5369906189fb")
 		(property "Reference" "R35"
-			(at 74.93 72.898 90)
+			(at 68.58 72.898 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2044,7 +2065,7 @@
 			)
 		)
 		(property "Value" "0"
-			(at 79.502 72.898 90)
+			(at 73.152 72.898 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2052,7 +2073,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 77.724 73.914 90)
+			(at 71.374 73.914 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2061,7 +2082,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 77.47 74.93 0)
+			(at 71.12 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2070,7 +2091,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 77.47 74.93 0)
+			(at 71.12 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2161,7 +2182,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_US")
-		(at 77.47 69.85 90)
+		(at 71.12 69.85 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2169,7 +2190,7 @@
 		(dnp no)
 		(uuid "ce0c3c16-3805-46af-867d-53b4d18e424e")
 		(property "Reference" "R34"
-			(at 74.93 67.818 90)
+			(at 68.58 67.818 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2177,7 +2198,7 @@
 			)
 		)
 		(property "Value" "0"
-			(at 79.502 67.818 90)
+			(at 73.152 67.818 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2185,7 +2206,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 77.724 68.834 90)
+			(at 71.374 68.834 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2194,7 +2215,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 77.47 69.85 0)
+			(at 71.12 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2203,7 +2224,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 77.47 69.85 0)
+			(at 71.12 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2390,7 +2411,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_US")
-		(at 77.47 64.77 90)
+		(at 71.12 64.77 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2398,7 +2419,7 @@
 		(dnp no)
 		(uuid "f704d7ca-995b-4df8-9cb2-e91c781e509a")
 		(property "Reference" "R33"
-			(at 74.93 62.738 90)
+			(at 68.58 62.738 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2406,7 +2427,7 @@
 			)
 		)
 		(property "Value" "0"
-			(at 79.502 62.738 90)
+			(at 73.152 62.738 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2414,7 +2435,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 77.724 63.754 90)
+			(at 71.374 63.754 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2423,7 +2444,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 77.47 64.77 0)
+			(at 71.12 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2432,7 +2453,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 77.47 64.77 0)
+			(at 71.12 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2457,7 +2478,7 @@
 	)
 	(symbol
 		(lib_id "open-ephys:TOUCH")
-		(at 64.77 74.93 90)
+		(at 55.88 74.93 90)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2466,7 +2487,7 @@
 		(dnp no)
 		(uuid "fe63f348-92af-4163-82d2-8773a47cd077")
 		(property "Reference" "S1"
-			(at 60.706 74.93 90)
+			(at 51.816 74.93 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2474,7 +2495,7 @@
 			)
 		)
 		(property "Value" "~"
-			(at 63.5 72.39 90)
+			(at 54.61 72.39 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2482,7 +2503,7 @@
 			)
 		)
 		(property "Footprint" "open-ephys:Touch_Center_2mm"
-			(at 64.77 74.93 0)
+			(at 55.88 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2491,7 +2512,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 64.77 74.93 0)
+			(at 55.88 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2500,7 +2521,7 @@
 			)
 		)
 		(property "Description" "Printed capactitive touch sensor"
-			(at 64.77 74.93 0)
+			(at 55.88 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
