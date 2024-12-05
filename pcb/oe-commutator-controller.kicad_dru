@@ -1,0 +1,5 @@
+(version 1)
+(rule gnd_button_separation
+(condition "(A.NetName == '/Touch Sensors/CW' || A.NetName == '/Touch Sensors/CCW' || A.NetName == '/Touch Sensors/STOP') && B.NetName == 'GND'")
+(constraint physical_clearance(min 0.5mm))
+)
