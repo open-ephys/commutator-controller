@@ -9945,7 +9945,7 @@
 		)
 		(uuid "2f7d43cb-9c91-4588-8f01-9da28022747d")
 	)
-	(hierarchical_label "TMC_{EN}"
+	(hierarchical_label "TMC_{~{EN}}"
 		(shape output)
 		(at 168.91 106.68 0)
 		(fields_autoplaced yes)
@@ -10876,7 +10876,7 @@
 				)
 			)
 		)
-		(property "Value" "PTS645SL50SMTR92 LFS"
+		(property "Value" "TS04-66-50-BK-160-SMT"
 			(at 67.31 58.42 0)
 			(effects
 				(font
@@ -10884,7 +10884,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_PTS645"
+		(property "Footprint" "open-ephys:SAMESKY-TS04-66-XX-BK-XXX-SMT-XX"
 			(at 67.31 58.42 0)
 			(effects
 				(font
@@ -10893,7 +10893,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.ckswitches.com/media/1471/pts645.pdf"
+		(property "Datasheet" "~"
 			(at 67.31 58.42 0)
 			(effects
 				(font
@@ -11629,7 +11629,7 @@
 				)
 			)
 		)
-		(property "Footprint" "oe:PANASONIC_EVQP7-JA-01P"
+		(property "Footprint" "open-ephys:PANASONIC_EVQP7-JA-01P"
 			(at 88.9 55.88 0)
 			(effects
 				(font
@@ -11638,7 +11638,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/245500"
+		(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
 			(at 88.9 55.88 0)
 			(effects
 				(font

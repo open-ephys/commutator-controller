@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "E")
+		(rev "F")
 		(company "Open Ephys, Inc.")
 		(comment 1 "Cris Sharp")
 		(comment 2 "Jonathan P. Newman")
@@ -2208,7 +2208,7 @@
 				(justify left top)
 			)
 		)
-		(pin "TMC_{EN}" input
+		(pin "TMC_{~{EN}}" input
 			(at 203.2 138.43 180)
 			(effects
 				(font
@@ -2462,7 +2462,7 @@
 			)
 			(uuid "e95f66c7-2b81-42a5-af35-0ee80cd6ea43")
 		)
-		(pin "TMC_{EN}" output
+		(pin "TMC_{~{EN}}" output
 			(at 139.7 102.87 0)
 			(effects
 				(font
