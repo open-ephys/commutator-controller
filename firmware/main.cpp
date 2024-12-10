@@ -29,7 +29,7 @@ const double GEAR_RATIO = 2.0;
 // #define COMMUTATOR_TYPE     "Dual Channel Coax"
 // const double GEAR_RATIO     = 3.06666666667
 
-#define DEBUG
+// #define DEBUG
 
 #define MAX_MESSAGE_LENGTH 1024
 
@@ -221,16 +221,17 @@ uint8_t process_button_input(uint8_t previous_sensor_input_status)
         rgb_set_auto(ctx);
         break;
     case CW_BUTTON_PRESS:
-        mot_ctx.target_turns = 0;
         turn_motor_if_enabled(1000);
         break;
     case CCW_BUTTON_PRESS:
-        mot_ctx.target_turns = 0;
         turn_motor_if_enabled(-1000);
         break;
     case BUTTON_RELEASE:
         if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
         {
+            // reset target_turns after manually adjusting commutator
+            // also, avoid motor moving indefinitely if a turn command is received while the motor is stopping
+            mot_ctx.target_turns = mot_ctx.motor.currentPosition() / (double)USTEPS_PER_REV / GEAR_RATIO;  
             mot_ctx.motor.stop();
         }
         break;

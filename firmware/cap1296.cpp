@@ -2,6 +2,9 @@
 
 void cap1296_init()
 {
+    // Lower threshold for button with series capacitor, cs4
+    const uint8_t cs4_sensor_input_threshold_register[2] = {0x33, 0x20};
+    i2c_write_blocking(I2C_PORT, CAP1296_ADDR, cs4_sensor_input_threshold_register, 2, false);
     // Set sensitivity multiplier to x4 and data scaling factor to x256 
     const uint8_t sensitivity_control_register[2] = {0x1F, 0x5f};
     i2c_write_blocking(I2C_PORT, CAP1296_ADDR, sensitivity_control_register, 2, false);
