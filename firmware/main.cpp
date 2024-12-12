@@ -49,6 +49,12 @@ static bool check_for_curly_bracket();
 static void core1_entry();
 static void io_alert_irq_callback(unsigned int gpio, long unsigned int events) { alert_flag = true; }
 
+// bool repeating_timer_callback(__unused struct repeating_timer *t) {
+//     if (mot_ctx.motor.isRunning()){
+//         mot_ctx.motor.run();
+//     }
+// }
+
 int main()
 {
     // Initialize chips
@@ -69,20 +75,13 @@ int main()
     motor_init(ctx, mot_ctx); // Initialize motor
     // Start the second core with motor.run() as its only task
     multicore_launch_core1(core1_entry);
-    gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
     cap1296_clear_int_bit_in_main_control_register();
+    // struct repeating_timer timer;
+    // add_repeating_timer_us(-20, repeating_timer_callback, NULL, &timer);
     // Decode commands and buttons
     while (true)
     {
-        if (tud_cdc_available())
-        {
-            process_serial_input(sensor_input_status);
-        }
-        if (alert_flag)
-        {
-            alert_flag = false;
-            sensor_input_status = process_button_input(sensor_input_status);
-        }
+        mot_ctx.motor.run();
     }
     return 0;
 }
@@ -229,10 +228,7 @@ uint8_t process_button_input(uint8_t previous_sensor_input_status)
     case BUTTON_RELEASE:
         if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
         {
-            // reset target_turns after manually adjusting commutator
-            // also, avoid motor moving indefinitely if a turn command is received while the motor is stopping
-            mot_ctx.target_turns = mot_ctx.motor.currentPosition() / (double)USTEPS_PER_REV / GEAR_RATIO;  
-            mot_ctx.motor.stop();
+            motor_soft_stop(mot_ctx);
         }
         break;
     }
@@ -260,8 +256,19 @@ void turn_motor_if_enabled(double turns)
 
 static void core1_entry()
 {
+    gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
+    uint8_t sensor_input_status;
     while (true)
     {
-        mot_ctx.motor.run();
+        if (tud_cdc_available())
+        {
+            process_serial_input(sensor_input_status);
+        }
+        if (alert_flag)
+        {
+            sensor_input_status = process_button_input(sensor_input_status);
+            alert_flag = false;
+        }
+        
     }
 }

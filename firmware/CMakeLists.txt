@@ -31,6 +31,7 @@ include(pico_sdk_import.cmake)
 project(commutator C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
+add_compile_definitions(PICO_STDIO_USB_CONNECTION_WITHOUT_DTR)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
