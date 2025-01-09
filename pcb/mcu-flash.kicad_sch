@@ -2222,7 +2222,7 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "U"
-				(at -8.89 8.89 0)
+				(at -6.35 11.43 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -2230,7 +2230,7 @@
 				)
 			)
 			(property "Value" "W25Q128JVS"
-				(at 7.62 8.89 0)
+				(at 7.62 11.43 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -2238,7 +2238,7 @@
 				)
 			)
 			(property "Footprint" "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm"
-				(at 0 0 0)
+				(at 0 22.86 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -2246,8 +2246,8 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "http://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf"
-				(at 0 0 0)
+			(property "Datasheet" "https://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf"
+				(at 0 25.4 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -2256,7 +2256,7 @@
 				)
 			)
 			(property "Description" "128Mb Serial Flash Memory, Standard/Dual/Quad SPI, SOIC-8"
-				(at 0 0 0)
+				(at 0 27.94 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -9994,7 +9994,7 @@
 		(uuid "6d47248b-5da9-4a34-a166-8717d7a94cdf")
 	)
 	(hierarchical_label "LTC44_{CURR}"
-		(shape output)
+		(shape input)
 		(at 168.91 134.62 0)
 		(fields_autoplaced yes)
 		(effects
@@ -10192,7 +10192,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "http://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf"
+		(property "Datasheet" "https://www.winbond.com/resource-files/w25q128jv_dtr%20revc%2003272018%20plus.pdf"
 			(at 36.83 88.9 0)
 			(effects
 				(font
@@ -12738,7 +12738,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22pF"
+		(property "Value" "C0402C0G500-220GNP-CT"
 			(at 60.96 107.95 0)
 			(effects
 				(font
@@ -14129,7 +14129,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22pF"
+		(property "Value" "C0402C0G500-220GNP-CT"
 			(at 60.96 120.65 0)
 			(effects
 				(font

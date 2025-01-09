@@ -905,7 +905,7 @@
 					)
 				)
 			)
-			(property "Footprint" "oe:TI_R-PDSS_B4_SMD"
+			(property "Footprint" "open-ephys:TI_R-PDSS_B4_SMD"
 				(at 0 -1.27 0)
 				(effects
 					(font
