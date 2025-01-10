@@ -16,26 +16,20 @@
 #include "motor.h"
 #include "pindefs.h"
 #include "hardware/structs/systick.h"
+#include "pico/binary_info.h"
 
 // Versions
 #define FIRMWARE_VER "0.1.0"
-#define BOARD_REV "F"
-
-// 3. Select a commutator type by uncommenting one of the following
-// #define COMMUTATOR_TYPE     "SPI"
-// const double GEAR_RATIO     = 1.77777777778
-
-#define COMMUTATOR_TYPE "Single Channel Coax"
-const double GEAR_RATIO = 2.0;
-
-// #define COMMUTATOR_TYPE     "Dual Channel Coax"
-// const double GEAR_RATIO     = 3.06666666667
+#define BOARD_REV "G"
 
 // #define DEBUG
 
 // constants
 #define MAX_SERIAL_BUFFER_LENGTH 1024u
 const bool unused_placeholder = true;
+
+bi_decl(bi_ptr_string(0, 0, gear_ratio, "1.0", 32));
+double GEAR_RATIO = 1.0;
 
 volatile bool alert_flag; // ISR flag
 // thread-safe queues shared between cores
@@ -54,6 +48,7 @@ int main()
     Context ctx{.enable = false, .led = true};
     double target_turns = 0;
     uint16_t serial_buffer_index = 0;
+    GEAR_RATIO = atof(gear_ratio);
 #ifdef DEBUG
     uint16_t button_counter = 0;
 #endif
@@ -175,7 +170,7 @@ int main()
             if (receive["print"].is<JsonVariant>())
             {
                 JsonDocument doc;
-                doc["type"] = COMMUTATOR_TYPE;
+                doc["type"] = GEAR_RATIO;
                 doc["board_rev"] = BOARD_REV;
                 doc["firmware"] = FIRMWARE_VER;
                 doc["enable"] = ctx.enable;

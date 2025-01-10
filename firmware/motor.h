@@ -6,7 +6,7 @@
 
 struct Context;
 
-extern const double GEAR_RATIO;
+extern double GEAR_RATIO;
 
 // Stepper parameters
 static const int DETENTS = 200;
