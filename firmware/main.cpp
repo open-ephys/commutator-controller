@@ -10,8 +10,8 @@
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include "pico/util/queue.h"
+#include "AccelStepper.h"
 #include "cap1296.h"
-#include "defs.h"
 #include "io.h"
 #include "is32fl3193.h"
 #include "ltc4425.h"
@@ -41,13 +41,22 @@ const bool stop_flag = true;
 // configure gear ratio through `picotool config`
 bi_decl(bi_ptr_string(0, 0, gear_ratio, "2.0", 32));
 double GEAR_RATIO = 2.0;
+// controller state
+struct Context {
+    bool enable = false;
+    bool led = true;
+    uint8_t current_sensor_input_status = 0;
+    double target_turns = 0.0;
+};
 
 ///////// FUNCTION DECLARATIONS /////////
 
 static double turn_command(double turns, double target_turns, bool enable);
 static void turn_button(bool direction, bool enable);
 static void core1_entry();
-static void reset_serial_buffer(uint8_t *serial_buffer, uint16_t *serial_buffer_index, bool *serial_buffer_has_open_curly);
+static void reset_serial_buffer(char *serial_buffer, uint16_t *serial_buffer_index, bool *serial_buffer_has_open_curly);
+Context process_button_touches(Context ctx);
+Context process_serial_commands(Context ctx);
 
 ///////// MAIN /////////
 
@@ -57,15 +66,8 @@ int main()
 #ifdef DEBUG
     uint16_t button_counter = 0;
 #endif
-    struct Context {
-        bool enable = false;
-        bool led = true;
-        double target_turns = 0.0;
-    } ctx;
-    uint16_t serial_buffer_index = 0;
-    uint8_t previous_sensor_input_status, current_sensor_input_status, temp_buf = 0;
-    uint8_t serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
-    bool serial_buffer_has_open_curly = false;
+    Context ctx;
+    uint8_t current_sensor_input_status = 0;
     GEAR_RATIO = atof(gear_ratio);
     queue_init(&motor_turn_queue, sizeof(long), 10);
     queue_init(&motor_enable_queue, sizeof(bool), 10);
@@ -91,161 +93,169 @@ int main()
     // Decode commands and buttons
     while (true)
     {
-
-        // if data is available in the USB serial buffer, process it
-
-        while (tud_cdc_available())
-        {
-            // Inserting the serial stream directly into deserializeJson() was causing the code that checked for 
-            // "{" to hang. This is because that code that was dependent on terminating with eof() byte which 
-            // is never received in a console stream like this (it can be, but we don't expect users to send it). We manage
-            // our own buffer instead. This allows us to know exactly when the message ends to avoid hanging.
-            // We check for "{" to begin with because sending a message like "asd{enable:true}" in which a valid JSON is 
-            // preceded with gibberish would not count as a valid JSON. 
-            if (serial_buffer_index < MAX_SERIAL_BUFFER_LENGTH)
-            {
-                temp_buf = getchar();
-                if (serial_buffer_has_open_curly)
-                {
-                    serial_buffer[serial_buffer_index++] = temp_buf;
-                }
-                else if (temp_buf == '{')
-                {
-                    serial_buffer_has_open_curly = true;
-                    serial_buffer[serial_buffer_index++] = temp_buf;
-                }
-                else
-                {
-                    break;
-                }
-                
-            }
-            else
-            {
-                printf("{error: input buffer overflow}\n");
-                reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
-            }
-
-            JsonDocument receive;
-            auto error = deserializeJson(receive, serial_buffer, serial_buffer_index, DeserializationOption::NestingLimit(2));
-            
-            // If the `temp_buf == '-'` is omitted, negative turns are omitted.
-            // Before the code just checked for any non-zero `error.code()` and hit `break;`. However, this 
-            // bricks serial communication if an invalid JSON is received. Every subsequent DeserializeJson would
-            // find this invalid json and proceed no further in the serial_buffer to find a subsequent potentially 
-            // valid JSON received later on, I think
-            if (error.code() == DeserializationError::IncompleteInput || temp_buf == '-')
-            {
-                break;
-            }
-            else if (error.code())
-            {
-                reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
-                break;
-            }
-
-            reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
-
-            // Enable command
-            if (receive["enable"].is<bool>())
-            {
-                ctx.enable = receive["enable"];
-                queue_add_blocking(&motor_enable_queue, &ctx.enable);
-                rgb_set_auto(ctx.enable, ctx.led);
-            }
-
-            // LED command
-            if (receive["led"].is<bool>())
-            {
-                ctx.led = receive["led"];
-                rgb_set_auto(ctx.enable, ctx.led);
-            }
-
-            // Turn command, but don't let this command override current button presses
-            if (receive["turn"].is<double>() & !(current_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS)))
-            {
-                double turns = receive["turn"];
-                if (std::isnan(turns))
-                {
-                    JsonDocument doc;
-                    doc["error"] = "NaN turn command";
-                    serializeJson(doc, std::cout);
-                    std::cout << std::endl;
-                }
-                else if (std::isinf(turns))
-                {
-                    JsonDocument doc;
-                    doc["error"] = "Inf turn command";
-                    serializeJson(doc, std::cout);
-                    std::cout << std::endl;
-                }
-                else
-                {
-                    ctx.target_turns = turn_command(turns, ctx.target_turns, ctx.enable);
-                }
-            }
-
-            // Print command
-            if (receive["print"].is<JsonVariant>())
-            {
-                JsonDocument doc;
-                doc["gear_ratio"] = GEAR_RATIO;
-                doc["board_rev"] = BOARD_REV;
-                doc["firmware"] = FIRMWARE_VER;
-                doc["enable"] = ctx.enable;
-                doc["led"] = ctx.led;
-                doc["charge_current"] = ltc4425_charge_current();
-                doc["power_good"] = ltc4425_power_good();
-                serializeJson(doc, std::cout);
-                std::cout << std::endl;
-            }
-#ifdef DEBUG
-            serializeJson(receive, std::cout);
-            std::cout << std::endl;
-#endif
-        }
-
-        // If the cap1296 touch sensor detects a button press or release, process it
-
         if (alert_flag)
-        {
-            cap1296_clear_int_bit_in_main_control_register();
-            current_sensor_input_status = cap1296_read_sensor_input_status_register();
-            switch (current_sensor_input_status)
-            {
-            case LED_BUTTON_PRESS:
-                ctx.led = !ctx.led;
-                rgb_set_auto(ctx.enable, ctx.led);
-                break;
-            case ENABLE_BUTTON_PRESS:
-                ctx.enable = !ctx.enable;
-                queue_add_blocking(&motor_enable_queue, &ctx.enable);
-                rgb_set_auto(ctx.enable, ctx.led);
-                ctx.target_turns = 0;
-                break;
-            case CW_BUTTON_PRESS:
-                turn_button(false, ctx.enable);
-                break;
-            case CCW_BUTTON_PRESS:
-                turn_button(true, ctx.enable);
-                break;
-            case BUTTON_RELEASE:
-                if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
-                {
-                    queue_add_blocking(&motor_stop_queue, &stop_flag);
-                    ctx.target_turns = 0; // both target_turns and accel stepper's absolute position-tracking variable
-                }                         // (_currentPosition) reset to zero after manually adjusting commutator with buttons
-                break;
-            }
-            previous_sensor_input_status = current_sensor_input_status;
-            alert_flag = false;
-#ifdef DEBUG
-            printf("{button: %02hhx, counter: %i}\n", current_sensor_input_status, button_counter++);
-#endif
-        }
+            ctx = process_button_touches(ctx);
+        while (tud_cdc_available())
+            ctx = process_serial_commands(ctx);
     }
     return 0;
 }
+
+Context process_button_touches(Context ctx)
+{
+    static uint8_t previous_sensor_input_status;
+    cap1296_clear_int_bit_in_main_control_register();
+    ctx.current_sensor_input_status = cap1296_read_sensor_input_status_register();
+    switch (ctx.current_sensor_input_status)
+    {
+    case LED_BUTTON_PRESS:
+        ctx.led = !ctx.led;
+        rgb_set_auto(ctx.enable, ctx.led);
+        break;
+    case ENABLE_BUTTON_PRESS:
+        ctx.enable = !ctx.enable;
+        queue_add_blocking(&motor_enable_queue, &ctx.enable);
+        rgb_set_auto(ctx.enable, ctx.led);
+        ctx.target_turns = 0;
+        break;
+    case CW_BUTTON_PRESS:
+        turn_button(false, ctx.enable);
+        break;
+    case CCW_BUTTON_PRESS:
+        turn_button(true, ctx.enable);
+        break;
+    case BUTTON_RELEASE:
+        if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
+        {
+            queue_add_blocking(&motor_stop_queue, &stop_flag);
+            ctx.target_turns = 0; // both target_turns and accel stepper's absolute position-tracking variable
+        }                         // (_currentPosition) reset to zero after manually adjusting commutator with buttons
+        break;
+    }
+    previous_sensor_input_status = ctx.current_sensor_input_status;
+    alert_flag = false;
+#ifdef DEBUG
+    printf("{button: %02hhx, counter: %i}\n", current_sensor_input_status, button_counter++);
+#endif
+    return ctx;
+}
+
+Context process_serial_commands(Context ctx)
+{
+    static bool serial_buffer_has_open_curly = false;
+    static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
+    static uint16_t serial_buffer_index = 0;
+    char temp_buf; 
+    // Inserting the serial stream directly into deserializeJson() was causing the code that checked for 
+    // "{" to hang. This is because that code that was dependent on terminating with eof() byte which 
+    // is never received in a console stream like this (it can be, but we don't expect users to send it). We manage
+    // our own buffer instead. This allows us to know exactly when the message ends to avoid hanging.
+    // We check for "{" to begin with because sending a message like "asd{enable:true}" in which a valid JSON is 
+    // preceded with gibberish would not count as a valid JSON. 
+    if (serial_buffer_index < MAX_SERIAL_BUFFER_LENGTH)
+    {
+        temp_buf = getchar();
+        if (serial_buffer_has_open_curly)
+        {
+            serial_buffer[serial_buffer_index++] = temp_buf;
+        }
+        else if (temp_buf == '{')
+        {
+            serial_buffer_has_open_curly = true;
+            serial_buffer[serial_buffer_index++] = temp_buf;
+        }
+        else
+        {
+            return ctx;
+        }
+        
+    }
+    else
+    {
+        printf("{error: input buffer overflow}\n");
+        reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
+    }
+
+    JsonDocument receive;
+    auto error = deserializeJson(receive, serial_buffer, serial_buffer_index, DeserializationOption::NestingLimit(2));
+    
+    // If the `temp_buf == '-'` is omitted, negative turns are omitted.
+    // Before the code just checked for any non-zero `error.code()` and hit `break;`. However, this 
+    // bricks serial communication if an invalid JSON is received. Every subsequent DeserializeJson would
+    // find this invalid json and proceed no further in the serial_buffer to find a subsequent potentially 
+    // valid JSON received later on, I think
+    if (error.code() == DeserializationError::IncompleteInput || temp_buf == '-')
+    {
+        return ctx;
+    }
+    else if (error.code())
+    {
+        reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
+        return ctx;
+    }
+
+    reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
+
+    // Enable command
+    if (receive["enable"].is<bool>())
+    {
+        ctx.enable = receive["enable"];
+        queue_add_blocking(&motor_enable_queue, &ctx.enable);
+        rgb_set_auto(ctx.enable, ctx.led);
+    }
+
+    // LED command
+    if (receive["led"].is<bool>())
+    {
+        ctx.led = receive["led"];
+        rgb_set_auto(ctx.enable, ctx.led);
+    }
+
+    // Turn command, but don't let this command override current button presses
+    if (receive["turn"].is<double>() & !(ctx.current_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS)))
+    {
+        double turns = receive["turn"];
+        if (std::isnan(turns))
+        {
+            JsonDocument doc;
+            doc["error"] = "NaN turn command";
+            serializeJson(doc, std::cout);
+            std::cout << std::endl;
+        }
+        else if (std::isinf(turns))
+        {
+            JsonDocument doc;
+            doc["error"] = "Inf turn command";
+            serializeJson(doc, std::cout);
+            std::cout << std::endl;
+        }
+        else
+        {
+            ctx.target_turns = turn_command(turns, ctx.target_turns, ctx.enable);
+        }
+    }
+
+    // Print command
+    if (receive["print"].is<JsonVariant>())
+    {
+        JsonDocument doc;
+        doc["gear_ratio"] = GEAR_RATIO;
+        doc["board_rev"] = BOARD_REV;
+        doc["firmware"] = FIRMWARE_VER;
+        doc["enable"] = ctx.enable;
+        doc["led"] = ctx.led;
+        doc["charge_current"] = ltc4425_charge_current();
+        doc["power_good"] = ltc4425_power_good();
+        serializeJson(doc, std::cout);
+        std::cout << std::endl;
+    }
+#ifdef DEBUG
+    serializeJson(receive, std::cout);
+    std::cout << std::endl;
+#endif
+    return ctx;
+}
+
 
 double turn_command(double turns, double target_turns, bool enable)
 {
@@ -303,7 +313,7 @@ void turn_button(bool direction, bool enable)
     return;
 }
 
-static void reset_serial_buffer(uint8_t *serial_buffer, uint16_t *serial_buffer_index, bool *serial_buffer_has_open_curly)
+static void reset_serial_buffer(char *serial_buffer, uint16_t *serial_buffer_index, bool *serial_buffer_has_open_curly)
 {
     memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
     *serial_buffer_index = 0;

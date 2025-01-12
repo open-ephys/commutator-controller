@@ -1,10 +1,8 @@
 #pragma once
 
 #include <climits>
-#include "defs.h"
+#include "AccelStepper.h"
 #include "tmc2130.h"
-
-struct Context;
 
 extern double GEAR_RATIO;
 

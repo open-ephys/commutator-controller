@@ -5,7 +5,6 @@
 #include "hardware/spi.h"
 #include "pico/stdlib.h"
 #include "pindefs.h"
-#include "defs.h"
 
 extern volatile bool alert_flag;
 void io_alert_irq_callback(unsigned int gpio, long unsigned int events);
