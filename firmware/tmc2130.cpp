@@ -29,32 +29,15 @@ static void tmc2130_write(uint8_t reg, uint32_t data)
 
 void tmc2130_init()
 {
-    spi_init(TMC2130_SPI_PORT, 1000 * 1000);
-    gpio_set_function(TMC2130_CFG2_SCLK, GPIO_FUNC_SPI);
-    gpio_set_function(TMC2130_CFG0_MISO, GPIO_FUNC_SPI);
-    gpio_set_function(TMC2130_CFG1_MOSI, GPIO_FUNC_SPI);
-
-    gpio_init(TMC2130_CFG3_CS);
-    gpio_set_dir(TMC2130_CFG3_CS, GPIO_OUT);
     gpio_put(TMC2130_CFG3_CS, 1);
-
-    gpio_init(TMC2130_DIR);
-    gpio_set_dir(TMC2130_DIR, GPIO_OUT);
     gpio_put(TMC2130_DIR, 0);
-
-    gpio_init(TMC2130_STEP);
-    gpio_set_dir(TMC2130_STEP, GPIO_OUT);
     gpio_put(TMC2130_STEP, 0);
-
-    gpio_init(TMC2130_CFG6_EN);
-    gpio_set_outover(TMC2130_CFG6_EN, gpio_override::GPIO_OVERRIDE_INVERT);
-    gpio_set_dir(TMC2130_CFG6_EN, GPIO_OUT);
-
+    
     // voltage on AIN is current reference
-    // Stealthchop is on
+    // Stealth chop is on
     tmc2130_write(REG_GCONF, 0x00000007UL);
 
-    // Configure steathchip
+    // Configure stealth chop
     // PWM_GRAD = 0x0F
     // PWM_AMPL = 0xFF
     // pwm_autoscale = 0x01

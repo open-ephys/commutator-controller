@@ -514,6 +514,11 @@ public:
     /// to stop as quickly as possible, using the current speed and acceleration parameters.
     void stop();
 
+    /// Sets a new target position that causes the stepper
+    /// to stop as quickly as possible, using the current speed and acceleration parameters.
+    /// and sets the new target position to the zero position
+    void stopAndResetPosition();
+    
     /// Disable motor pin outputs by setting them all LOW
     /// Depending on the design of your electronics this may turn off
     /// the power to the motor coils, saving power.
