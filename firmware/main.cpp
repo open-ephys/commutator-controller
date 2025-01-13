@@ -55,8 +55,8 @@ static double turn_command(double turns, double target_turns, bool enable);
 static void turn_button(bool direction, bool enable);
 static void core1_entry();
 static void reset_serial_buffer(char *serial_buffer, uint16_t *serial_buffer_index, bool *serial_buffer_has_open_curly);
-Context process_button_touches(Context ctx);
-Context process_serial_commands(Context ctx);
+void process_button_touches(Context *ctx);
+void process_serial_commands(Context *ctx);
 
 ///////// MAIN /////////
 
@@ -94,53 +94,53 @@ int main()
     while (true)
     {
         if (alert_flag)
-            ctx = process_button_touches(ctx);
+            process_button_touches(&ctx);
         while (tud_cdc_available())
-            ctx = process_serial_commands(ctx);
+            process_serial_commands(&ctx);
     }
     return 0;
 }
 
-Context process_button_touches(Context ctx)
+void process_button_touches(Context *ctx)
 {
     static uint8_t previous_sensor_input_status;
     cap1296_clear_int_bit_in_main_control_register();
-    ctx.current_sensor_input_status = cap1296_read_sensor_input_status_register();
-    switch (ctx.current_sensor_input_status)
+    ctx->current_sensor_input_status = cap1296_read_sensor_input_status_register();
+    switch (ctx->current_sensor_input_status)
     {
     case LED_BUTTON_PRESS:
-        ctx.led = !ctx.led;
-        rgb_set_auto(ctx.enable, ctx.led);
+        ctx->led = !ctx->led;
+        rgb_set_auto(ctx->enable, ctx->led);
         break;
     case ENABLE_BUTTON_PRESS:
-        ctx.enable = !ctx.enable;
-        queue_add_blocking(&motor_enable_queue, &ctx.enable);
-        rgb_set_auto(ctx.enable, ctx.led);
-        ctx.target_turns = 0;
+        ctx->enable = !ctx->enable;
+        queue_add_blocking(&motor_enable_queue, &ctx->enable);
+        rgb_set_auto(ctx->enable, ctx->led);
+        ctx->target_turns = 0;
         break;
     case CW_BUTTON_PRESS:
-        turn_button(false, ctx.enable);
+        turn_button(false, ctx->enable);
         break;
     case CCW_BUTTON_PRESS:
-        turn_button(true, ctx.enable);
+        turn_button(true, ctx->enable);
         break;
     case BUTTON_RELEASE:
         if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
         {
             queue_add_blocking(&motor_stop_queue, &stop_flag);
-            ctx.target_turns = 0; // both target_turns and accel stepper's absolute position-tracking variable
+            ctx->target_turns = 0; // both target_turns and accel stepper's absolute position-tracking variable
         }                         // (_currentPosition) reset to zero after manually adjusting commutator with buttons
         break;
     }
-    previous_sensor_input_status = ctx.current_sensor_input_status;
+    previous_sensor_input_status = ctx->current_sensor_input_status;
     alert_flag = false;
 #ifdef DEBUG
     printf("{button: %02hhx, counter: %i}\n", current_sensor_input_status, button_counter++);
 #endif
-    return ctx;
+    return;
 }
 
-Context process_serial_commands(Context ctx)
+void process_serial_commands(Context *ctx)
 {
     static bool serial_buffer_has_open_curly = false;
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
@@ -166,7 +166,7 @@ Context process_serial_commands(Context ctx)
         }
         else
         {
-            return ctx;
+            return;
         }
         
     }
@@ -186,12 +186,12 @@ Context process_serial_commands(Context ctx)
     // valid JSON received later on, I think
     if (error.code() == DeserializationError::IncompleteInput || temp_buf == '-')
     {
-        return ctx;
+        return;
     }
     else if (error.code())
     {
         reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
-        return ctx;
+        return;
     }
 
     reset_serial_buffer(serial_buffer, &serial_buffer_index, &serial_buffer_has_open_curly);
@@ -199,20 +199,20 @@ Context process_serial_commands(Context ctx)
     // Enable command
     if (receive["enable"].is<bool>())
     {
-        ctx.enable = receive["enable"];
-        queue_add_blocking(&motor_enable_queue, &ctx.enable);
-        rgb_set_auto(ctx.enable, ctx.led);
+        ctx->enable = receive["enable"];
+        queue_add_blocking(&motor_enable_queue, &ctx->enable);
+        rgb_set_auto(ctx->enable, ctx->led);
     }
 
     // LED command
     if (receive["led"].is<bool>())
     {
-        ctx.led = receive["led"];
-        rgb_set_auto(ctx.enable, ctx.led);
+        ctx->led = receive["led"];
+        rgb_set_auto(ctx->enable, ctx->led);
     }
 
     // Turn command, but don't let this command override current button presses
-    if (receive["turn"].is<double>() & !(ctx.current_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS)))
+    if (receive["turn"].is<double>() & !(ctx->current_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS)))
     {
         double turns = receive["turn"];
         if (std::isnan(turns))
@@ -231,7 +231,7 @@ Context process_serial_commands(Context ctx)
         }
         else
         {
-            ctx.target_turns = turn_command(turns, ctx.target_turns, ctx.enable);
+            ctx->target_turns = turn_command(turns, ctx->target_turns, ctx->enable);
         }
     }
 
@@ -242,8 +242,8 @@ Context process_serial_commands(Context ctx)
         doc["gear_ratio"] = GEAR_RATIO;
         doc["board_rev"] = BOARD_REV;
         doc["firmware"] = FIRMWARE_VER;
-        doc["enable"] = ctx.enable;
-        doc["led"] = ctx.led;
+        doc["enable"] = ctx->enable;
+        doc["led"] = ctx->led;
         doc["charge_current"] = ltc4425_charge_current();
         doc["power_good"] = ltc4425_power_good();
         serializeJson(doc, std::cout);
@@ -253,7 +253,7 @@ Context process_serial_commands(Context ctx)
     serializeJson(receive, std::cout);
     std::cout << std::endl;
 #endif
-    return ctx;
+    return;
 }
 
 
