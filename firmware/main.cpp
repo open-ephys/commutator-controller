@@ -37,7 +37,7 @@ queue_t motor_turn_queue;
 queue_t motor_enable_queue;
 queue_t motor_stop_queue;
 // send this value to core1 through motor_stop_queue whenever a stop command is received 
-const bool stop_flag = true;
+const bool STOP_FLAG = true;
 // configure gear ratio through `picotool config`
 bi_decl(bi_ptr_string(0, 0, gear_ratio, "2.0", 32));
 double GEAR_RATIO = 2.0;
@@ -108,29 +108,29 @@ void process_button_touches(Context *ctx)
     ctx->current_sensor_input_status = cap1296_read_sensor_input_status_register();
     switch (ctx->current_sensor_input_status)
     {
-    case LED_BUTTON_PRESS:
-        ctx->led = !ctx->led;
-        rgb_set_auto(ctx->enable, ctx->led);
-        break;
-    case ENABLE_BUTTON_PRESS:
-        ctx->enable = !ctx->enable;
-        queue_add_blocking(&motor_enable_queue, &ctx->enable);
-        rgb_set_auto(ctx->enable, ctx->led);
-        ctx->target_turns = 0;
-        break;
-    case CW_BUTTON_PRESS:
-        turn_button(false, ctx->enable);
-        break;
-    case CCW_BUTTON_PRESS:
-        turn_button(true, ctx->enable);
-        break;
-    case BUTTON_RELEASE:
-        if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
-        {
-            queue_add_blocking(&motor_stop_queue, &stop_flag);
-            ctx->target_turns = 0; // both target_turns and accel stepper's absolute position-tracking variable
-        }                         // (_currentPosition) reset to zero after manually adjusting commutator with buttons
-        break;
+        case LED_BUTTON_PRESS:
+            ctx->led = !ctx->led;
+            rgb_set_auto(ctx->enable, ctx->led);
+            break;
+        case ENABLE_BUTTON_PRESS:
+            ctx->enable = !ctx->enable;
+            queue_add_blocking(&motor_enable_queue, &ctx->enable);
+            rgb_set_auto(ctx->enable, ctx->led);
+            ctx->target_turns = 0;
+            break;
+        case CW_BUTTON_PRESS:
+            turn_button(false, ctx->enable);
+            break;
+        case CCW_BUTTON_PRESS:
+            turn_button(true, ctx->enable);
+            break;
+        case BUTTON_RELEASE:
+            if (previous_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
+            {
+                queue_add_blocking(&motor_stop_queue, &STOP_FLAG);
+                ctx->target_turns = 0; // both target_turns and accel stepper's absolute position-tracking variable
+            }                         // (_currentPosition) reset to zero after manually adjusting commutator with buttons
+            break;
     }
     previous_sensor_input_status = ctx->current_sensor_input_status;
     alert_flag = false;
@@ -274,7 +274,7 @@ double turn_command(double turns, double target_turns, bool enable)
         } 
         else 
         {
-            queue_add_blocking(&motor_stop_queue, &stop_flag); // Deal with very unlikely case of overflow
+            queue_add_blocking(&motor_stop_queue, &STOP_FLAG); // Deal with very unlikely case of overflow
             target_turns = turn_command(target_turns, target_turns, turns); // Restart this routine now that position has been zeroed
         }
     }
