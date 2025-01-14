@@ -25,7 +25,7 @@ static inline void pinMode(uint pin, bool output)
     gpio_set_dir(pin, output);
 }
 
-static inline float max(float a, float b) 
+static inline float max(float a, float b)
 {
    return a > b ? a: b;
 }
@@ -83,7 +83,7 @@ boolean AccelStepper::runSpeed()
     if (!_stepInterval)
 	return false;
 
-    unsigned long time = micros();   
+    unsigned long time = micros();
     if (time - _lastStepTime >= _stepInterval)
     {
 	if (_direction == DIRECTION_CW)
@@ -93,7 +93,7 @@ boolean AccelStepper::runSpeed()
 	}
 	else
 	{
-	    // Anticlockwise  
+	    // Anticlockwise
 	    _currentPos -= 1;
 	}
 	step(_currentPos);
@@ -195,7 +195,7 @@ unsigned long AccelStepper::computeNewSpeed()
     {
 	// Subsequent step. Works for accel (n is +_ve) and decel (n is -ve).
 	_cn = _cn - ((2.0 * _cn) / ((4.0 * _n) + 1)); // Equation 13
-	_cn = max(_cn, _cmin); 
+	_cn = max(_cn, _cmin);
     }
     _n++;
     _stepInterval = _cn;
@@ -246,7 +246,7 @@ AccelStepper::AccelStepper(uint8_t interface, uint8_t pin1, uint8_t pin2, uint8_
     _pin[2] = pin3;
     _pin[3] = pin4;
     _enableInverted = false;
-    
+
     // NEW
     _n = 0;
     _c0 = 0.0;
@@ -375,26 +375,26 @@ void AccelStepper::step(long step)
 	case DRIVER:
 	    step1(step);
 	    break;
-    
+
 	case FULL2WIRE:
 	    step2(step);
 	    break;
-    
+
 	case FULL3WIRE:
 	    step3(step);
-	    break;  
+	    break;
 
 	case FULL4WIRE:
 	    step4(step);
-	    break;  
+	    break;
 
 	case HALF3WIRE:
 	    step6(step);
-	    break;  
-		
+	    break;
+
 	case HALF4WIRE:
 	    step8(step);
-	    break;  
+	    break;
     }
 }
 
@@ -452,7 +452,7 @@ void AccelStepper::step1(long step)
     // _pin[0] is step, _pin[1] is direction
     setOutputPins(_direction ? 0b10 : 0b00); // Set direction first else get rogue pulses
     setOutputPins(_direction ? 0b11 : 0b01); // step HIGH
-    // Caution 200ns setup time 
+    // Caution 200ns setup time
     // Delay the minimum allowed pulse width
     delayMicroseconds(_minPulseWidth);
     setOutputPins(_direction ? 0b10 : 0b00); // step LOW
@@ -501,7 +501,7 @@ void AccelStepper::step3(long step)
 	case 2:    //010
 	    setOutputPins(0b010);
 	    break;
-	    
+
     }
 }
 
@@ -540,27 +540,27 @@ void AccelStepper::step6(long step)
 	case 0:    // 100
 	    setOutputPins(0b100);
             break;
-	    
+
         case 1:    // 101
 	    setOutputPins(0b101);
             break;
-	    
+
 	case 2:    // 001
 	    setOutputPins(0b001);
             break;
-	    
+
         case 3:    // 011
 	    setOutputPins(0b011);
             break;
-	    
+
 	case 4:    // 010
 	    setOutputPins(0b010);
             break;
-	    
+
 	case 5:    // 011
 	    setOutputPins(0b110);
             break;
-	    
+
     }
 }
 
@@ -574,40 +574,40 @@ void AccelStepper::step8(long step)
 	case 0:    // 1000
 	    setOutputPins(0b0001);
             break;
-	    
+
         case 1:    // 1010
 	    setOutputPins(0b0101);
             break;
-	    
+
 	case 2:    // 0010
 	    setOutputPins(0b0100);
             break;
-	    
+
         case 3:    // 0110
 	    setOutputPins(0b0110);
             break;
-	    
+
 	case 4:    // 0100
 	    setOutputPins(0b0010);
             break;
-	    
+
         case 5:    //0101
 	    setOutputPins(0b1010);
             break;
-	    
+
 	case 6:    // 0001
 	    setOutputPins(0b1000);
             break;
-	    
+
         case 7:    //1001
 	    setOutputPins(0b1001);
             break;
     }
 }
-    
+
 // Prevents power consumption on the outputs
 void    AccelStepper::disableOutputs()
-{   
+{
     if (! _interface) return;
 
     setOutputPins(0); // Handles inversion automatically
@@ -620,7 +620,7 @@ void    AccelStepper::disableOutputs()
 
 void    AccelStepper::enableOutputs()
 {
-    if (! _interface) 
+    if (! _interface)
 	return;
 
     pinMode(_pin[0], OUTPUT);
@@ -667,7 +667,7 @@ void AccelStepper::setPinsInverted(bool directionInvert, bool stepInvert, bool e
 }
 
 void AccelStepper::setPinsInverted(bool pin1Invert, bool pin2Invert, bool pin3Invert, bool pin4Invert, bool enableInvert)
-{    
+{
     _pinInverted[0] = pin1Invert;
     _pinInverted[1] = pin2Invert;
     _pinInverted[2] = pin3Invert;
@@ -703,7 +703,7 @@ void AccelStepper::runToNewPosition(long position)
 void AccelStepper::stop()
 {
     if (_speed != 0.0)
-    {    
+    {
 	long stepsToStop = (long)((_speed * _speed) / (2.0 * _acceleration)) + 1; // Equation 16 (+integer rounding)
 	if (_speed > 0)
 	    move(stepsToStop);
@@ -712,23 +712,23 @@ void AccelStepper::stop()
     }
 }
 
-void AccelStepper::stopAndResetPosition()
-{
-    if (_speed != 0.0)
-    {    
-        long stepsToStop = (long)((_speed * _speed) / (2.0 * _acceleration)) + 1; // Equation 16 (+integer rounding)
-        
-        if (_speed > 0)
-            _currentPos = -stepsToStop;
-        else
-            _currentPos = stepsToStop;
-        moveTo(0);
-    }
-    else
-    {
-        _currentPos = 0;
-    }
-}
+// void AccelStepper::stopAndResetPosition()
+// {
+//     if (_speed != 0.0)
+//     {
+//         long stepsToStop = (long)((_speed * _speed) / (2.0 * _acceleration)) + 1; // Equation 16 (+integer rounding)
+
+//         if (_speed > 0)
+//             _currentPos = -stepsToStop;
+//         else
+//             _currentPos = stepsToStop;
+//         moveTo(0);
+//     }
+//     else
+//     {
+//         _currentPos = 0;
+//     }
+// }
 
 bool AccelStepper::isRunning()
 {

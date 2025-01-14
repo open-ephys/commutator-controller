@@ -1,12 +1,9 @@
 #include "io.h"
 
-void io_alert_irq_callback(unsigned int gpio, long unsigned int events){alert_flag = true;};
+
 
 void io_init()
 {
-    // Initialize serial port
-    stdio_init_all();
-    
     // Initialize GPIO as digital output for LED driver
     gpio_init(IS31_POW_EN);
     gpio_set_dir(IS31_POW_EN, GPIO_OUT);
@@ -23,7 +20,8 @@ void io_init()
 
     // Initialize GPIO as analog input for supercap charger
     adc_init();
-    adc_select_input(LTC4425_CHARGE_CURR);
+    adc_gpio_init(LTC4425_CHARGE_CURR);
+    adc_select_input(LTC4425_CHARGE_CURR_ADC);
 
     // Initialize GPIO as i2c for cap touch sensor and LED driver
     i2c_init(I2C_PORT, 400000);
@@ -39,7 +37,7 @@ void io_init()
     // Initialize GPIO as digital outputs for stepper motor driver
     gpio_init(TMC2130_CFG3_CS);
     gpio_set_dir(TMC2130_CFG3_CS, GPIO_OUT);
-    
+
     gpio_init(TMC2130_DIR);
     gpio_set_dir(TMC2130_DIR, GPIO_OUT);
 

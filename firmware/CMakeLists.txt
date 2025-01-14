@@ -35,7 +35,7 @@ add_compile_definitions(PICO_STDIO_USB_CONNECTION_WITHOUT_DTR)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-add_executable(commutator main.cpp ltc4425.cpp is32fl3193.cpp tmc2130.cpp motor.cpp cap1296.cpp accelstepper/AccelStepper.cpp io.cpp)
+add_executable(commutator)
 
 pico_set_program_name(commutator "open-ephys-commutator")
 pico_set_program_version(commutator "0.1")
@@ -43,14 +43,14 @@ pico_set_program_version(commutator "0.1")
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(commutator 0)
 pico_enable_stdio_usb(commutator 1)
- 
+
 # Add the standard library to the build
 target_link_libraries(commutator PRIVATE
     pico_stdlib
     pico_time
     pico_multicore
-    hardware_adc 
-    hardware_i2c 
+    hardware_adc
+    hardware_i2c
     hardware_spi
     hardware_flash
     ArduinoJson)
@@ -59,9 +59,23 @@ target_link_libraries(commutator PRIVATE
 target_include_directories(commutator PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
   ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
-   accelstepper 
+   accelstepper
 )
 
+target_sources(commutator PRIVATE
+        main.cpp
+        ltc4425.cpp
+        is32fl3193.cpp
+        tmc2130.cpp
+        rotor.cpp
+        cap1296.cpp
+        accelstepper/AccelStepper.cpp
+        io.cpp
+        )
+
+
 add_subdirectory(arduinojson)
+
+add_compile_options(-Wall -Wextra -Wpedantic)
 
 

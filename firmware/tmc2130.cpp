@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 
@@ -20,7 +22,12 @@ static inline void cs_deselect() {
 
 static void tmc2130_write(uint8_t reg, uint32_t data)
 {
-    uint8_t buf[5] = {WRITE_FLAG | reg, (data >> 24UL) & 0xFF, (data >> 16UL) & 0xFF, (data >> 8UL) & 0xFF, (data >> 0UL) & 0xFF};
+    uint8_t buf[5] = {(uint8_t)(WRITE_FLAG | reg),
+                      (uint8_t)((data >> 24UL) & 0xFF),
+                      (uint8_t)((data >> 16UL) & 0xFF),
+                      (uint8_t)((data >> 8UL) & 0xFF),
+                      (uint8_t)((data >> 0UL) & 0xFF)};
+
 
     cs_select();
     spi_write_blocking(TMC2130_SPI_PORT, buf, 5);
@@ -32,7 +39,7 @@ void tmc2130_init()
     gpio_put(TMC2130_CFG3_CS, 1);
     gpio_put(TMC2130_DIR, 0);
     gpio_put(TMC2130_STEP, 0);
-    
+
     // voltage on AIN is current reference
     // Stealth chop is on
     tmc2130_write(REG_GCONF, 0x00000007UL);
@@ -49,7 +56,7 @@ void tmc2130_init()
     tmc2130_write(REG_IHOLD_IRUN, 0b01100001111100011111UL); // 0x00_04_1F_UL);
 
     // 8 microsteps per step
-    tmc2130_write(REG_CHOPCONF, 0x05008008UL); 
+    tmc2130_write(REG_CHOPCONF, 0x05008008UL);
 
     // Start in disabled state
     tmc2130_enable(0);
