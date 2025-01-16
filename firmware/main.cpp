@@ -39,12 +39,7 @@ static void io_alert_irq_callback(unsigned int gpio, long unsigned int events)
 };
 
 // Shared state between cores: thread-safe queues
-queue_t motor_turn_queue;
-queue_t motor_enable_queue;
-queue_t motor_stop_queue;
-
-// NB: pushed to motor_stop_queue whenever a stop command is received
-const bool STOP_FLAG = true;
+queue_t rotor_cmd_queue;
 
 // NB: The gear ratio is configurable without recompilation using
 //      `picotool config -s gear_ratio 3.14`
@@ -58,11 +53,22 @@ struct Context {
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
 } ctx;
 
+enum class rotor_cmd_tag {ENABLE, TURN, STOP};
+
+struct rotor_cmd_t {
+    rotor_cmd_tag tag;
+    union {
+        bool enable;
+        double turns;
+    } value;
+};
+
 static void turn_command(Context *ctx, double turns)
 {
     if (ctx->enable)
     {
-        queue_add_blocking(&motor_turn_queue, &turns);
+        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
+        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
     }
     else
     {
@@ -78,13 +84,17 @@ static void turn_button(bool direction, bool enable)
     if (enable)
     {
         double turns = direction ? -100 : 100;
-        queue_add_blocking(&motor_turn_queue, &turns);
+        const rotor_cmd_t rotor_cmd_stop = {.tag = rotor_cmd_tag::STOP};
+        const rotor_cmd_t rotor_cmd_turn = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
+        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd_stop);
+        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd_turn);
     }
 }
 
 static void process_button_touches(Context *ctx)
 {
     if (alert_flag) {
+        rotor_cmd_t rotor_cmd;
         cap1296_clear_int_bit_in_main_control_register();
         uint8_t sensor_input_status = cap1296_read_sensor_input_status_register();
         switch (sensor_input_status)
@@ -95,7 +105,8 @@ static void process_button_touches(Context *ctx)
                 break;
             case ENABLE_BUTTON_PRESS:
                 ctx->enable = !ctx->enable;
-                queue_add_blocking(&motor_enable_queue, &ctx->enable);
+                rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
+                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
                 rgb_set_auto(ctx->enable, ctx->led);
                 break;
             case CW_BUTTON_PRESS:
@@ -107,7 +118,8 @@ static void process_button_touches(Context *ctx)
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
                 {
-                    queue_add_blocking(&motor_stop_queue, &STOP_FLAG);
+                    rotor_cmd.tag = rotor_cmd_tag::STOP;
+                    queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
                 }
                 break;
         }
@@ -149,11 +161,14 @@ static void process_serial_commands(Context *ctx)
         return;
     }
 
+    rotor_cmd_t rotor_cmd;
+
     // Enable command
     if (receive["enable"].is<bool>())
     {
         ctx->enable = receive["enable"];
-        queue_add_blocking(&motor_enable_queue, &ctx->enable);
+        rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
+        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
         rgb_set_auto(ctx->enable, ctx->led);
     }
 
@@ -212,28 +227,35 @@ static void process_serial_commands(Context *ctx)
 static void core1_entry()
 {
     rotor_t rotor = { AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), atof(gear_ratio_str)};
+    rotor_cmd_t rotor_cmd;
     double turn_command;
     bool enable_command;
     bool stop_flag;
     rotor_init(&rotor);
     while (true)
     {
-        if (queue_try_remove(&motor_enable_queue, &enable_command))
+        if (queue_try_remove(&rotor_cmd_queue, &rotor_cmd))
         {
-            rotor_enable(&rotor, enable_command);
+            switch (rotor_cmd.tag)
+            {
+                case rotor_cmd_tag::ENABLE:
+                    rotor_enable(&rotor, rotor_cmd.value.enable);
+                    break;
+                case rotor_cmd_tag::TURN:
+                    rotor_move(&rotor, rotor_cmd.value.turns);
+                    break;
+                case rotor_cmd_tag::STOP:
+                    rotor_stop(&rotor);
+                    break;
+                default:
+                    rotor_try_to_zero_position(&rotor);
+                    break;
+            }
         }
-        else if (queue_try_remove(&motor_turn_queue, &turn_command))
-        {
-            rotor_move(&rotor, turn_command);
-        }
-        else if (queue_try_remove(&motor_stop_queue, &stop_flag))
-        {
-            rotor_stop(&rotor);
-        } else
+        else
         {
             rotor_try_to_zero_position(&rotor);
         }
-
         rotor.motor.run();
     }
 }
@@ -241,9 +263,7 @@ static void core1_entry()
 int main()
 {
     gear_ratio = atof(gear_ratio_str);
-    queue_init(&motor_turn_queue, sizeof(double), 50);
-    queue_init(&motor_enable_queue, sizeof(bool), 50);
-    queue_init(&motor_stop_queue, sizeof(bool), 50);
+    queue_init(&rotor_cmd_queue, sizeof(rotor_cmd_t), 32);
 
     // Initialize serial port
     stdio_init_all();
