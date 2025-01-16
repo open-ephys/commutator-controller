@@ -63,31 +63,30 @@ struct rotor_cmd_t {
     } value;
 };
 
-static void turn_command(Context *ctx, double turns)
+static void send_error_msg(char *error_msg)
+{
+    JsonDocument doc;
+    doc["error"] = error_msg;
+    serializeJson(doc, std::cout);
+    std::cout << std::endl;
+}
+
+static void turn(Context *ctx, double turns, bool reset_position)
 {
     if (ctx->enable)
     {
-        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
+        rotor_cmd_t rotor_cmd;
+        if (reset_position)
+        {
+            rotor_cmd = {.tag = rotor_cmd_tag::STOP};
+            queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+        }
+        rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
         queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
     }
     else
     {
-        JsonDocument doc;
-        doc["error"] = "Turn command received while disabled";
-        serializeJson(doc, std::cout);
-        std::cout << std::endl;
-    }
-}
-
-static void turn_button(bool direction, bool enable)
-{
-    if (enable)
-    {
-        double turns = direction ? -100 : 100;
-        const rotor_cmd_t rotor_cmd_stop = {.tag = rotor_cmd_tag::STOP};
-        const rotor_cmd_t rotor_cmd_turn = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
-        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd_stop);
-        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd_turn);
+        send_error_msg((char[]){"Turn command received while disabled"});
     }
 }
 
@@ -110,10 +109,10 @@ static void process_button_touches(Context *ctx)
                 rgb_set_auto(ctx->enable, ctx->led);
                 break;
             case CW_BUTTON_PRESS:
-                turn_button(false, ctx->enable);
+                turn(ctx, -100, true);
                 break;
             case CCW_BUTTON_PRESS:
-                turn_button(true, ctx->enable);
+                turn(ctx, 100, true);
                 break;
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
@@ -131,34 +130,43 @@ static void process_button_touches(Context *ctx)
     }
 }
 
-static void process_serial_commands(Context *ctx)
+static bool build_serial_buffer(char *serial_buffer)
 {
-    char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
-    std::cin.getline(serial_buffer, MAX_SERIAL_BUFFER_LENGTH);
-    if (std::cin.rdstate() == std::ios_base::failbit)
+    static uint16_t serial_buffer_index = 0;
+    serial_buffer[serial_buffer_index++] = getchar();
+    if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH)
     {
         JsonDocument doc;
         char buf[256];
-        snprintf(buf, sizeof(buf), "Command must be less than %d bytes long.", MAX_SERIAL_BUFFER_LENGTH);
-        doc["error"] = buf;
-        serializeJson(doc, std::cout);
-        std::cout << std::endl;
+        snprintf(buf, sizeof(buf), "Command exceeded %d bytes", MAX_SERIAL_BUFFER_LENGTH);
+        send_error_msg(buf);
+        serial_buffer_index = 0;
+        memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
+    }
+    else if (serial_buffer[serial_buffer_index - 1] == '\n')
+    {
+        serial_buffer_index = 0;
+        return true;
+    }
+    return false;
+}
 
-        std::cin.clear();
-        std::cin.ignore(INT_MAX, '\n');
+static void process_serial_commands(Context *ctx)
+{
+    static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
+
+    if (!build_serial_buffer(serial_buffer))
+    {
         return;
     }
-
+    
     JsonDocument receive;
     auto error = deserializeJson(receive, serial_buffer, MAX_SERIAL_BUFFER_LENGTH);
+    memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
 
     if (error.code() != DeserializationError::Ok)
     {
-        JsonDocument doc;
-        doc["error"] = "Bad JSON formatting";
-        serializeJson(doc, std::cout);
-        std::cout << std::endl;
-        return;
+        send_error_msg((char[]){"Malformed JSON"});
     }
 
     rotor_cmd_t rotor_cmd;
@@ -185,21 +193,15 @@ static void process_serial_commands(Context *ctx)
         double turns = receive["turn"];
         if (std::isnan(turns))
         {
-            JsonDocument doc;
-            doc["error"] = "NaN turn command";
-            serializeJson(doc, std::cout);
-            std::cout << std::endl;
+            send_error_msg((char[]){"NaN turn command"});
         }
         else if (std::isinf(turns))
         {
-            JsonDocument doc;
-            doc["error"] = "Inf turn command";
-            serializeJson(doc, std::cout);
-            std::cout << std::endl;
+            send_error_msg((char[]){"Inf turn command"});
         }
         else
         {
-           turn_command(ctx, turns);
+            turn(ctx, turns, false);
         }
     }
 
@@ -275,12 +277,12 @@ int main()
     rgb_set_breathing(true);
     ltc4425_init();
     cap1296_init();
-    while (!ltc4425_power_good()) { tight_loop_contents(); } // Wait for supercaps to charge
+    while (!ltc4425_power_good()) { tight_loop_contents(); } // Wait for super caps to charge
     rgb_set_breathing(false);
     rgb_set_auto(ctx.enable, ctx.led);
 
-    // Launch motor driver loop
-    multicore_launch_core1(core1_entry); // Launch core1
+    // Launch motor driver loop in core1
+    multicore_launch_core1(core1_entry);
 
     // Enable button alert ISR and clear any button touches registered during initialization
     gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);

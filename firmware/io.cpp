@@ -1,7 +1,5 @@
 #include "io.h"
 
-
-
 void io_init()
 {
     // Initialize GPIO as digital output for LED driver

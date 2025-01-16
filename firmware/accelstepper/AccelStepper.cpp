@@ -712,24 +712,6 @@ void AccelStepper::stop()
     }
 }
 
-// void AccelStepper::stopAndResetPosition()
-// {
-//     if (_speed != 0.0)
-//     {
-//         long stepsToStop = (long)((_speed * _speed) / (2.0 * _acceleration)) + 1; // Equation 16 (+integer rounding)
-
-//         if (_speed > 0)
-//             _currentPos = -stepsToStop;
-//         else
-//             _currentPos = stepsToStop;
-//         moveTo(0);
-//     }
-//     else
-//     {
-//         _currentPos = 0;
-//     }
-// }
-
 bool AccelStepper::isRunning()
 {
     return !(_speed == 0.0 && _targetPos == _currentPos);
