@@ -16,13 +16,18 @@
 #define MAX_SPEED_SPS(gear_ratio) (USTEPS_PER_REV * gear_ratio * SPEED_RPM / 60.0L)
 #define MAX_ACCEL_SPSS(gear_ratio) (USTEPS_PER_REV * gear_ratio * ACCEL_RPMM / 60.0L)
 
-typedef struct rotor_t {
+typedef struct rotor_t
+{
     AccelStepper motor;
     double gear_ratio;
+    double target_position;
 } rotor_t;
 
+static inline void rotor_stop(rotor_t *rotor)
+{
+    rotor->target_position = 0.0;
+    rotor->motor.setCurrentPosition(0);
+}
+static inline void rotor_enable(rotor_t *rotor, bool enable) { tmc2130_enable(enable); }
 void rotor_init(rotor_t *rotor);
-void rotor_enable(rotor_t *rotor, bool enable);
 int rotor_move(rotor_t *rotor, double turns);
-void rotor_stop(rotor_t *rotor);
-void rotor_try_to_zero_position(rotor_t *rotor);

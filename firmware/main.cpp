@@ -47,11 +47,11 @@ queue_t rotor_cmd_queue;
 double gear_ratio = 2.0;
 bi_decl(bi_ptr_string(0, 0, gear_ratio_str, "2.0", 32));
 
-struct Context {
+struct context_t {
     bool enable = false;
     bool led = true;
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
-} ctx;
+};
 
 enum class rotor_cmd_tag {ENABLE, TURN, STOP};
 
@@ -71,7 +71,7 @@ static void send_error_msg(char *error_msg)
     std::cout << std::endl;
 }
 
-static void turn(Context *ctx, double turns, bool reset_position)
+static void turn(context_t *ctx, double turns, bool reset_position)
 {
     if (ctx->enable)
     {
@@ -90,7 +90,7 @@ static void turn(Context *ctx, double turns, bool reset_position)
     }
 }
 
-static void process_button_touches(Context *ctx)
+static void process_button_touches(context_t *ctx)
 {
     if (alert_flag) {
         rotor_cmd_t rotor_cmd;
@@ -151,7 +151,7 @@ static bool build_serial_buffer(char *serial_buffer)
     return false;
 }
 
-static void process_serial_commands(Context *ctx)
+static void process_serial_commands(context_t *ctx)
 {
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
 
@@ -228,11 +228,8 @@ static void process_serial_commands(Context *ctx)
 
 static void core1_entry()
 {
-    rotor_t rotor = { AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), atof(gear_ratio_str)};
+    rotor_t rotor = { AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), atof(gear_ratio_str), 0.0};
     rotor_cmd_t rotor_cmd;
-    double turn_command;
-    bool enable_command;
-    bool stop_flag;
     rotor_init(&rotor);
     while (true)
     {
@@ -249,21 +246,18 @@ static void core1_entry()
                 case rotor_cmd_tag::STOP:
                     rotor_stop(&rotor);
                     break;
-                default:
-                    rotor_try_to_zero_position(&rotor);
-                    break;
             }
         }
-        else
+        if (!rotor.motor.run())
         {
-            rotor_try_to_zero_position(&rotor);
+            rotor_stop(&rotor);
         }
-        rotor.motor.run();
     }
 }
 
 int main()
 {
+    context_t ctx;
     gear_ratio = atof(gear_ratio_str);
     queue_init(&rotor_cmd_queue, sizeof(rotor_cmd_t), 32);
 
@@ -293,7 +287,7 @@ int main()
     {
         process_button_touches(&ctx);
 
-        if (ctx.last_sensor_input_status == BUTTON_RELEASE && tud_cdc_available()) {
+        if (((ctx.last_sensor_input_status == BUTTON_RELEASE) || ctx.last_sensor_input_status == LED_BUTTON_PRESS) && tud_cdc_available()) {
             process_serial_commands(&ctx);
         }
     }
