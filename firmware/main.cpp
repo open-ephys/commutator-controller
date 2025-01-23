@@ -71,17 +71,11 @@ static void send_error_msg(char *error_msg)
     std::cout << std::endl;
 }
 
-static void turn(context_t *ctx, double turns, bool reset_position)
+static void turn(context_t *ctx, double turns)
 {
     if (ctx->enable)
     {
-        rotor_cmd_t rotor_cmd;
-        if (reset_position)
-        {
-            rotor_cmd = {.tag = rotor_cmd_tag::STOP};
-            queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-        }
-        rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
+        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
         queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
     }
     else
@@ -109,10 +103,14 @@ static void process_button_touches(context_t *ctx)
                 rgb_set_auto(ctx->enable, ctx->led);
                 break;
             case CW_BUTTON_PRESS:
-                turn(ctx, -100, true);
+                rotor_cmd = {.tag = rotor_cmd_tag::STOP};
+                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+                turn(ctx, -100);
                 break;
             case CCW_BUTTON_PRESS:
-                turn(ctx, 100, true);
+                rotor_cmd = {.tag = rotor_cmd_tag::STOP};
+                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+                turn(ctx, 100);
                 break;
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
@@ -201,7 +199,7 @@ static void process_serial_commands(context_t *ctx)
         }
         else
         {
-            turn(ctx, turns, false);
+            turn(ctx, turns);
         }
     }
 
