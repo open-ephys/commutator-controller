@@ -23,11 +23,12 @@ typedef struct rotor_t
     double target_position;
 } rotor_t;
 
-static inline void rotor_stop(rotor_t *rotor)
+static inline void rotor_stop_and_reset(rotor_t *rotor)
 {
     rotor->target_position = 0.0;
     rotor->motor.setCurrentPosition(0);
 }
-static inline void rotor_enable(rotor_t *rotor, bool enable) { tmc2130_enable(enable); }
+
+void rotor_enable(rotor_t *rotor, bool enable);
 void rotor_init(rotor_t *rotor);
 int rotor_move(rotor_t *rotor, double turns);

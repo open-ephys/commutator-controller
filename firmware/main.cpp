@@ -21,6 +21,9 @@
 #include "rotor.h"
 #include "pindefs.h"
 
+#define xstr(a) str(a)
+#define str(a) #a
+
 // #define DEBUG
 #define FIRMWARE_VER "0.1.0"
 #define BOARD_REV "G"
@@ -29,6 +32,7 @@
     uint16_t button_counter = 0;
 #endif
 
+#define MAX_GEAR_RATIO 100
 #define MAX_SERIAL_BUFFER_LENGTH 1024u
 
 // ISR flag for capacitative touch detected
@@ -38,20 +42,20 @@ static void io_alert_irq_callback(unsigned int gpio, long unsigned int events)
     alert_flag = true;
 };
 
-// Shared state between cores: thread-safe queues
-queue_t rotor_cmd_queue;
-
 // NB: The gear ratio is configurable without recompilation using
 //      `picotool config -s gear_ratio 3.14`
 // or similar.
-double gear_ratio = 2.0;
-bi_decl(bi_ptr_string(0, 0, gear_ratio_str, "2.0", 32));
+double gear_ratio_f = 2.0;
+bi_decl(bi_ptr_string(0, 0, gear_ratio, "2.0", 32));
 
 struct context_t {
     bool enable = false;
     bool led = true;
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
 };
+
+// Thread-safe queue and command types that are shared state between cores
+queue_t rotor_cmd_queue;
 
 enum class rotor_cmd_tag {ENABLE, TURN, STOP};
 
@@ -63,29 +67,55 @@ struct rotor_cmd_t {
     } value;
 };
 
-static void send_error_msg(char *error_msg)
+// Errors
+typedef enum {
+    ERROR_SUCCESS = 0,
+    ERROR_INVALID_TURN_REQ = -1,
+    ERROR_COMMAND_BUFFER_OVERFLOW = -2,
+    ERROR_COMMAND_INCOMPLETE = -3,
+    ERROR_MALFORMED_JSON = -4,
+    ERROR_NAN_OR_INF_TURN_COMMAND = -5,
+    ERROR_REMOTE_INTERFACE_LOCKED = -6
+} commutator_error_t;
+
+static const char *error_str(int error)
 {
-    JsonDocument doc;
-    doc["error"] = error_msg;
-    serializeJson(doc, std::cout);
-    std::cout << std::endl;
+    switch (error)
+    {
+        case ERROR_SUCCESS:
+            return "Success";
+        case ERROR_INVALID_TURN_REQ:
+            return "Cannot enqueue turn command when commutator is disabled.";
+        case ERROR_COMMAND_BUFFER_OVERFLOW:
+            return "Command exceeded " xstr(MAX_SERIAL_BUFFER_LENGTH) " byte maximum.";
+        case ERROR_COMMAND_INCOMPLETE:
+            return "A complete command could not be constructed from the input stream.";
+        case ERROR_MALFORMED_JSON:
+            return "Malformed JSON received.";
+        case ERROR_NAN_OR_INF_TURN_COMMAND:
+            return "Turn command with value NaN or Inf received.";
+        case ERROR_REMOTE_INTERFACE_LOCKED:
+            return "A remote command was received when remote interface was locked";
+        default:
+            return "Invalid error code.";
+    }
 }
 
-static void turn(context_t *ctx, double turns)
+static int queue_add_turn_cmd_blocking(const context_t *ctx, double turns)
 {
     if (ctx->enable)
     {
         rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
         queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+        return ERROR_SUCCESS;
     }
-    else
-    {
-        send_error_msg((char[]){"Turn command received while disabled"});
-    }
+
+    return ERROR_INVALID_TURN_REQ;
 }
 
-static void process_button_touches(context_t *ctx)
+static int process_button_touches(context_t *ctx)
 {
+    int rc = ERROR_SUCCESS;
     if (alert_flag) {
         rotor_cmd_t rotor_cmd;
         cap1296_clear_int_bit_in_main_control_register();
@@ -105,12 +135,12 @@ static void process_button_touches(context_t *ctx)
             case CW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                turn(ctx, -100);
+                rc = queue_add_turn_cmd_blocking(ctx, -100);
                 break;
             case CCW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                turn(ctx, 100);
+                rc = queue_add_turn_cmd_blocking(ctx, 100);
                 break;
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
@@ -126,45 +156,54 @@ static void process_button_touches(context_t *ctx)
         printf("{button: %02hhx, counter: %i}\n", sensor_input_status, button_counter++);
 #endif
     }
+
+    return rc;
 }
 
-static bool build_serial_buffer(char *serial_buffer)
+static inline bool remote_available(const context_t *ctx)
+{
+    return ctx->last_sensor_input_status == BUTTON_RELEASE ||
+           ctx->last_sensor_input_status == LED_BUTTON_PRESS;
+}
+
+static int build_serial_buffer(char *serial_buffer)
 {
     static uint16_t serial_buffer_index = 0;
     serial_buffer[serial_buffer_index++] = getchar();
     if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH)
     {
-        JsonDocument doc;
-        char buf[256];
-        snprintf(buf, sizeof(buf), "Command exceeded %d bytes", MAX_SERIAL_BUFFER_LENGTH);
-        send_error_msg(buf);
         serial_buffer_index = 0;
         memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
+        return ERROR_COMMAND_BUFFER_OVERFLOW;
     }
     else if (serial_buffer[serial_buffer_index - 1] == '\n')
     {
         serial_buffer_index = 0;
-        return true;
+        return ERROR_SUCCESS;
     }
-    return false;
+
+    return ERROR_COMMAND_INCOMPLETE;
 }
 
-static void process_serial_commands(context_t *ctx)
+static int process_serial_commands(context_t *ctx)
 {
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
 
-    if (!build_serial_buffer(serial_buffer))
+    int rc = build_serial_buffer(serial_buffer);
+    if (rc){ return rc; }
+
+    if(!remote_available(ctx))
     {
-        return;
+        return ERROR_REMOTE_INTERFACE_LOCKED;
     }
-    
+
     JsonDocument receive;
     auto error = deserializeJson(receive, serial_buffer, MAX_SERIAL_BUFFER_LENGTH);
     memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
 
     if (error.code() != DeserializationError::Ok)
     {
-        send_error_msg((char[]){"Malformed JSON"});
+        return ERROR_MALFORMED_JSON;
     }
 
     rotor_cmd_t rotor_cmd;
@@ -189,17 +228,13 @@ static void process_serial_commands(context_t *ctx)
     if (receive["turn"].is<double>())
     {
         double turns = receive["turn"];
-        if (std::isnan(turns))
+        if (std::isnan(turns) || std::isinf(turns))
         {
-            send_error_msg((char[]){"NaN turn command"});
-        }
-        else if (std::isinf(turns))
-        {
-            send_error_msg((char[]){"Inf turn command"});
+            rc = ERROR_NAN_OR_INF_TURN_COMMAND;
         }
         else
         {
-            turn(ctx, turns);
+            rc = queue_add_turn_cmd_blocking(ctx, turns);
         }
     }
 
@@ -207,7 +242,7 @@ static void process_serial_commands(context_t *ctx)
     if (receive["print"].is<JsonVariant>())
     {
         JsonDocument doc;
-        doc["gear_ratio"] = gear_ratio;
+        doc["gear_ratio"] = gear_ratio_f;
         doc["board_rev"] = BOARD_REV;
         doc["firmware"] = FIRMWARE_VER;
         doc["enable"] = ctx->enable;
@@ -222,13 +257,17 @@ static void process_serial_commands(context_t *ctx)
     std::cout << std::endl;
 #endif
 
+    return rc;
 }
 
 static void core1_entry()
 {
-    rotor_t rotor = { AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), atof(gear_ratio_str), 0.0};
+    rotor_t rotor = {AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), gear_ratio_f, 0.0};
     rotor_cmd_t rotor_cmd;
     rotor_init(&rotor);
+
+    rotor_enable(&rotor, false);
+
     while (true)
     {
         if (queue_try_remove(&rotor_cmd_queue, &rotor_cmd))
@@ -242,13 +281,15 @@ static void core1_entry()
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::STOP:
-                    rotor_stop(&rotor);
+                    rotor_stop_and_reset(&rotor);
                     break;
             }
         }
+
+        // If the motor has completed its motion and is stopped, reset the internal position counter
         if (!rotor.motor.run())
         {
-            rotor_stop(&rotor);
+            rotor_stop_and_reset(&rotor);
         }
     }
 }
@@ -256,11 +297,21 @@ static void core1_entry()
 int main()
 {
     context_t ctx;
-    gear_ratio = atof(gear_ratio_str);
-    queue_init(&rotor_cmd_queue, sizeof(rotor_cmd_t), 32);
+
+    gear_ratio_f = atof(gear_ratio);
+    if (gear_ratio_f < -MAX_GEAR_RATIO || gear_ratio_f > MAX_GEAR_RATIO)
+    {
+        // In all likelihood the string was nonsense
+        return EXIT_FAILURE;
+    }
 
     // Initialize serial port
-    stdio_init_all();
+    if (!stdio_init_all())
+    {
+        return EXIT_FAILURE;
+    }
+
+    queue_init(&rotor_cmd_queue, sizeof(rotor_cmd_t), 32);
 
     // Initialize chips
     io_init();
@@ -283,13 +334,23 @@ int main()
     // Decode commands and buttons
     while (true)
     {
-        process_button_touches(&ctx);
+        int rc = process_button_touches(&ctx);
+#ifdef DEBUG
+        std::cerr << error_str(rc) << "\n";
+#endif
 
-        if (((ctx.last_sensor_input_status == BUTTON_RELEASE) || ctx.last_sensor_input_status == LED_BUTTON_PRESS) && tud_cdc_available()) {
-            process_serial_commands(&ctx);
+        if (tud_cdc_available()) {
+            rc = process_serial_commands(&ctx);
+#ifdef DEBUG
+            std::cerr << error_str(rc) << "\n";
+#endif
         }
+
+#ifdef DEBUG
+        printf("%f\n", ltc4425_charge_current());
+#endif
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 

@@ -3,6 +3,17 @@
 #include <math.h>
 #include "AccelStepper.h"
 
+
+void rotor_enable(rotor_t *rotor, bool enable)
+{
+    if (!enable)
+    {
+        rotor_stop_and_reset(rotor);
+    }
+
+    tmc2130_enable(enable);
+}
+
 void rotor_init(rotor_t *rotor)
 {
     tmc2130_init();
