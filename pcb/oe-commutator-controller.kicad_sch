@@ -1,21 +1,25 @@
 (kicad_sch
-	(version 20231120)
+	(version 20241209)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "f8e1d654-dc44-4fb2-953c-f5982945ff40")
 	(paper "A4")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "F")
+		(rev "G")
 		(company "Open Ephys, Inc.")
 		(comment 1 "Cris Sharp")
 		(comment 2 "Jonathan P. Newman")
 	)
 	(lib_symbols
 		(symbol "Connector:TestPoint"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.762) hide)
+				(offset 0.762)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -113,9 +117,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R_US"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
 				(offset 0)
 			)
@@ -186,7 +193,7 @@
 			(symbol "R_US_0_1"
 				(polyline
 					(pts
-						(xy 0 -2.286) (xy 0 -2.54)
+						(xy 0 2.286) (xy 1.016 1.905) (xy 0 1.524) (xy -1.016 1.143) (xy 0 0.762)
 					)
 					(stroke
 						(width 0)
@@ -210,18 +217,6 @@
 				)
 				(polyline
 					(pts
-						(xy 0 -0.762) (xy 1.016 -1.143) (xy 0 -1.524) (xy -1.016 -1.905) (xy 0 -2.286)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 0 0.762) (xy 1.016 0.381) (xy 0 0) (xy -1.016 -0.381) (xy 0 -0.762)
 					)
 					(stroke
@@ -234,7 +229,19 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.286) (xy 1.016 1.905) (xy 0 1.524) (xy -1.016 1.143) (xy 0 0.762)
+						(xy 0 -0.762) (xy 1.016 -1.143) (xy 0 -1.524) (xy -1.016 -1.905) (xy 0 -2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -2.286) (xy 0 -2.54)
 					)
 					(stroke
 						(width 0)
@@ -283,6 +290,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Mechanical:MountingHole"
 			(pin_names
@@ -365,12 +373,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+3.3V"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -442,7 +455,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -454,7 +467,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -485,12 +498,17 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:GND"
 			(power)
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0) hide)
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -581,7 +599,32 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
+	)
+	(arc
+		(start 166.37 57.15)
+		(mid 167.6851 60.325)
+		(end 166.37 63.5)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 657ce3a5-2904-4550-9b40-5a935f59a0c4)
+	)
+	(text "NB: jumper used\nto avoid routing \ndirectly over \ncap. sensor"
+		(exclude_from_sim no)
+		(at 153.67 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "338e341a-a6ca-47e6-87ba-0ea6938eea99")
 	)
 	(junction
 		(at 184.15 66.04)
@@ -1216,30 +1259,6 @@
 			(type default)
 		)
 		(uuid "fb775e20-4ec0-4b83-b0f1-164b9334bc37")
-	)
-	(arc
-		(start 166.37 57.15)
-		(mid 167.6851 60.325)
-		(end 166.37 63.5)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 657ce3a5-2904-4550-9b40-5a935f59a0c4)
-	)
-	(text "NB: jumper used\nto avoid routing \ndirectly over \ncap. sensor"
-		(exclude_from_sim no)
-		(at 153.67 54.61 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "338e341a-a6ca-47e6-87ba-0ea6938eea99")
 	)
 	(symbol
 		(lib_id "Connector:TestPoint")
@@ -2103,6 +2122,10 @@
 	(sheet
 		(at 203.2 95.25)
 		(size 25.4 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2132,43 +2155,43 @@
 		)
 		(pin "LTC44_{SEL}" input
 			(at 203.2 106.68 180)
+			(uuid "a995b9a6-1db3-423d-8ab1-14634660d62e")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "a995b9a6-1db3-423d-8ab1-14634660d62e")
 		)
 		(pin "LTC44_{EN}" input
 			(at 203.2 104.14 180)
+			(uuid "b75e12bc-acee-4f4f-8791-ec2b41258b85")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "b75e12bc-acee-4f4f-8791-ec2b41258b85")
 		)
 		(pin "LTC44_{CURR}" output
 			(at 203.2 109.22 180)
+			(uuid "9d638ee3-ecfc-4b5a-8c37-9be27bb14733")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "9d638ee3-ecfc-4b5a-8c37-9be27bb14733")
 		)
 		(pin "LTC44_{~{PFO}}" output
 			(at 203.2 111.76 180)
+			(uuid "a5f585f2-228b-4c5e-a3ff-609b1f011c5b")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "a5f585f2-228b-4c5e-a3ff-609b1f011c5b")
 		)
 		(instances
 			(project "oe-commutator-controller"
@@ -2181,6 +2204,10 @@
 	(sheet
 		(at 203.2 133.35)
 		(size 25.4 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2210,73 +2237,73 @@
 		)
 		(pin "TMC_{~{EN}}" input
 			(at 203.2 138.43 180)
+			(uuid "3b84f533-69b6-458d-9a54-4b96abcaf1f1")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "3b84f533-69b6-458d-9a54-4b96abcaf1f1")
 		)
 		(pin "MISO" output
 			(at 203.2 153.67 180)
+			(uuid "fffe87c6-d327-4a86-9a86-eab557e07606")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "fffe87c6-d327-4a86-9a86-eab557e07606")
 		)
 		(pin "MOSI" input
 			(at 203.2 151.13 180)
+			(uuid "fa10f38f-9872-4a62-8ffc-b408afa71f6c")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "fa10f38f-9872-4a62-8ffc-b408afa71f6c")
 		)
 		(pin "TMC_{~{CS}}" input
 			(at 203.2 146.05 180)
+			(uuid "b48d2156-5fbc-4070-9111-25c8622671a4")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "b48d2156-5fbc-4070-9111-25c8622671a4")
 		)
 		(pin "SCLK" input
 			(at 203.2 148.59 180)
+			(uuid "b347037b-4493-48bb-8dab-b4a125f248c9")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "b347037b-4493-48bb-8dab-b4a125f248c9")
 		)
 		(pin "TMC_{DIR}" input
 			(at 203.2 140.97 180)
+			(uuid "73b4d916-f09a-4eca-8129-7c8133bfbee2")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "73b4d916-f09a-4eca-8129-7c8133bfbee2")
 		)
 		(pin "TMC_{STEP}" input
 			(at 203.2 143.51 180)
+			(uuid "c9d7b6e1-5696-4e88-8fde-6a0dbdabbe93")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "c9d7b6e1-5696-4e88-8fde-6a0dbdabbe93")
 		)
 		(instances
 			(project "oe-commutator-controller"
@@ -2289,6 +2316,10 @@
 	(sheet
 		(at 50.8 78.74)
 		(size 25.4 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2318,23 +2349,23 @@
 		)
 		(pin "D_{-}" bidirectional
 			(at 76.2 93.98 0)
+			(uuid "8a757061-533d-4f5e-918b-e664c345f2a4")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "8a757061-533d-4f5e-918b-e664c345f2a4")
 		)
 		(pin "D_{+}" bidirectional
 			(at 76.2 88.9 0)
+			(uuid "e5d7446d-c1eb-46a5-986f-6ce12cb17ca8")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "e5d7446d-c1eb-46a5-986f-6ce12cb17ca8")
 		)
 		(instances
 			(project "oe-commutator-controller"
@@ -2347,6 +2378,10 @@
 	(sheet
 		(at 203.2 57.15)
 		(size 25.4 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2376,43 +2411,43 @@
 		)
 		(pin "SCL" bidirectional
 			(at 203.2 66.04 180)
+			(uuid "ba1d6c51-b23a-42fc-8962-c8a0f4a5e4d5")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "ba1d6c51-b23a-42fc-8962-c8a0f4a5e4d5")
 		)
 		(pin "SDA" bidirectional
 			(at 203.2 68.58 180)
+			(uuid "ad3c7d72-829a-4de2-a6df-042f431675b5")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "ad3c7d72-829a-4de2-a6df-042f431675b5")
 		)
 		(pin "IS31_{BM}" output
 			(at 203.2 73.66 180)
+			(uuid "a6a08a43-ab8f-441f-85c3-c8163e5751aa")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "a6a08a43-ab8f-441f-85c3-c8163e5751aa")
 		)
 		(pin "IS31_{EN}" input
 			(at 203.2 71.12 180)
+			(uuid "63a614c5-66b8-4349-9a5d-f7157b22b408")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "63a614c5-66b8-4349-9a5d-f7157b22b408")
 		)
 		(instances
 			(project "oe-commutator-controller"
@@ -2425,6 +2460,10 @@
 	(sheet
 		(at 101.6 59.69)
 		(size 38.1 63.5)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2454,183 +2493,183 @@
 		)
 		(pin "IS31_{EN}" output
 			(at 139.7 77.47 0)
+			(uuid "e95f66c7-2b81-42a5-af35-0ee80cd6ea43")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "e95f66c7-2b81-42a5-af35-0ee80cd6ea43")
 		)
 		(pin "TMC_{~{EN}}" output
 			(at 139.7 102.87 0)
+			(uuid "2a01f0a7-53b5-40fd-a382-d3993aadfa52")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "2a01f0a7-53b5-40fd-a382-d3993aadfa52")
 		)
 		(pin "ALERT#" input
 			(at 139.7 63.5 0)
+			(uuid "e88a3d17-570f-4ea2-aa0c-00568ccca4f0")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "e88a3d17-570f-4ea2-aa0c-00568ccca4f0")
 		)
 		(pin "SDA" bidirectional
 			(at 139.7 68.58 0)
+			(uuid "634ba9fa-7407-44c8-a1cb-a9076ebfa8e9")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "634ba9fa-7407-44c8-a1cb-a9076ebfa8e9")
 		)
 		(pin "SCL" bidirectional
 			(at 139.7 66.04 0)
+			(uuid "787f43dc-aeeb-4f84-bd04-5172ff5023b1")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "787f43dc-aeeb-4f84-bd04-5172ff5023b1")
 		)
 		(pin "D_{-}" bidirectional
 			(at 101.6 93.98 180)
+			(uuid "9b0b03dd-4375-4ef2-a32d-f63e237a5af1")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "9b0b03dd-4375-4ef2-a32d-f63e237a5af1")
 		)
 		(pin "D_{+}" bidirectional
 			(at 101.6 88.9 180)
+			(uuid "8108933b-98de-4840-a433-a8504e2c7bb0")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "8108933b-98de-4840-a433-a8504e2c7bb0")
 		)
 		(pin "IS31_{BM}" input
 			(at 139.7 80.01 0)
+			(uuid "efe01cad-11ab-400c-a220-de392e7bae84")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "efe01cad-11ab-400c-a220-de392e7bae84")
 		)
 		(pin "LTC44_{CURR}" output
 			(at 139.7 92.71 0)
+			(uuid "4e7ef4b8-cc54-484d-81fd-f9f918d6c9d1")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "4e7ef4b8-cc54-484d-81fd-f9f918d6c9d1")
 		)
 		(pin "LTC44_{~{PFO}}" input
 			(at 139.7 95.25 0)
+			(uuid "ec2d2037-54cd-457e-b912-8dd338a1c0ac")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "ec2d2037-54cd-457e-b912-8dd338a1c0ac")
 		)
 		(pin "LTC44_{EN}" output
 			(at 139.7 87.63 0)
+			(uuid "fae9ac94-8f8b-42dc-ba83-6da4216140b8")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "fae9ac94-8f8b-42dc-ba83-6da4216140b8")
 		)
 		(pin "LTC44_{SEL}" output
 			(at 139.7 90.17 0)
+			(uuid "f7b50310-8491-48ac-9951-92bf5318f28a")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "f7b50310-8491-48ac-9951-92bf5318f28a")
 		)
 		(pin "MISO" input
 			(at 139.7 118.11 0)
+			(uuid "b6db4faa-3c1f-4528-8087-0d0e0134d79c")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "b6db4faa-3c1f-4528-8087-0d0e0134d79c")
 		)
 		(pin "TMC_{DIR}" output
 			(at 139.7 105.41 0)
+			(uuid "97c114f4-c1c2-402b-85d8-9023d18e016f")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "97c114f4-c1c2-402b-85d8-9023d18e016f")
 		)
 		(pin "TMC_{STEP}" output
 			(at 139.7 107.95 0)
+			(uuid "2424b265-3c20-4cbd-b5d4-3e9d93a6702e")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "2424b265-3c20-4cbd-b5d4-3e9d93a6702e")
 		)
 		(pin "TMC_{~{CS}}" output
 			(at 139.7 110.49 0)
+			(uuid "df2f1335-395e-4a7c-aaaa-0bfefa9c69c5")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "df2f1335-395e-4a7c-aaaa-0bfefa9c69c5")
 		)
 		(pin "SCLK" output
 			(at 139.7 113.03 0)
+			(uuid "5bf108c6-cb01-46be-ae7f-a50aef9f4ce8")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "5bf108c6-cb01-46be-ae7f-a50aef9f4ce8")
 		)
 		(pin "MOSI" output
 			(at 139.7 115.57 0)
+			(uuid "307008af-19c7-4a41-9e7c-f2fcc2b1866f")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify right)
 			)
-			(uuid "307008af-19c7-4a41-9e7c-f2fcc2b1866f")
 		)
 		(instances
 			(project "oe-commutator-controller"
@@ -2643,6 +2682,10 @@
 	(sheet
 		(at 203.2 19.05)
 		(size 25.4 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(stroke
 			(width 0.1524)
@@ -2672,33 +2715,33 @@
 		)
 		(pin "ALERT#" output
 			(at 203.2 29.21 180)
+			(uuid "a92651ad-4f58-4fb6-a544-4d9233f8ec5a")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "a92651ad-4f58-4fb6-a544-4d9233f8ec5a")
 		)
 		(pin "SDA" bidirectional
 			(at 203.2 34.29 180)
+			(uuid "11005886-ee2f-47b2-a941-c51f796f999b")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "11005886-ee2f-47b2-a941-c51f796f999b")
 		)
 		(pin "SCL" bidirectional
 			(at 203.2 31.75 180)
+			(uuid "9d422ffe-0ac9-46e3-98a9-efb86bdaa5e0")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
 			)
-			(uuid "9d422ffe-0ac9-46e3-98a9-efb86bdaa5e0")
 		)
 		(instances
 			(project "oe-commutator-controller"
@@ -2713,4 +2756,5 @@
 			(page "1")
 		)
 	)
+	(embedded_fonts no)
 )
