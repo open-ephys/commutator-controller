@@ -9750,7 +9750,7 @@
 		(uuid "6d47248b-5da9-4a34-a166-8717d7a94cdf")
 	)
 	(hierarchical_label "LTC44_{CURR}"
-		(shape output)
+		(shape input)
 		(at 168.91 134.62 0)
 		(effects
 			(font

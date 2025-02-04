@@ -2571,16 +2571,6 @@
 				(justify right)
 			)
 		)
-		(pin "LTC44_{CURR}" output
-			(at 139.7 92.71 0)
-			(uuid "4e7ef4b8-cc54-484d-81fd-f9f918d6c9d1")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "LTC44_{~{PFO}}" input
 			(at 139.7 95.25 0)
 			(uuid "ec2d2037-54cd-457e-b912-8dd338a1c0ac")
@@ -2664,6 +2654,16 @@
 		(pin "MOSI" output
 			(at 139.7 115.57 0)
 			(uuid "307008af-19c7-4a41-9e7c-f2fcc2b1866f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LTC44_{CURR}" input
+			(at 139.7 92.71 0)
+			(uuid "035376ad-1e91-4b14-bc5c-0b28b75c7b38")
 			(effects
 				(font
 					(size 1.27 1.27)
