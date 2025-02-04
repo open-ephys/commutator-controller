@@ -62,7 +62,7 @@ void tmc2130_init()
     tmc2130_write(REG_PWMCONF, 0x000401C8);
 
     // Start in disabled state
-    tmc2130_enable(true);
+    tmc2130_enable(false);
 }
 
 int32_t tmc2130_status()
