@@ -60,20 +60,32 @@
       ],
       "drc_exclusions": [
         [
-          "hole_clearance|138070000|75950000|3af2f640-198d-48da-b62f-a943568ab21a|1b0af4fb-d5f9-4a61-8b45-5c9fb6f1bf2b",
-          "Nominal"
+          "copper_edge_clearance|144255000|74730000|201446f0-4bc7-44dc-8d9c-da4521d30a85|6d7e00a4-d3e0-4fc3-bcdb-9600d60763bd",
+          ""
         ],
         [
-          "hole_clearance|138070000|75950000|3af2f640-198d-48da-b62f-a943568ab21a|5147c5d1-287d-415e-832c-929d56edd132",
-          "Nominal"
+          "copper_edge_clearance|144255000|84950000|201446f0-4bc7-44dc-8d9c-da4521d30a85|33981d44-24f4-485e-80a8-26288efd3a0e",
+          ""
         ],
         [
-          "hole_clearance|138070000|82050000|be51931c-994c-4ea5-be39-0a91984707e0|3440ce76-0f14-4934-8e6e-462b982981cc",
-          "Nominal"
+          "hole_clearance|139425000|75950000|1b0af4fb-d5f9-4a61-8b45-5c9fb6f1bf2b|3af2f640-198d-48da-b62f-a943568ab21a",
+          ""
         ],
         [
-          "hole_clearance|138070000|82050000|be51931c-994c-4ea5-be39-0a91984707e0|ed38c6ee-f3e1-4590-8a96-7de03720765c",
-          "Nominal"
+          "hole_clearance|139425000|75950000|5147c5d1-287d-415e-832c-929d56edd132|3af2f640-198d-48da-b62f-a943568ab21a",
+          ""
+        ],
+        [
+          "hole_clearance|139425000|82050000|3440ce76-0f14-4934-8e6e-462b982981cc|be51931c-994c-4ea5-be39-0a91984707e0",
+          ""
+        ],
+        [
+          "hole_clearance|139425000|82050000|ed38c6ee-f3e1-4590-8a96-7de03720765c|be51931c-994c-4ea5-be39-0a91984707e0",
+          ""
+        ],
+        [
+          "starved_thermal|115400000|85780000|6d4132a5-432a-402a-96ec-63aebe079779|40c30a19-3a62-4b4f-aa4e-6d7039eba9e3|F.Cu",
+          ""
         ]
       ],
       "meta": {
@@ -543,7 +555,7 @@
       "svg": "",
       "vrml": ""
     },
-    "page_layout_descr_file": ""
+    "page_layout_descr_file": "kicad-embed://open-ephys.kicad_wks"
   },
   "schematic": {
     "annotate_start_num": 0,
