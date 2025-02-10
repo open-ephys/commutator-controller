@@ -20,7 +20,7 @@ between the Licensor and the Licensee. Please get in touch if you are interested
 in commercially distributing this tool.
 
 ## Software/Firmware License
-This license pertains to documents in the source code in the `firmware`
+This license pertains to source code in the `firmware`
 subdirectory.
 
 Open Ephys Commutator Controller Firmware
