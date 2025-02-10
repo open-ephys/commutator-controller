@@ -1,48 +1,40 @@
-# Commutator Controller PCB & Firmware
-Submodule repository for commutator PCB and firmware.
+# Commutator Controller
+Open Ephys Commutator Controller hardware and firmware designs.
 
-Repositories that use this submodule include:
-- [Coaxial Commutator](https://github.com/open-ephys/commutator-coax)
-- [SPI Commutator](https://github.com/open-ephys/commutator-spi)
-- [Dual Channel Commutator](https://github.com/open-ephys/commutator-dual)
-
-This repo contains firmware and PCBs for Rev D and after, i.e. designs involving a [RP2040](https://www.raspberrypi.com/products/rp2040/).
-
-The archived [commutators repo](https://github.com/open-ephys/commutators) contains firmware and PCBs for Rev C and before, i.e. designs involving a [Teensy](https://www.pjrc.com/teensy/).
+- This repository contains firmware and PCBs for Rev D and after, i.e. designs
+  using an [RP2040](https://www.raspberrypi.com/products/rp2040/).
+- The archived [commutators repository](https://github.com/open-ephys/commutators)
+  contains firmware and PCBs for Rev C and before, i.e. designs using a
+  [Teensy](https://www.pjrc.com/teensy/).
 
 ## Hardware License
-
 This license pertains to documents in the `pcb` subdirectory.
 
-This work is licensed to Jonathan P. Newman and Jakob Voigts under CC BY-NC-SA
-4.0. To view a copy of this license, visit
+This work is licensed to Open Ephys, Inc. under CC BY-NC-SA 4.0.
+To view a copy of this license, visit
 https://creativecommons.org/licenses/by-nc-sa/4.0
 
 The creation of commercial products using the hardware documentation in this
-repository is not permitted without an explicit, supplementary agreement
-between the Licensor and the Licensee. Please get in touch if you are
-interested in commercially distributing this tool.
+repository is **not permitted** without an explicit, supplementary agreement
+between the Licensor and the Licensee. Please get in touch if you are interested
+in commercially distributing this tool.
 
 ## Software/Firmware License
+This license pertains to documents in the source code in the `firmware`
+subdirectory.
 
-This license pertains to documents in the source code in the `firmware` subdirectory.
+Open Ephys Commutator Controller Firmware
+Copyright (C) Open Ephys, Inc.
 
-Copyright Jonathan P. Newman
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see http://www.gnu.org/licenses/.
