@@ -1,12 +1,12 @@
 (kicad_sch
-	(version 20241209)
+	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
 	(uuid "f8e1d654-dc44-4fb2-953c-f5982945ff40")
 	(paper "A4")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "G")
+		(rev "H")
 		(company "Open Ephys, Inc.")
 		(comment 1 "Cris Sharp")
 		(comment 2 "Jonathan P. Newman")
@@ -193,7 +193,7 @@
 			(symbol "R_US_0_1"
 				(polyline
 					(pts
-						(xy 0 2.286) (xy 1.016 1.905) (xy 0 1.524) (xy -1.016 1.143) (xy 0 0.762)
+						(xy 0 2.286) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -205,7 +205,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.286) (xy 0 2.54)
+						(xy 0 2.286) (xy 1.016 1.905) (xy 0 1.524) (xy -1.016 1.143) (xy 0 0.762)
 					)
 					(stroke
 						(width 0)
@@ -2495,7 +2495,7 @@
 				(justify left top)
 			)
 		)
-		(pin "D_{-}" bidirectional
+		(pin "D-" bidirectional
 			(at 201.93 101.6 180)
 			(uuid "8a757061-533d-4f5e-918b-e664c345f2a4")
 			(effects
@@ -2505,7 +2505,7 @@
 				(justify left)
 			)
 		)
-		(pin "D_{+}" bidirectional
+		(pin "D+" bidirectional
 			(at 201.93 99.06 180)
 			(uuid "e5d7446d-c1eb-46a5-986f-6ce12cb17ca8")
 			(effects
@@ -2689,7 +2689,7 @@
 				(justify left)
 			)
 		)
-		(pin "D_{-}" bidirectional
+		(pin "D-" bidirectional
 			(at 184.15 101.6 0)
 			(uuid "9b0b03dd-4375-4ef2-a32d-f63e237a5af1")
 			(effects
@@ -2699,7 +2699,7 @@
 				(justify right)
 			)
 		)
-		(pin "D_{+}" bidirectional
+		(pin "D+" bidirectional
 			(at 184.15 99.06 0)
 			(uuid "8108933b-98de-4840-a433-a8504e2c7bb0")
 			(effects
