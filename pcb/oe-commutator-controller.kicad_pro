@@ -60,8 +60,40 @@
       ],
       "drc_exclusions": [
         [
+          "hole_clearance|139420000|75950000|f27e5844-457d-4faa-981f-ea191987f810|1b0af4fb-d5f9-4a61-8b45-5c9fb6f1bf2b",
+          "This is a feature of the USB connector's footprint "
+        ],
+        [
+          "hole_clearance|139420000|75950000|f27e5844-457d-4faa-981f-ea191987f810|5147c5d1-287d-415e-832c-929d56edd132",
+          "This is a feature of the USB connector's footprint "
+        ],
+        [
+          "hole_clearance|139420000|82050000|8f4d9145-2130-4989-a1d4-467ddd794056|3440ce76-0f14-4934-8e6e-462b982981cc",
+          "This is a feature of the USB connector's footprint "
+        ],
+        [
+          "hole_clearance|139420000|82050000|8f4d9145-2130-4989-a1d4-467ddd794056|ed38c6ee-f3e1-4590-8a96-7de03720765c",
+          "This is a feature of the USB connector's footprint "
+        ],
+        [
           "starved_thermal|115400000|85780000|6d4132a5-432a-402a-96ec-63aebe079779|40c30a19-3a62-4b4f-aa4e-6d7039eba9e3|F.Cu",
-          ""
+          "Only one spoke fits well here, not worth the effort of spreading the surrounding traces"
+        ],
+        [
+          "starved_thermal|138995000|75800000|6d4132a5-432a-402a-96ec-63aebe079779|1b0af4fb-d5f9-4a61-8b45-5c9fb6f1bf2b|F.Cu",
+          "Fixed with manually placed trace extending from pad to GND plane"
+        ],
+        [
+          "starved_thermal|138995000|75800000|6d4132a5-432a-402a-96ec-63aebe079779|5147c5d1-287d-415e-832c-929d56edd132|F.Cu",
+          "Fixed with manually placed trace extending from pad to GND plane"
+        ],
+        [
+          "starved_thermal|138995000|82200000|6d4132a5-432a-402a-96ec-63aebe079779|3440ce76-0f14-4934-8e6e-462b982981cc|F.Cu",
+          "Fixed with manually placed trace extending from pad to GND plane"
+        ],
+        [
+          "starved_thermal|138995000|82200000|6d4132a5-432a-402a-96ec-63aebe079779|ed38c6ee-f3e1-4590-8a96-7de03720765c|F.Cu",
+          "Fixed with manually placed trace extending from pad to GND plane"
         ]
       ],
       "meta": {

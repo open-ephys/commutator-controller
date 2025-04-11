@@ -10588,6 +10588,18 @@
 				)
 			)
 		)
+		(property "LCSC" "C5219231"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "704a2dae-a8a3-4d0e-b359-92e875fb588b")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
 		(path "/0bac2e8b-d578-4516-b05c-9606c956906b/32b70d24-2428-4620-addc-0ccc62c63497")
 		(sheetname "/Supercap Charger/")
 		(sheetfile "cap-charger.kicad_sch")
