@@ -731,7 +731,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C22438449"
+		(property "LCSC" "C7145797"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -2330,7 +2330,7 @@
 		(path "/884b71f2-a75a-40cc-a0f7-e858347b8f6c/c298c12f-452e-47e7-bc3e-eae5080b7792")
 		(sheetname "/USB/")
 		(sheetfile "usb-power.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(attr exclude_from_pos_files)
 		(fp_circle
 			(center 0 0)
 			(end 0 1.2)
@@ -2499,6 +2499,7 @@
 		(property "Value" "TPD4E05U06DQA"
 			(at 0.01829 2.5 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "6220a9f8-4dc7-4e04-a305-d491fca5a552")
 			(effects
 				(font
@@ -6469,7 +6470,7 @@
 		(path "/0bac2e8b-d578-4516-b05c-9606c956906b/52b68c8f-bdf1-4adb-bdfd-94dca047e654")
 		(sheetname "/Supercap Charger/")
 		(sheetfile "cap-charger.kicad_sch")
-		(attr smd exclude_from_pos_files exclude_from_bom)
+		(attr smd exclude_from_pos_files)
 		(fp_line
 			(start -0.711252 -0.91)
 			(end 0.711252 -0.91)
@@ -7576,7 +7577,7 @@
 		(path "/884b71f2-a75a-40cc-a0f7-e858347b8f6c/3758f038-b760-4b5a-9f02-d4b990f6f7e5")
 		(sheetname "/USB/")
 		(sheetfile "usb-power.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(attr exclude_from_pos_files)
 		(fp_circle
 			(center 0 0)
 			(end 0 1.2)
@@ -14491,7 +14492,7 @@
 		(path "/0bac2e8b-d578-4516-b05c-9606c956906b/d871e8d3-0b8e-48c9-bfbc-76b23516d7b4")
 		(sheetname "/Supercap Charger/")
 		(sheetfile "cap-charger.kicad_sch")
-		(attr smd exclude_from_pos_files exclude_from_bom)
+		(attr smd exclude_from_pos_files)
 		(fp_line
 			(start -0.711252 -0.91)
 			(end 0.711252 -0.91)
@@ -16035,7 +16036,7 @@
 		(path "/4b34cfd9-2bf6-4b39-b6c8-def0ac3d1935")
 		(sheetname "/")
 		(sheetfile "oe-commutator-controller.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(attr exclude_from_pos_files)
 		(fp_circle
 			(center 0 0)
 			(end 0 1.2)
@@ -16139,7 +16140,7 @@
 		(path "/0bac2e8b-d578-4516-b05c-9606c956906b/8e63897c-75fe-4d9d-a054-c28ba7d5182c")
 		(sheetname "/Supercap Charger/")
 		(sheetfile "cap-charger.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(attr exclude_from_pos_files)
 		(fp_circle
 			(center 0 0)
 			(end 0 1.2)
@@ -17550,7 +17551,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C963216"
+		(property "LCSC" "C5143397"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -18175,7 +18176,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C471518"
+		(property "LCSC" "C265088"
 			(at 0 0 0)
 			(layer "F.SilkS")
 			(hide yes)
@@ -18796,6 +18797,7 @@
 		(property "Value" "W25Q128JVS"
 			(at 0 3.6 0)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "20590753-46fb-474c-8ef6-604627833fbb")
 			(effects
 				(font
@@ -19161,7 +19163,7 @@
 		(path "/228dc06f-36c7-4a7f-b944-4a1ff74d1b39")
 		(sheetname "/")
 		(sheetfile "oe-commutator-controller.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(attr exclude_from_pos_files)
 		(fp_circle
 			(center 0 0)
 			(end 0 1.2)
@@ -19717,7 +19719,7 @@
 		(path "/0bac2e8b-d578-4516-b05c-9606c956906b/7a94c699-217d-4ed3-b273-5c8e4ecb9bf5")
 		(sheetname "/Supercap Charger/")
 		(sheetfile "cap-charger.kicad_sch")
-		(attr exclude_from_pos_files exclude_from_bom)
+		(attr exclude_from_pos_files)
 		(fp_circle
 			(center 0 0)
 			(end 0 1.2)
@@ -21990,6 +21992,7 @@
 		(property "Value" "LTC4425"
 			(at 0 2.97 90)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "db332fd0-ff5b-425f-99d0-81a5c6b9e246")
 			(effects
 				(font
@@ -42006,18 +42009,18 @@
 			(pts
 				(xy 132.042712 79.519407) (xy 132.054524 79.529496) (xy 132.315488 79.790459) (xy 132.315493 79.790463)
 				(xy 132.384008 79.83002) (xy 132.384006 79.83002) (xy 132.38401 79.830021) (xy 132.384012 79.830022)
-				(xy 132.460438 79.8505) (xy 132.539562 79.8505) (xy 133.0405 79.8505) (xy 133.098691 79.869407)
-				(xy 133.134655 79.918907) (xy 133.1395 79.949499) (xy 133.1395 80.102129) (xy 133.139501 80.102137)
-				(xy 133.155484 80.182494) (xy 133.155485 80.182496) (xy 133.21622 80.273391) (xy 133.216376 80.273624)
-				(xy 133.307505 80.334515) (xy 133.387867 80.3505) (xy 133.842132 80.350499) (xy 133.922495 80.334515)
-				(xy 133.922496 80.334513) (xy 133.926068 80.333035) (xy 133.963952 80.3255) (xy 134.036048 80.3255)
-				(xy 134.073935 80.333036) (xy 134.077503 80.334513) (xy 134.077505 80.334515) (xy 134.157867 80.3505)
-				(xy 134.612132 80.350499) (xy 134.692495 80.334515) (xy 134.718431 80.317184) (xy 134.773433 80.3005)
-				(xy 135.664563 80.3005) (xy 135.664563 80.300499) (xy 135.740989 80.280021) (xy 135.809511 80.24046)
-				(xy 135.86546 80.184511) (xy 135.872357 80.177613) (xy 135.876049 80.174574) (xy 135.891845 80.168361)
-				(xy 135.925491 80.151219) (xy 135.940978 80.15) (xy 136.291 80.15) (xy 136.349191 80.168907) (xy 136.385155 80.218407)
-				(xy 136.39 80.249) (xy 136.39 80.25) (xy 136.391 80.25) (xy 136.449191 80.268907) (xy 136.485155 80.318407)
-				(xy 136.49 80.349) (xy 136.49 80.769998) (xy 136.490001 80.769999) (xy 136.564251 80.769999) (xy 136.56426 80.769998)
+				(xy 132.460438 79.8505) (xy 133.0405 79.8505) (xy 133.098691 79.869407) (xy 133.134655 79.918907)
+				(xy 133.1395 79.949499) (xy 133.1395 80.102129) (xy 133.139501 80.102137) (xy 133.155484 80.182494)
+				(xy 133.155485 80.182496) (xy 133.21622 80.273391) (xy 133.216376 80.273624) (xy 133.307505 80.334515)
+				(xy 133.387867 80.3505) (xy 133.842132 80.350499) (xy 133.922495 80.334515) (xy 133.922496 80.334513)
+				(xy 133.926068 80.333035) (xy 133.963952 80.3255) (xy 134.036048 80.3255) (xy 134.073935 80.333036)
+				(xy 134.077503 80.334513) (xy 134.077505 80.334515) (xy 134.157867 80.3505) (xy 134.612132 80.350499)
+				(xy 134.692495 80.334515) (xy 134.718431 80.317184) (xy 134.773433 80.3005) (xy 135.664563 80.3005)
+				(xy 135.664563 80.300499) (xy 135.740989 80.280021) (xy 135.809511 80.24046) (xy 135.86546 80.184511)
+				(xy 135.872357 80.177613) (xy 135.876049 80.174574) (xy 135.891845 80.168361) (xy 135.925491 80.151219)
+				(xy 135.940978 80.15) (xy 136.291 80.15) (xy 136.349191 80.168907) (xy 136.385155 80.218407) (xy 136.39 80.249)
+				(xy 136.39 80.25) (xy 136.391 80.25) (xy 136.449191 80.268907) (xy 136.485155 80.318407) (xy 136.49 80.349)
+				(xy 136.49 80.769998) (xy 136.490001 80.769999) (xy 136.564251 80.769999) (xy 136.56426 80.769998)
 				(xy 136.613041 80.763577) (xy 136.720109 80.71365) (xy 136.803649 80.63011) (xy 136.809997 80.616497)
 				(xy 136.851723 80.571747) (xy 136.911784 80.560069) (xy 136.967238 80.585925) (xy 136.989446 80.61649)
 				(xy 136.995933 80.630401) (xy 136.995934 80.630402) (xy 136.995935 80.630404) (xy 137.079596 80.714065)

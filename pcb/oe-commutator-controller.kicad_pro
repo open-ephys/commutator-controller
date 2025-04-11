@@ -527,7 +527,7 @@
       "idf": "",
       "netlist": "",
       "plot": "manufacturing/gerber/",
-      "pos_files": "",
+      "pos_files": "manufacturing/gerber/",
       "specctra_dsn": "",
       "step": "",
       "svg": "",
