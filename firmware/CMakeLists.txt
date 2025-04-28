@@ -71,6 +71,7 @@ target_sources(commutator PRIVATE
         cap1296.cpp
         accelstepper/AccelStepper.cpp
         io.cpp
+        pico_bootsel_via_double_reset
         )
 
 
