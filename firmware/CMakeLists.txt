@@ -49,6 +49,7 @@ target_link_libraries(commutator PRIVATE
     pico_stdlib
     pico_time
     pico_multicore
+    pico_bootsel_via_double_reset
     hardware_adc
     hardware_i2c
     hardware_spi
