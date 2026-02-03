@@ -278,9 +278,11 @@ static void core1_entry()
                     rotor_enable(&rotor, rotor_cmd.value.enable);
                     break;
                 case rotor_cmd_tag::TURN:
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS(rotor.gear_ratio));
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::STOP:
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS(rotor.gear_ratio)*2);
                     rotor.motor.stop();
                     break;
             }
