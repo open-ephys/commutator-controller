@@ -56,7 +56,10 @@ void tmc2130_init()
     // Copied from page 84
     //tmc2130_write(REG_CHOPCONF, 0x05008008UL);
     tmc2130_write(REG_CHOPCONF, 0x050100C3); // TOFF=3, HSTRT=4, HEND=1, CHM=0 (SpreadCycle), TBL=2, VSENSE=0, MRES=8, INTPOL=0
-    tmc2130_write(REG_IHOLD_IRUN, 0x00061313); // IHOLD = 0x13 (275 mA), IRUN = 0x13 (275 mA RMS)
+    tmc2130_write(REG_IHOLD_IRUN, 0x00060F12); 
+    // IHOLD = 0x12 (empirically 1.262 W measured from the output of 12V regulator, Rev H)
+    // IRUN = 0x10 (empirically 1.42 W measured from the output of the 12V regulator, Rev H)
+    // these values provide margin for 12v regulator inefficiency (~80% worst case) and surprise current spikes
     tmc2130_write(REG_TPOWERDOWN, 0x0000000A);
     tmc2130_write(REG_GCONF, 0x00000004);
     tmc2130_write(REG_PWMCONF, 0x000401C8);
