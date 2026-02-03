@@ -26,7 +26,7 @@
 
 // #define DEBUG
 #define FIRMWARE_VER "0.1.0"
-#define BOARD_REV "G"
+#define BOARD_REV "H"
 
 #ifdef DEBUG
     uint16_t button_counter = 0;
@@ -135,12 +135,12 @@ static int process_button_touches(context_t *ctx)
             case CW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rc = queue_add_turn_cmd_blocking(ctx, -100);
+                rc = queue_add_turn_cmd_blocking(ctx, -INFINITY);
                 break;
             case CCW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rc = queue_add_turn_cmd_blocking(ctx, 100);
+                rc = queue_add_turn_cmd_blocking(ctx, INFINITY);
                 break;
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
@@ -281,7 +281,7 @@ static void core1_entry()
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::STOP:
-                    rotor_stop_and_reset(&rotor);
+                    rotor.motor.stop();
                     break;
             }
         }

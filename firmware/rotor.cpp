@@ -3,7 +3,6 @@
 #include <math.h>
 #include "AccelStepper.h"
 
-
 void rotor_enable(rotor_t *rotor, bool enable)
 {
     if (!enable)
@@ -26,10 +25,18 @@ void rotor_init(rotor_t *rotor)
 
 int rotor_move(rotor_t *rotor, double turns)
 {
-    if (turns >= MAX_TURNS(rotor->gear_ratio))
+    if (std::isinf(turns))
+    {
+        double dir = std::signbit(turns) ? -1.0 : 1.0;
+        rotor->target_position = (rotor->motor.currentPosition() / (double)USTEPS_PER_REV / rotor->gear_ratio) + (dir * 100.0);
+    }
+
+    else if (abs(turns) >= MAX_TURNS(rotor->gear_ratio))
         return -1;
 
-    rotor->target_position += turns;
+    else 
+        rotor->target_position += turns;
+    
     long target_position_steps = lround(rotor->target_position * (double)USTEPS_PER_REV * rotor->gear_ratio);
     rotor->motor.moveTo(target_position_steps);
 
