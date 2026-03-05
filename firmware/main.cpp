@@ -176,7 +176,7 @@ static int build_serial_buffer(char *serial_buffer)
         memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
         return ERROR_COMMAND_BUFFER_OVERFLOW;
     }
-    else if (serial_buffer[serial_buffer_index - 1] == '\n')
+    else if (serial_buffer[serial_buffer_index - 1] == '}')
     {
         serial_buffer_index = 0;
         return ERROR_SUCCESS;
