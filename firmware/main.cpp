@@ -170,8 +170,20 @@ static int process_serial_commands(context_t *ctx)
 {
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
     static uint16_t serial_buffer_index = 0;
+    static bool accept_serial_commands_previous = false;
+    static bool accept_serial_commands = false;
 
-    if(!remote_available(ctx))
+    accept_serial_commands = remote_available(ctx);
+
+    if (accept_serial_commands && !accept_serial_commands_previous) {
+        while (getchar_timeout_us(0) != PICO_ERROR_TIMEOUT);
+        serial_buffer_index = 0;
+        memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
+    }
+
+    accept_serial_commands_previous = accept_serial_commands;
+
+    if (!accept_serial_commands)
         return ERROR_REMOTE_INTERFACE_LOCKED;
 
     if (tud_cdc_available()) {
