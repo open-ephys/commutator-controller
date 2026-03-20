@@ -3573,7 +3573,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_PH_B6B-PH-SM4-TB_1x06-1MP_P2.00mm_Vertical"
+		(property "Footprint" "open-ephys:JST_PH_B6B-PH-SM4-TB_1x06-1MP_P2.00mm_Vertical"
 			(at 210.82 85.09 0)
 			(effects
 				(font

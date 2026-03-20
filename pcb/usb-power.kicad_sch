@@ -3977,7 +3977,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_USB:USB_C_Receptacle_GCT_USB4110"
+		(property "Footprint" "open-ephys:USB_C_Receptacle_GCT_USB4110"
 			(at 109.22 95.25 0)
 			(effects
 				(font
