@@ -78,5 +78,4 @@ target_sources(commutator PRIVATE
 add_subdirectory(arduinojson)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
-
-
+add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
