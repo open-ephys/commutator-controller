@@ -11,6 +11,7 @@
 #define REG_TPOWERDOWN          0x11
 #define REG_TSTEP               0x12
 #define REG_TPWMTHRS            0x13
+#define REG_TCOOLTHRS           0x14
 #define REG_CHOPCONF            0x6C
 #define REG_COOLCONF            0x6D
 #define REG_DCCTRL              0x6E

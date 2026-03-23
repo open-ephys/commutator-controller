@@ -221,10 +221,11 @@ unsigned long AccelStepper::computeNewSpeed()
 // You must call this at least once per step, preferably in your main loop
 // If the motor is in the desired position, the cost is very small
 // returns true if the motor is still running to the target position.
-boolean AccelStepper::run()
+boolean AccelStepper::run(float *speed)
 {
     if (runSpeed())
 	computeNewSpeed();
+    *speed = _speed;
     return _speed != 0.0 || distanceToGo() != 0;
 }
 
@@ -678,7 +679,8 @@ void AccelStepper::setPinsInverted(bool pin1Invert, bool pin2Invert, bool pin3In
 // Blocks until the target position is reached and stopped
 void AccelStepper::runToPosition()
 {
-    while (run())
+    float dummy;
+    while (run(&dummy))
 	YIELD; // Let system housekeeping occur
 }
 

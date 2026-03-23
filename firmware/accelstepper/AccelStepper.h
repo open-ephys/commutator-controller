@@ -421,7 +421,7 @@ public:
     /// preferably in your main loop. Note that each call to run() will make at most one step, and then only when a step is due,
     /// based on the current speed and the time since the last step.
     /// \return true if the motor is still running to the target position.
-    boolean run();
+    boolean run(float *speed);
 
     /// Poll the motor and step it if a step is due, implementing a constant
     /// speed as set by the most recent call to setSpeed(). You must call this as

@@ -8,6 +8,7 @@
 #include <istream>
 
 #include "hardware/gpio.h"
+#include "hardware/structs/bus_ctrl.h"
 #include "pico/binary_info.h"
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
@@ -34,6 +35,7 @@
 
 #define MAX_GEAR_RATIO 100
 #define MAX_SERIAL_BUFFER_LENGTH 1024u
+#define STALL_DETECTION_THRESHOLD_RPM 20.0
 
 // ISR flag for capacitative touch detected
 volatile bool alert_flag = false;
@@ -41,6 +43,8 @@ static void io_alert_irq_callback(unsigned int gpio, long unsigned int events)
 {
     alert_flag = true;
 };
+
+volatile float speed_rpm;
 
 // NB: The gear ratio is configurable without recompilation using
 //      `picotool config -s gear_ratio 3.14`
@@ -52,6 +56,7 @@ struct context_t {
     bool enable = false;
     bool led = true;
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
+    bool stall = false;
 };
 
 // Thread-safe queue and command types that are shared state between cores
@@ -128,6 +133,8 @@ static int process_button_touches(context_t *ctx)
                 break;
             case ENABLE_BUTTON_PRESS:
                 ctx->enable = !ctx->enable;
+                if (ctx->enable) 
+                    ctx->stall = false;
                 rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
                 rgb_set_auto(ctx->enable, ctx->led);
@@ -212,6 +219,8 @@ static int process_serial_commands(context_t *ctx)
     if (receive["enable"].is<bool>())
     {
         ctx->enable = receive["enable"];
+        if (ctx->enable)
+            ctx->stall = false;
         rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
         queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
         rgb_set_auto(ctx->enable, ctx->led);
@@ -246,6 +255,7 @@ static int process_serial_commands(context_t *ctx)
         doc["board_rev"] = BOARD_REV;
         doc["firmware"] = FIRMWARE_VER;
         doc["enable"] = ctx->enable;
+        doc["stall"] = ctx->stall;
         doc["led"] = ctx->led;
         doc["charge_current"] = ltc4425_charge_current();
         doc["power_good"] = ltc4425_power_good();
@@ -289,10 +299,12 @@ static void core1_entry()
         }
 
         // If the motor has completed its motion and is stopped, reset the internal position counter
-        if (!rotor.motor.run())
+        float speed_sps;
+        if (!rotor.motor.run(&speed_sps))
         {
             rotor_stop_and_reset(&rotor);
         }
+        speed_rpm = speed_sps / DETENTS / 16.0 * 60.0;
     }
 }
 
@@ -326,6 +338,9 @@ int main()
     rgb_set_breathing(false);
     rgb_set_auto(ctx.enable, ctx.led);
 
+    // give core1 priority on bus  if there's ever a contention (i.e. if core
+    // tries to write to speed_rpm while core0 tries to read speed_rpm)
+    bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_PROC1_BITS;
     // Launch motor driver loop in core1
     multicore_launch_core1(core1_entry);
 
@@ -346,6 +361,18 @@ int main()
 #ifdef DEBUG
             std::cerr << error_str(rc) << "\n";
 #endif
+        }
+
+        uint32_t motor_status = tmc2130_status();
+        if (!(motor_status & (1 << 31)) && (motor_status & (1 << 24)) && (abs(speed_rpm) > STALL_DETECTION_THRESHOLD_RPM)) {
+#ifdef DEBUG
+            printf("stall: speed=%.2f sg_result=%d\n", speed_rpm, motor_status & 0x3FF);
+#endif
+            ctx.enable = false;
+            ctx.stall = true;
+            rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx.enable}};
+            queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+            rgb_set_auto(ctx.enable, ctx.led);
         }
 
 #ifdef DEBUG
