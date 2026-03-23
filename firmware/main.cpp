@@ -57,6 +57,7 @@ struct context_t {
     bool led = true;
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
     bool stall = false;
+    bool power_good = false;
 };
 
 // Thread-safe queue and command types that are shared state between cores
@@ -131,10 +132,16 @@ static int process_button_touches(context_t *ctx)
                 ctx->led = !ctx->led;
                 rgb_set_auto(ctx->enable, ctx->led);
                 break;
+            
+            if (!ctx->power_good) return ERROR_REMOTE_INTERFACE_LOCKED;
+            
             case ENABLE_BUTTON_PRESS:
                 ctx->enable = !ctx->enable;
-                if (ctx->enable) 
-                    ctx->stall = false;
+                if (ctx->enable) {
+                    ctx->stall = false; 
+                    ctx->power_good = true;
+                    rgb_set_breathing(false);
+                }
                 rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
                 rgb_set_auto(ctx->enable, ctx->led);
@@ -195,7 +202,8 @@ static int build_serial_buffer(char *serial_buffer)
 static int process_serial_commands(context_t *ctx)
 {
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
-
+    if (!ctx->power_good) return ERROR_REMOTE_INTERFACE_LOCKED;
+    
     int rc = build_serial_buffer(serial_buffer);
     if (rc){ return rc; }
 
@@ -219,8 +227,11 @@ static int process_serial_commands(context_t *ctx)
     if (receive["enable"].is<bool>())
     {
         ctx->enable = receive["enable"];
-        if (ctx->enable)
+        if (ctx->enable) {
             ctx->stall = false;
+            ctx->power_good = true;
+            rgb_set_breathing(false);
+        }
         rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
         queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
         rgb_set_auto(ctx->enable, ctx->led);
@@ -258,7 +269,7 @@ static int process_serial_commands(context_t *ctx)
         doc["stall"] = ctx->stall;
         doc["led"] = ctx->led;
         doc["charge_current"] = ltc4425_charge_current();
-        doc["power_good"] = ltc4425_power_good();
+        doc["power_good"] = ctx->power_good;
         serializeJson(doc, std::cout);
         std::cout << std::endl;
     }
@@ -334,7 +345,7 @@ int main()
     rgb_set_breathing(true);
     ltc4425_init();
     cap1296_init();
-    while (!ltc4425_power_good()) { tight_loop_contents(); } // Wait for super caps to charge
+    while (!(ctx.power_good = ltc4425_power_good())) { tight_loop_contents(); } // Wait for super caps to charge
     rgb_set_breathing(false);
     rgb_set_auto(ctx.enable, ctx.led);
 
@@ -347,6 +358,8 @@ int main()
     // Enable button alert ISR and clear any button touches registered during initialization
     gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
     cap1296_clear_int_bit_in_main_control_register();
+
+    bool power_good_prev;
 
     // Decode commands and buttons
     while (true)
@@ -374,6 +387,20 @@ int main()
             queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
             rgb_set_auto(ctx.enable, ctx.led);
         }
+
+        if (!ltc4425_power_good()) {
+            if (power_good_prev) {
+                ctx.power_good = false;
+                ctx.enable = false;
+                rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx.enable}};
+                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+                rgb_set_auto(ctx.enable, ctx.led);
+                rgb_set_breathing(true);
+            }
+        }
+        else if (!power_good_prev) rgb_set_breathing(false);
+        
+        power_good_prev = ctx.power_good;
 
 #ifdef DEBUG
         printf("%f\n", ltc4425_charge_current());
