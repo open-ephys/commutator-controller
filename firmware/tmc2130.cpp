@@ -52,13 +52,12 @@ void tmc2130_init()
     gpio_put(TMC2130_DIR, 0);
     gpio_put(TMC2130_STEP, 0);
 
-
-    // Copied from page 84
-    //tmc2130_write(REG_CHOPCONF, 0x05008008UL);
-    tmc2130_write(REG_CHOPCONF, 0x050100C3); // TOFF=3, HSTRT=4, HEND=1, CHM=0 (SpreadCycle), TBL=2, VSENSE=0, MRES=8, INTPOL=0
-    tmc2130_write(REG_IHOLD_IRUN, 0x00060F12); 
-    // IHOLD = 0x12 (empirically 1.262 W measured from the output of 12V regulator, Rev H)
-    // IRUN = 0x10 (empirically 1.42 W measured from the output of the 12V regulator, Rev H)
+    tmc2130_write(REG_CHOPCONF, 0x050300C3); // TOFF=3, HSTRT=4, HEND=1, CHM=0 (SpreadCycle), TBL=2, VSENSE=1, MRES=8, INTPOL=0
+    tmc2130_write(REG_IHOLD_IRUN, 0x00061F1F); 
+    // IHOLD = 0x1F (1.37 W measured from the output of 12V regulator, Rev H -
+    // 0.5 Ohm Rsense)
+    // IRUN = 0x1F (1.08 W measured from the output of the 12V regulator, Rev H -
+    // 0.5 Ohm Rsense)
     // these values provide margin for 12v regulator inefficiency (~80% worst case) and surprise current spikes
     tmc2130_write(REG_TPOWERDOWN, 0x0000000A);
     tmc2130_write(REG_GCONF, 0x00000004);
