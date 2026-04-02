@@ -95,7 +95,7 @@ static const char *error_str(int error)
         case ERROR_NAN_OR_INF_TURN_COMMAND:
             return "Turn command with value NaN or Inf received.";
         case ERROR_REMOTE_INTERFACE_LOCKED:
-            return "A remote command was received when remote interface was locked";
+            return "A remote command was received when remote interface was locked.";
         default:
             return "Invalid error code.";
     }
@@ -166,47 +166,60 @@ static inline bool remote_available(const context_t *ctx)
            ctx->last_sensor_input_status == LED_BUTTON_PRESS;
 }
 
-static int build_serial_buffer(char *serial_buffer)
-{
-    static uint16_t serial_buffer_index = 0;
-    serial_buffer[serial_buffer_index++] = getchar();
-    if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH)
-    {
-        serial_buffer_index = 0;
-        memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
-        return ERROR_COMMAND_BUFFER_OVERFLOW;
-    }
-    else if (serial_buffer[serial_buffer_index - 1] == '\n')
-    {
-        serial_buffer_index = 0;
-        return ERROR_SUCCESS;
-    }
-
-    return ERROR_COMMAND_INCOMPLETE;
-}
-
 static int process_serial_commands(context_t *ctx)
 {
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
+    static uint16_t serial_buffer_index = 0;
+    static bool accept_serial_commands_previous = false;
+    static bool accept_serial_commands = false;
 
-    int rc = build_serial_buffer(serial_buffer);
-    if (rc){ return rc; }
+    accept_serial_commands = remote_available(ctx);
 
-    if(!remote_available(ctx))
-    {
+    if (accept_serial_commands && !accept_serial_commands_previous) {
+        while (getchar_timeout_us(0) != PICO_ERROR_TIMEOUT);
+        serial_buffer_index = 0;
+        memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
+    }
+
+    accept_serial_commands_previous = accept_serial_commands;
+
+    if (!accept_serial_commands)
         return ERROR_REMOTE_INTERFACE_LOCKED;
+
+    if (tud_cdc_available()) {
+        if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH-1) {
+            serial_buffer_index = 0;
+            memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
+            return ERROR_COMMAND_BUFFER_OVERFLOW;
+        }
+        char c = getchar_timeout_us(0);
+        if (!(serial_buffer_index == 0 && c != '{')) {
+            // ignore anything preceding a '{'
+            serial_buffer[serial_buffer_index++] = c;
+        }
+        if (serial_buffer_index > 0 && c == '{') {
+            // since we don't have any nesting jsons, reset the buffer when a
+            // new '{' arrives. This prevents a singular '{' from bricking
+            // further jsons from being parsed.
+            memset(serial_buffer, 0, serial_buffer_index+1);
+            serial_buffer_index = 0;
+            serial_buffer[serial_buffer_index++] = c;
+        }
     }
 
     JsonDocument receive;
     auto error = deserializeJson(receive, serial_buffer, MAX_SERIAL_BUFFER_LENGTH);
-    memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
 
     if (error.code() != DeserializationError::Ok)
     {
         return ERROR_MALFORMED_JSON;
     }
 
+    memset(serial_buffer, 0, serial_buffer_index+1);
+    serial_buffer_index = 0;
+
     rotor_cmd_t rotor_cmd;
+    int rc = ERROR_SUCCESS;
 
     // Enable command
     if (receive["enable"].is<bool>())
@@ -341,12 +354,10 @@ int main()
         std::cerr << error_str(rc) << "\n";
 #endif
 
-        if (tud_cdc_available()) {
-            rc = process_serial_commands(&ctx);
+        rc = process_serial_commands(&ctx);
 #ifdef DEBUG
-            std::cerr << error_str(rc) << "\n";
+        std::cerr << error_str(rc) << "\n";
 #endif
-        }
 
 #ifdef DEBUG
         printf("%f\n", ltc4425_charge_current());
