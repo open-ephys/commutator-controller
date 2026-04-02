@@ -57,7 +57,7 @@ struct context_t {
 // Thread-safe queue and command types that are shared state between cores
 queue_t rotor_cmd_queue;
 
-enum class rotor_cmd_tag {ENABLE, TURN, STOP};
+enum class rotor_cmd_tag {ENABLE, TURN, BUTTON_TURN, STOP};
 
 struct rotor_cmd_t {
     rotor_cmd_tag tag;
@@ -101,6 +101,18 @@ static const char *error_str(int error)
     }
 }
 
+static int queue_add_button_turn_cmd_blocking(const context_t *ctx, double turns)
+{
+    if (ctx->enable)
+    {
+        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::BUTTON_TURN, .value = {.turns = turns}};
+        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+        return ERROR_SUCCESS;
+    }
+
+    return ERROR_INVALID_TURN_REQ;
+}
+
 static int queue_add_turn_cmd_blocking(const context_t *ctx, double turns)
 {
     if (ctx->enable)
@@ -135,12 +147,12 @@ static int process_button_touches(context_t *ctx)
             case CW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rc = queue_add_turn_cmd_blocking(ctx, -INFINITY);
+                rc = queue_add_button_turn_cmd_blocking(ctx, -INFINITY);
                 break;
             case CCW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                 queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rc = queue_add_turn_cmd_blocking(ctx, INFINITY);
+                rc = queue_add_button_turn_cmd_blocking(ctx, INFINITY);
                 break;
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
@@ -183,9 +195,6 @@ static int process_serial_commands(context_t *ctx)
 
     accept_serial_commands_previous = accept_serial_commands;
 
-    if (!accept_serial_commands)
-        return ERROR_REMOTE_INTERFACE_LOCKED;
-
     if (tud_cdc_available()) {
         if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH-1) {
             serial_buffer_index = 0;
@@ -224,30 +233,51 @@ static int process_serial_commands(context_t *ctx)
     // Enable command
     if (receive["enable"].is<bool>())
     {
-        ctx->enable = receive["enable"];
-        rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
-        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-        rgb_set_auto(ctx->enable, ctx->led);
+        if (!accept_serial_commands)
+        {
+            rc = ERROR_REMOTE_INTERFACE_LOCKED;
+        }
+        else
+        {
+            ctx->enable = receive["enable"];
+            rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
+            queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+            rgb_set_auto(ctx->enable, ctx->led);
+        }
     }
 
     // LED command
     if (receive["led"].is<bool>())
     {
-        ctx->led = receive["led"];
-        rgb_set_auto(ctx->enable, ctx->led);
+        if (!accept_serial_commands)
+        {
+            rc = ERROR_REMOTE_INTERFACE_LOCKED;
+        }
+        else
+        {
+            ctx->led = receive["led"];
+            rgb_set_auto(ctx->enable, ctx->led);
+        }
     }
 
     // Turn command, but don't let this command override current button presses
     if (receive["turn"].is<double>())
     {
-        double turns = receive["turn"];
-        if (std::isnan(turns) || std::isinf(turns))
+        if (!accept_serial_commands)
         {
-            rc = ERROR_NAN_OR_INF_TURN_COMMAND;
+            rc = ERROR_REMOTE_INTERFACE_LOCKED;
         }
         else
         {
-            rc = queue_add_turn_cmd_blocking(ctx, turns);
+            double turns = receive["turn"];
+            if (std::isnan(turns) || std::isinf(turns))
+            {
+                rc = ERROR_NAN_OR_INF_TURN_COMMAND;
+            }
+            else
+            {
+                rc = queue_add_turn_cmd_blocking(ctx, turns);
+            }
         }
     }
 
@@ -294,8 +324,12 @@ static void core1_entry()
                     rotor.motor.setAcceleration(MAX_ACCEL_SPSS(rotor.gear_ratio));
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
+                case rotor_cmd_tag::BUTTON_TURN:
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON(rotor.gear_ratio));
+                    rotor_move(&rotor, rotor_cmd.value.turns);
+                    break;
                 case rotor_cmd_tag::STOP:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS(rotor.gear_ratio)*2);
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON(rotor.gear_ratio) * 2);
                     rotor.motor.stop();
                     break;
             }

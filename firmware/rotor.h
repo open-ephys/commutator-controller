@@ -15,6 +15,7 @@
 #define ACCEL_RPMM 100
 #define MAX_SPEED_SPS(gear_ratio) (USTEPS_PER_REV * gear_ratio * SPEED_RPM / 60.0L)
 #define MAX_ACCEL_SPSS(gear_ratio) (USTEPS_PER_REV * gear_ratio * ACCEL_RPMM / 60.0L)
+#define MAX_ACCEL_SPSS_BUTTON(gear_ratio) (2 * MAX_ACCEL_SPSS(gear_ratio))
 
 typedef struct rotor_t
 {
