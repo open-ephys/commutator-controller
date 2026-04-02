@@ -4,6 +4,8 @@
 #include "hardware/spi.h"
 
 #include "tmc2130.h"
+#include "rotor.h"
+#include "math.h"
 
 #define WRITE_FLAG              (1<<7)
 #define READ_FLAG               (0<<7)
@@ -52,16 +54,38 @@ void tmc2130_init()
     gpio_put(TMC2130_DIR, 0);
     gpio_put(TMC2130_STEP, 0);
 
-    tmc2130_write(REG_CHOPCONF, 0x050300C3); // TOFF=3, HSTRT=4, HEND=1, CHM=0 (SpreadCycle), TBL=2, VSENSE=1, MRES=8, INTPOL=0
-    tmc2130_write(REG_IHOLD_IRUN, 0x00061F1F); 
-    // IHOLD = 0x1F (1.37 W measured from the output of 12V regulator, Rev H -
-    // 0.5 Ohm Rsense)
-    // IRUN = 0x1F (1.08 W measured from the output of the 12V regulator, Rev H -
-    // 0.5 Ohm Rsense)
-    // these values provide margin for 12v regulator inefficiency (~80% worst case) and surprise current spikes
-    tmc2130_write(REG_TPOWERDOWN, 0x0000000A);
+    // Page 25: General Configuration
+    // - en_pwm_mode = 0b1 (enable SteathChop)
+    // - others - 0b0
     tmc2130_write(REG_GCONF, 0x00000004);
-    tmc2130_write(REG_PWMCONF, 0x000401C8);
+
+    // Page 34: Chopper configuration
+    // - TOFF = 3
+    // - HSTRT = 4
+    // - HEND = 1
+    // - CHM = 0 (SpreadCycle)
+    // - TBL = 2
+    // - VSENSE = 1
+    // - MRES = log2(256/USTEPS_PER_STEP)
+    // - INTPOL = 0
+    uint32_t ustep_setting = (USTEPS_PER_STEP == 256 ? 0x00 : (int32_t)log2(256 / USTEPS_PER_STEP)) << 24 ;
+    tmc2130_write(REG_CHOPCONF, 0x000300C3 | ustep_setting);
+
+    // Page 27: Current configuration
+    // * RSENSE = 0.47 Ohms
+    // * VSENSE = 1
+    // * I_RMS_MAX = 0.26A (Page 55)
+    // - IHOLD = 0x1F (I_RMS = 0.26A)
+    // - IRUN = 0x1F (I_RMS = 0.26A)
+    tmc2130_write(REG_IHOLD_IRUN, 0x00061F1F);
+
+    // Page 37: SteathChop Configuration
+    // PWM_AMPL = 0xC8 (not used though since we stay in SteathChop mode)
+    // freewheel = 0b00 (Normal)
+    // pwm_symmetric = 0b0
+    // pwm_autoscale = 0b1
+    // pwm_freq = 0b01 (38 kHz, see  Table 6.1, using internal clk)
+    tmc2130_write(REG_PWMCONF, 0x000501C8);
 
     // Start in disabled state
     tmc2130_enable(false);
