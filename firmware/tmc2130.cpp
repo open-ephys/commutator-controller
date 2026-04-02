@@ -38,14 +38,23 @@ static void tmc2130_write(uint8_t reg, uint32_t data)
 
 static uint32_t tmc2130_read(uint8_t reg)
 {
-    uint8_t dst[5];
+    // Refer to 4.1.1 of datasheet for clarification regarding this
+    // implementation
+    uint8_t rx[5];
+    uint8_t tx[5] = {(uint8_t)(READ_FLAG | reg), 0, 0, 0, 0};
 
     cs_select();
-    spi_read_blocking(TMC2130_SPI_PORT, (uint8_t)(READ_FLAG | reg), dst, 5);
+    spi_write_read_blocking(TMC2130_SPI_PORT, tx, rx, 5);
     cs_deselect();
 
-    return  (uint32_t)dst[1] << 24 | (uint32_t)dst[2] << 16 | (uint32_t)dst[3] << 8 | (uint32_t)dst[4] << 0;
+    sleep_us(1);
 
+    tx[0] = 0;
+    cs_select();
+    spi_write_read_blocking(TMC2130_SPI_PORT, tx, rx, 5);
+    cs_deselect();
+
+    return (uint32_t)rx[1] << 24 | (uint32_t)rx[2] << 16 | (uint32_t)rx[3] << 8  | (uint32_t)rx[4];
 }
 
 void tmc2130_init()
