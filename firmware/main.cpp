@@ -72,36 +72,27 @@ typedef enum {
     ERROR_SUCCESS = 0,
     ERROR_INVALID_TURN_REQ = -1,
     ERROR_COMMAND_BUFFER_OVERFLOW = -2,
-    ERROR_COMMAND_INCOMPLETE = -3,
-    ERROR_MALFORMED_JSON = -4,
-    ERROR_NAN_OR_INF_TURN_COMMAND = -5,
-    ERROR_REMOTE_INTERFACE_LOCKED = -6
+    ERROR_COMMAND_MALFORMED = -3,
+    ERROR_NAN_OR_INF_TURN_COMMAND = -4,
+    ERROR_REMOTE_INTERFACE_LOCKED = -5,
+    ERROR_POWER_BAD = -6
 } commutator_error_t;
 
-static const char *error_str(int error)
-{
-    switch (error)
-    {
-        case ERROR_SUCCESS:
-            return "Success";
-        case ERROR_INVALID_TURN_REQ:
-            return "Cannot enqueue turn command when commutator is disabled.";
-        case ERROR_COMMAND_BUFFER_OVERFLOW:
-            return "Command exceeded " xstr(MAX_SERIAL_BUFFER_LENGTH) " byte maximum.";
-        case ERROR_COMMAND_INCOMPLETE:
-            return "A complete command could not be constructed from the input stream.";
-        case ERROR_MALFORMED_JSON:
-            return "Malformed JSON received.";
-        case ERROR_NAN_OR_INF_TURN_COMMAND:
-            return "Turn command with value NaN or Inf received.";
-        case ERROR_REMOTE_INTERFACE_LOCKED:
-            return "A remote command was received when remote interface was locked.";
-        default:
-            return "Invalid error code.";
-    }
+void print_report(context_t *ctx, commutator_error_t error){
+    JsonDocument doc;
+    doc["gear_ratio"] = gear_ratio_f;
+    doc["board_rev"] = BOARD_REV;
+    doc["firmware"] = FIRMWARE_VER;
+    doc["enable"] = ctx->enable;
+    doc["led"] = ctx->led;
+    doc["charge_current"] = ltc4425_charge_current();
+    doc["power_good"] = ltc4425_power_good();
+    doc["error"] = error;
+    serializeJson(doc, std::cout);
+    std::cout << std::endl;
 }
 
-static int queue_add_button_turn_cmd_blocking(const context_t *ctx, double turns)
+static commutator_error_t queue_add_button_turn_cmd_blocking(const context_t *ctx, double turns)
 {
     if (ctx->enable)
     {
@@ -113,7 +104,7 @@ static int queue_add_button_turn_cmd_blocking(const context_t *ctx, double turns
     return ERROR_INVALID_TURN_REQ;
 }
 
-static int queue_add_turn_cmd_blocking(const context_t *ctx, double turns)
+static commutator_error_t queue_add_turn_cmd_blocking(const context_t *ctx, double turns)
 {
     if (ctx->enable)
     {
@@ -125,9 +116,9 @@ static int queue_add_turn_cmd_blocking(const context_t *ctx, double turns)
     return ERROR_INVALID_TURN_REQ;
 }
 
-static int process_button_touches(context_t *ctx)
+static commutator_error_t process_button_touches(context_t *ctx)
 {
-    int rc = ERROR_SUCCESS;
+    commutator_error_t rc = ERROR_SUCCESS;
     if (alert_flag) {
         rotor_cmd_t rotor_cmd;
         cap1296_clear_int_bit_in_main_control_register();
@@ -139,10 +130,12 @@ static int process_button_touches(context_t *ctx)
                 rgb_set_auto(ctx->enable, ctx->led);
                 break;
             case ENABLE_BUTTON_PRESS:
-                ctx->enable = !ctx->enable;
-                rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
-                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rgb_set_auto(ctx->enable, ctx->led);
+                if (ltc4425_power_good()) {
+                    ctx->enable = !ctx->enable;
+                    rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
+                    queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+                    rgb_set_auto(ctx->enable, ctx->led);
+                }
                 break;
             case CW_BUTTON_PRESS:
                 rotor_cmd = {.tag = rotor_cmd_tag::STOP};
@@ -175,10 +168,11 @@ static int process_button_touches(context_t *ctx)
 static inline bool remote_available(const context_t *ctx)
 {
     return ctx->last_sensor_input_status == BUTTON_RELEASE ||
-           ctx->last_sensor_input_status == LED_BUTTON_PRESS;
+           ctx->last_sensor_input_status == LED_BUTTON_PRESS ||
+           !ltc4425_power_good();
 }
 
-static int process_serial_commands(context_t *ctx)
+static commutator_error_t process_serial_commands(context_t *ctx)
 {
     static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
     static uint16_t serial_buffer_index = 0;
@@ -217,18 +211,24 @@ static int process_serial_commands(context_t *ctx)
     }
 
     JsonDocument receive;
-    auto error = deserializeJson(receive, serial_buffer, MAX_SERIAL_BUFFER_LENGTH);
+    auto error = deserializeJson(receive, serial_buffer);
 
-    if (error.code() != DeserializationError::Ok)
+    if (error.code() == DeserializationError::InvalidInput)
     {
-        return ERROR_MALFORMED_JSON;
+        memset(serial_buffer, 0, serial_buffer_index+1);
+        serial_buffer_index = 0;
+        return ERROR_COMMAND_MALFORMED;
+    }
+    else if (error.code() == DeserializationError::IncompleteInput)
+    {
+        return ERROR_SUCCESS;
     }
 
     memset(serial_buffer, 0, serial_buffer_index+1);
     serial_buffer_index = 0;
 
     rotor_cmd_t rotor_cmd;
-    int rc = ERROR_SUCCESS;
+    commutator_error_t rc = ERROR_SUCCESS;
 
     // Enable command
     if (receive["enable"].is<bool>())
@@ -284,16 +284,7 @@ static int process_serial_commands(context_t *ctx)
     // Print command
     if (receive["print"].is<JsonVariant>())
     {
-        JsonDocument doc;
-        doc["gear_ratio"] = gear_ratio_f;
-        doc["board_rev"] = BOARD_REV;
-        doc["firmware"] = FIRMWARE_VER;
-        doc["enable"] = ctx->enable;
-        doc["led"] = ctx->led;
-        doc["charge_current"] = ltc4425_charge_current();
-        doc["power_good"] = ltc4425_power_good();
-        serializeJson(doc, std::cout);
-        std::cout << std::endl;
+        print_report(ctx, ERROR_SUCCESS);
     }
 #ifdef DEBUG
     serializeJson(receive, std::cout);
@@ -380,18 +371,35 @@ int main()
     gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
     cap1296_clear_int_bit_in_main_control_register();
 
+    bool power_good, power_good_prev;
+
     // Decode commands and buttons
     while (true)
     {
-        int rc = process_button_touches(&ctx);
-#ifdef DEBUG
-        std::cerr << error_str(rc) << "\n";
-#endif
+        commutator_error_t rc = ERROR_SUCCESS;
+
+        rc = process_button_touches(&ctx);
+        if (rc) print_report(&ctx, rc);
 
         rc = process_serial_commands(&ctx);
-#ifdef DEBUG
-        std::cerr << error_str(rc) << "\n";
-#endif
+        if (rc) print_report(&ctx, rc);
+
+        if (!(power_good = ltc4425_power_good())) {
+            if (power_good_prev) {
+                ctx.enable = false;
+                rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx.enable}};
+                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+                rgb_set_auto(ctx.enable, ctx.led);
+                rgb_set_breathing(true);
+                print_report(&ctx, ERROR_POWER_BAD);
+            }
+        }
+        else if (!power_good_prev) {
+            rgb_set_breathing(false);
+            rgb_set_auto(ctx.enable, ctx.led);
+        }
+        
+        power_good_prev = power_good;
 
 #ifdef DEBUG
         printf("%f\n", ltc4425_charge_current());
