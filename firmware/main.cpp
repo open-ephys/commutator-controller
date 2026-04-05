@@ -40,7 +40,7 @@ volatile bool alert_flag = false;
 static void io_alert_irq_callback(unsigned int gpio, long unsigned int events)
 {
     alert_flag = true;
-};
+}
 
 // NB: The gear ratio is configurable without recompilation using
 //      `picotool config -s gear_ratio 3.14`
@@ -78,7 +78,7 @@ typedef enum {
     ERROR_POWER_BAD = -6
 } commutator_error_t;
 
-void print_report(context_t *ctx, commutator_error_t error){
+static void print_report(context_t *ctx, commutator_error_t error){
     JsonDocument doc;
     doc["gear_ratio"] = gear_ratio_f;
     doc["board_rev"] = BOARD_REV;
@@ -150,7 +150,7 @@ static commutator_error_t process_button_touches(context_t *ctx)
             case BUTTON_RELEASE:
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
                 {
-                    rotor_cmd.tag = rotor_cmd_tag::STOP;
+                    rotor_cmd = {.tag = rotor_cmd_tag::STOP};
                     queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
                 }
                 break;
@@ -371,7 +371,7 @@ int main()
     gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
     cap1296_clear_int_bit_in_main_control_register();
 
-    bool power_good, power_good_prev;
+    bool power_good = true, power_good_prev = true;
 
     // Decode commands and buttons
     while (true)

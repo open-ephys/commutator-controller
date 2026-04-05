@@ -100,7 +100,7 @@ void tmc2130_init()
     tmc2130_enable(false);
 }
 
-int32_t tmc2130_status()
+uint32_t tmc2130_status()
 {
     return tmc2130_read(REG_DRVSTATUS);
 }

@@ -24,4 +24,4 @@ static inline void tmc2130_enable(bool enable)
 }
 
 void tmc2130_init();
-int32_t tmc2130_status();
+uint32_t tmc2130_status();

@@ -31,7 +31,7 @@ int rotor_move(rotor_t *rotor, double turns)
         rotor->target_position = (rotor->motor.currentPosition() / (double)USTEPS_PER_REV / rotor->gear_ratio) + (dir * 100.0);
     }
 
-    else if (abs(turns) >= MAX_TURNS(rotor->gear_ratio))
+    else if (fabs(turns) >= MAX_TURNS(rotor->gear_ratio))
         return -1;
 
     else 
