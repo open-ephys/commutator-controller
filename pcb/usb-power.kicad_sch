@@ -4004,6 +4004,15 @@
 				(hide yes)
 			)
 		)
+		(property "Component Class" "USB"
+			(at 105.41 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "A1"
 			(uuid "2274bfeb-d3db-4901-9c55-8ec65a08d28b")
 		)
