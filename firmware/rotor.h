@@ -8,14 +8,14 @@
 #define DETENTS 200
 #define USTEPS_PER_STEP 64
 #define USTEPS_PER_REV (DETENTS * USTEPS_PER_STEP)
-#define MAX_TURNS(gear_ratio) (INT_MAX / USTEPS_PER_REV / gear_ratio)
+#define MAX_TURNS (INT_MAX / USTEPS_PER_REV)
 
 // Turn speed and acceleration
-#define SPEED_RPM 100
+#define SPEED_RPM 200
 #define ACCEL_RPMM 100
-#define MAX_SPEED_SPS(gear_ratio) (USTEPS_PER_REV * gear_ratio * SPEED_RPM / 60.0L)
-#define MAX_ACCEL_SPSS(gear_ratio) (USTEPS_PER_REV * gear_ratio * ACCEL_RPMM / 60.0L)
-#define MAX_ACCEL_SPSS_BUTTON(gear_ratio) (2 * MAX_ACCEL_SPSS(gear_ratio))
+#define MAX_SPEED_SPS (USTEPS_PER_REV * SPEED_RPM / 60.0L)
+#define MAX_ACCEL_SPSS (USTEPS_PER_REV * ACCEL_RPMM / 60.0L)
+#define MAX_ACCEL_SPSS_BUTTON (2 * MAX_ACCEL_SPSS)
 
 typedef struct rotor_t
 {

@@ -18,8 +18,8 @@ void rotor_init(rotor_t *rotor)
     tmc2130_init();
 
     // Stepper motor configuration
-    rotor->motor.setMaxSpeed(MAX_SPEED_SPS(rotor->gear_ratio));
-    rotor->motor.setAcceleration(MAX_ACCEL_SPSS(rotor->gear_ratio));
+    rotor->motor.setMaxSpeed(MAX_SPEED_SPS);
+    rotor->motor.setAcceleration(MAX_ACCEL_SPSS);
     rotor->motor.setMinPulseWidth(2);
 }
 
@@ -31,7 +31,7 @@ int rotor_move(rotor_t *rotor, double turns)
         rotor->target_position = (rotor->motor.currentPosition() / (double)USTEPS_PER_REV / rotor->gear_ratio) + (dir * 100.0);
     }
 
-    else if (fabs(turns) >= MAX_TURNS(rotor->gear_ratio))
+    else if (fabs(turns) >= MAX_TURNS)
         return -1;
 
     else 

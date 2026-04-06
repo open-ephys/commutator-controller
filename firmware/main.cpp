@@ -312,15 +312,15 @@ static void core1_entry()
                     rotor_enable(&rotor, rotor_cmd.value.enable);
                     break;
                 case rotor_cmd_tag::TURN:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS(rotor.gear_ratio));
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS);
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::BUTTON_TURN:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON(rotor.gear_ratio));
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON);
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::STOP:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON(rotor.gear_ratio) * 2);
+                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON * 2);
                     rotor.motor.stop();
                     break;
             }
