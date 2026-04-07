@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "H")
+		(rev "J")
 		(company "Open Ephys, Inc.")
 		(comment 1 "Cris Sharp")
 		(comment 2 "Jonathan P. Newman")
@@ -3170,16 +3170,6 @@
 		)
 		(uuid "032d2783-481c-4041-9888-169f78af84ac")
 	)
-	(polyline
-		(pts
-			(xy 201.9122 139.6053) (xy 176.53 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0372a507-4b76-47ee-81f0-d10d644df629")
-	)
 	(wire
 		(pts
 			(xy 209.55 41.91) (xy 209.55 40.64)
@@ -3349,16 +3339,6 @@
 			(type default)
 		)
 		(uuid "2004ea66-db61-4901-97b3-0de392f83241")
-	)
-	(polyline
-		(pts
-			(xy 176.53 114.3) (xy 202.0507 132.4883)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "20207837-e2f7-490b-a6a0-9c183c6b55d0")
 	)
 	(wire
 		(pts
@@ -3920,16 +3900,6 @@
 		)
 		(uuid "8d3b2d8f-1eda-4281-935d-80fe9fbcfed1")
 	)
-	(polyline
-		(pts
-			(xy 175.26 68.58) (xy 201.9004 85.8664)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8f31183b-1e89-46bb-9a57-c261fc196b73")
-	)
 	(wire
 		(pts
 			(xy 62.23 109.22) (xy 58.42 109.22)
@@ -3989,16 +3959,6 @@
 			(type default)
 		)
 		(uuid "9bfd69d5-8e25-47ee-ab9e-303da2c74cbb")
-	)
-	(polyline
-		(pts
-			(xy 201.9122 134.833) (xy 176.53 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a3f5e36f-bfbb-4aaa-b3ec-c8ff0d0755af")
 	)
 	(wire
 		(pts
@@ -4350,16 +4310,6 @@
 		)
 		(uuid "d5e30df4-5c0e-4408-80c5-468a60140d6d")
 	)
-	(polyline
-		(pts
-			(xy 176.53 119.38) (xy 201.7205 137.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d60fa4d2-8a79-428e-9ec8-ddccd0b04783")
-	)
 	(wire
 		(pts
 			(xy 54.61 63.5) (xy 54.61 81.28)
@@ -4399,16 +4349,6 @@
 			(type default)
 		)
 		(uuid "e16b29e2-423d-4699-a1a1-5a651875bcd9")
-	)
-	(polyline
-		(pts
-			(xy 175.26 71.12) (xy 201.9217 88.359)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e1e63af5-a87c-4541-b309-8a60ee78683c")
 	)
 	(wire
 		(pts
