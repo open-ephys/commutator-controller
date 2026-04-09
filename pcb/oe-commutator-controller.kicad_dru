@@ -1,5 +1,10 @@
 (version 1)
-(rule gnd_button_separation
+(rule gnd_button_clearance
 (condition "(A.NetName == '/Touch Sensors/CW' || A.NetName == '/Touch Sensors/CCW' || A.NetName == '/Touch Sensors/STOP') && B.NetName == 'GND'")
 (constraint physical_clearance(min 0.5mm))
+)
+
+(rule usb_copper_hole_clearance
+  (condition "A.memberOfFootprint('${Class:USB}') && B.memberOfFootprint('${Class:USB}')")
+  (constraint hole_clearance (min 0.19mm))
 )

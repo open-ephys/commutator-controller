@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "H")
+		(rev "J")
 		(company "Open Ephys, Inc.")
 		(comment 1 "Cris Sharp")
 		(comment 2 "Jonathan P. Newman")
@@ -745,7 +745,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 113.03) (xy 118.11 148.59)
+			(xy 118.11 113.03) (xy 118.11 146.05)
 		)
 		(stroke
 			(width 0)
@@ -765,7 +765,7 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 125.73) (xy 130.81 161.29)
+			(xy 135.89 130.81) (xy 135.89 163.83)
 		)
 		(stroke
 			(width 0)
@@ -775,13 +775,23 @@
 	)
 	(wire
 		(pts
-			(xy 146.05 123.19) (xy 128.27 123.19)
+			(xy 146.05 128.27) (xy 133.35 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "0aba3da2-1441-4c44-a05f-985ab4c0301c")
+	)
+	(wire
+		(pts
+			(xy 128.27 123.19) (xy 146.05 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c7c2026-67f9-4106-8a11-c35fd4c54920")
 	)
 	(wire
 		(pts
@@ -805,7 +815,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 148.59) (xy 82.55 148.59)
+			(xy 118.11 146.05) (xy 82.55 146.05)
 		)
 		(stroke
 			(width 0)
@@ -835,7 +845,7 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 158.75) (xy 82.55 158.75)
+			(xy 133.35 161.29) (xy 82.55 161.29)
 		)
 		(stroke
 			(width 0)
@@ -855,7 +865,17 @@
 	)
 	(wire
 		(pts
-			(xy 146.05 128.27) (xy 133.35 128.27)
+			(xy 82.55 156.21) (xy 128.27 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d4c7f68-2130-4292-84e8-608d013743de")
+	)
+	(wire
+		(pts
+			(xy 146.05 133.35) (xy 138.43 133.35)
 		)
 		(stroke
 			(width 0)
@@ -885,6 +905,16 @@
 	)
 	(wire
 		(pts
+			(xy 128.27 156.21) (xy 128.27 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36a8d987-3798-4a13-b4e4-11c7320cbd05")
+	)
+	(wire
+		(pts
 			(xy 88.9 63.5) (xy 88.9 64.77)
 		)
 		(stroke
@@ -895,7 +925,7 @@
 	)
 	(wire
 		(pts
-			(xy 128.27 123.19) (xy 128.27 158.75)
+			(xy 133.35 128.27) (xy 133.35 161.29)
 		)
 		(stroke
 			(width 0)
@@ -905,7 +935,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 128.27) (xy 133.35 163.83)
+			(xy 138.43 133.35) (xy 138.43 166.37)
 		)
 		(stroke
 			(width 0)
@@ -965,7 +995,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 163.83) (xy 82.55 163.83)
+			(xy 138.43 166.37) (xy 82.55 166.37)
 		)
 		(stroke
 			(width 0)
@@ -975,7 +1005,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 153.67) (xy 82.55 153.67)
+			(xy 123.19 151.13) (xy 82.55 151.13)
 		)
 		(stroke
 			(width 0)
@@ -1045,6 +1075,16 @@
 	)
 	(wire
 		(pts
+			(xy 130.81 125.73) (xy 146.05 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83b602b9-20f0-404e-801f-d69daac8c14e")
+	)
+	(wire
+		(pts
 			(xy 105.41 121.92) (xy 82.55 121.92)
 		)
 		(stroke
@@ -1055,7 +1095,7 @@
 	)
 	(wire
 		(pts
-			(xy 146.05 125.73) (xy 130.81 125.73)
+			(xy 146.05 130.81) (xy 135.89 130.81)
 		)
 		(stroke
 			(width 0)
@@ -1075,7 +1115,7 @@
 	)
 	(wire
 		(pts
-			(xy 123.19 118.11) (xy 123.19 153.67)
+			(xy 123.19 118.11) (xy 123.19 151.13)
 		)
 		(stroke
 			(width 0)
@@ -1125,7 +1165,7 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 120.65) (xy 125.73 156.21)
+			(xy 125.73 120.65) (xy 125.73 153.67)
 		)
 		(stroke
 			(width 0)
@@ -1175,6 +1215,16 @@
 	)
 	(wire
 		(pts
+			(xy 130.81 158.75) (xy 130.81 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a7a6c2ef-9d9e-4f20-b932-f6226482bc8e")
+	)
+	(wire
+		(pts
 			(xy 146.05 76.2) (xy 125.73 76.2)
 		)
 		(stroke
@@ -1185,7 +1235,7 @@
 	)
 	(wire
 		(pts
-			(xy 120.65 115.57) (xy 120.65 151.13)
+			(xy 120.65 115.57) (xy 120.65 148.59)
 		)
 		(stroke
 			(width 0)
@@ -1215,7 +1265,7 @@
 	)
 	(wire
 		(pts
-			(xy 120.65 151.13) (xy 82.55 151.13)
+			(xy 120.65 148.59) (xy 82.55 148.59)
 		)
 		(stroke
 			(width 0)
@@ -1245,7 +1295,7 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 156.21) (xy 82.55 156.21)
+			(xy 125.73 153.67) (xy 82.55 153.67)
 		)
 		(stroke
 			(width 0)
@@ -1285,7 +1335,7 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 161.29) (xy 82.55 161.29)
+			(xy 135.89 163.83) (xy 82.55 163.83)
 		)
 		(stroke
 			(width 0)
@@ -1312,6 +1362,16 @@
 			(type default)
 		)
 		(uuid "ed929a22-efba-4a3f-81b6-7f05bd44f1ef")
+	)
+	(wire
+		(pts
+			(xy 82.55 158.75) (xy 130.81 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "efa142a3-cd15-4505-963f-be4fb5bec296")
 	)
 	(wire
 		(pts
@@ -2384,7 +2444,7 @@
 			)
 		)
 		(pin "TMC_{~{EN}}" input
-			(at 82.55 148.59 0)
+			(at 82.55 146.05 0)
 			(uuid "3b84f533-69b6-458d-9a54-4b96abcaf1f1")
 			(effects
 				(font
@@ -2394,7 +2454,7 @@
 			)
 		)
 		(pin "MISO" output
-			(at 82.55 163.83 0)
+			(at 82.55 166.37 0)
 			(uuid "fffe87c6-d327-4a86-9a86-eab557e07606")
 			(effects
 				(font
@@ -2404,7 +2464,7 @@
 			)
 		)
 		(pin "MOSI" input
-			(at 82.55 161.29 0)
+			(at 82.55 163.83 0)
 			(uuid "fa10f38f-9872-4a62-8ffc-b408afa71f6c")
 			(effects
 				(font
@@ -2414,7 +2474,7 @@
 			)
 		)
 		(pin "TMC_{~{CS}}" input
-			(at 82.55 156.21 0)
+			(at 82.55 153.67 0)
 			(uuid "b48d2156-5fbc-4070-9111-25c8622671a4")
 			(effects
 				(font
@@ -2424,7 +2484,7 @@
 			)
 		)
 		(pin "SCLK" input
-			(at 82.55 158.75 0)
+			(at 82.55 161.29 0)
 			(uuid "b347037b-4493-48bb-8dab-b4a125f248c9")
 			(effects
 				(font
@@ -2434,7 +2494,7 @@
 			)
 		)
 		(pin "TMC_{DIR}" input
-			(at 82.55 151.13 0)
+			(at 82.55 148.59 0)
 			(uuid "73b4d916-f09a-4eca-8129-7c8133bfbee2")
 			(effects
 				(font
@@ -2444,8 +2504,28 @@
 			)
 		)
 		(pin "TMC_{STEP}" input
-			(at 82.55 153.67 0)
+			(at 82.55 151.13 0)
 			(uuid "c9d7b6e1-5696-4e88-8fde-6a0dbdabbe93")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "TMC_{DIAG0}" output
+			(at 82.55 156.21 0)
+			(uuid "9110ebd2-818c-49f0-a416-788d12243e15")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "TMC_{DIAG1}" output
+			(at 82.55 158.75 0)
+			(uuid "9966bdeb-c395-4076-a81f-79c185628d07")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2607,7 +2687,7 @@
 	)
 	(sheet
 		(at 146.05 69.85)
-		(size 38.1 63.5)
+		(size 38.1 69.85)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -2631,7 +2711,7 @@
 			)
 		)
 		(property "Sheetfile" "mcu-flash.kicad_sch"
-			(at 146.05 133.9346 0)
+			(at 146.05 140.2846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2750,7 +2830,7 @@
 			)
 		)
 		(pin "MISO" input
-			(at 146.05 128.27 180)
+			(at 146.05 133.35 180)
 			(uuid "b6db4faa-3c1f-4528-8087-0d0e0134d79c")
 			(effects
 				(font
@@ -2790,7 +2870,7 @@
 			)
 		)
 		(pin "SCLK" output
-			(at 146.05 123.19 180)
+			(at 146.05 128.27 180)
 			(uuid "5bf108c6-cb01-46be-ae7f-a50aef9f4ce8")
 			(effects
 				(font
@@ -2800,7 +2880,7 @@
 			)
 		)
 		(pin "MOSI" output
-			(at 146.05 125.73 180)
+			(at 146.05 130.81 180)
 			(uuid "307008af-19c7-4a41-9e7c-f2fcc2b1866f")
 			(effects
 				(font
@@ -2812,6 +2892,26 @@
 		(pin "LTC44_{CURR}" input
 			(at 146.05 102.87 180)
 			(uuid "035376ad-1e91-4b14-bc5c-0b28b75c7b38")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "TMC_{DIAG0}" input
+			(at 146.05 123.19 180)
+			(uuid "4a8c8d05-0e21-45ae-9896-dec4778879d4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "TMC_{DIAG1}" input
+			(at 146.05 125.73 180)
+			(uuid "b974bc58-e48d-497f-ab4e-ddec571c1fd1")
 			(effects
 				(font
 					(size 1.27 1.27)

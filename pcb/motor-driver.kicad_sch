@@ -6,7 +6,7 @@
 	(paper "A4")
 	(title_block
 		(title "Open Ephys Commutator Controller")
-		(rev "G")
+		(rev "J")
 		(company "Open Ephys, Inc.")
 		(comment 1 "Cris Sharp")
 		(comment 2 "Jonathan P. Newman")
@@ -1786,17 +1786,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "NB: ~0.44A max I_{RMS}\n(pg. 55)"
-		(exclude_from_sim no)
-		(at 167.64 113.03 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "64184567-0af9-420e-b9e4-1a06050beeca")
-	)
 	(text "NB: Connect\nto GNDA"
 		(exclude_from_sim no)
 		(at 160.02 57.15 0)
@@ -1895,14 +1884,6 @@
 	(no_connect
 		(at 130.81 125.73)
 		(uuid "4f37d094-f4ac-4492-a588-86927ef2aee2")
-	)
-	(no_connect
-		(at 130.81 118.11)
-		(uuid "72e6723e-6f05-4f1c-b1d5-7a97eefbfb1f")
-	)
-	(no_connect
-		(at 130.81 120.65)
-		(uuid "9f071336-afad-4b3a-9407-95f3a15bdcee")
 	)
 	(no_connect
 		(at 130.81 102.87)
@@ -2149,6 +2130,16 @@
 			(type default)
 		)
 		(uuid "41c5df59-5fb8-4e9b-825a-3ba7e00a0f38")
+	)
+	(wire
+		(pts
+			(xy 125.73 118.11) (xy 130.81 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "494ec4aa-5f90-4920-b021-aaa2ec991207")
 	)
 	(wire
 		(pts
@@ -2682,6 +2673,16 @@
 	)
 	(wire
 		(pts
+			(xy 125.73 120.65) (xy 130.81 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eff0ccb6-161c-4354-ba50-1adeff1ef654")
+	)
+	(wire
+		(pts
 			(xy 151.13 140.97) (xy 151.13 144.78)
 		)
 		(stroke
@@ -2810,6 +2811,17 @@
 		)
 		(uuid "f4c3cdc2-6d8a-4198-8e9d-628e2083c961")
 	)
+	(hierarchical_label "TMC_{DIAG1}"
+		(shape output)
+		(at 125.73 120.65 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "29eabc05-d8b6-43be-9aa0-2bd36993ad21")
+	)
 	(hierarchical_label "SCLK"
 		(shape input)
 		(at 129.54 85.09 180)
@@ -2842,6 +2854,17 @@
 			(justify right)
 		)
 		(uuid "39a2dc1e-c44d-4bee-b9be-ff2ee35f783d")
+	)
+	(hierarchical_label "TMC_{DIAG0}"
+		(shape output)
+		(at 125.73 118.11 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "46139311-8376-4848-ab80-19c0616eeb03")
 	)
 	(hierarchical_label "TMC_{~{EN}}"
 		(shape input)
@@ -3114,7 +3137,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.5,0.5W"
+		(property "Value" "0.43,0.5W"
 			(at 182.88 124.46 0)
 			(effects
 				(font
@@ -3345,7 +3368,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.5,0.5W"
+		(property "Value" "0.43,0.5W"
 			(at 168.91 124.46 0)
 			(effects
 				(font
