@@ -3137,7 +3137,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.43,0.5W"
+		(property "Value" "0.47,0.5W"
 			(at 182.88 124.46 0)
 			(effects
 				(font
@@ -3368,7 +3368,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "0.43,0.5W"
+		(property "Value" "0.47,0.5W"
 			(at 168.91 124.46 0)
 			(effects
 				(font
