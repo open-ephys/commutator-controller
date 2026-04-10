@@ -10499,7 +10499,7 @@
 				)
 			)
 		)
-		(property "Value" "0.43,0.5W"
+		(property "Value" "0.47,0.5W"
 			(at 0 1.82 180)
 			(layer "F.Fab")
 			(hide yes)
@@ -19138,7 +19138,7 @@
 				)
 			)
 		)
-		(property "Value" "0.43,0.5W"
+		(property "Value" "0.47,0.5W"
 			(at 0 1.82 0)
 			(layer "F.Fab")
 			(hide yes)
