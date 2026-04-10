@@ -1,7 +1,12 @@
 #include "rotor.h"
+#include "tmc2130.h"
 
 #include <math.h>
 #include "AccelStepper.h"
+
+#define MAX_SPEED_SPS (USTEPS_PER_REV * SPEED_RPM / 60.0L)
+#define MAX_ACCEL_SPSS (USTEPS_PER_REV * ACCEL_RPMM / 60.0L)
+#define MAX_ACCEL_SPSS_BUTTON (2 * MAX_ACCEL_SPSS)
 
 void rotor_enable(rotor_t *rotor, bool enable)
 {
@@ -25,20 +30,19 @@ void rotor_init(rotor_t *rotor)
 
 int rotor_move(rotor_t *rotor, double turns)
 {
-    if (std::isinf(turns))
-    {
-        double dir = std::signbit(turns) ? -1.0 : 1.0;
-        rotor->target_position = (rotor->motor.currentPosition() / (double)USTEPS_PER_REV / rotor->gear_ratio) + (dir * 100.0);
-    }
-
-    else if (fabs(turns) >= MAX_TURNS)
-        return -1;
-
-    else 
-        rotor->target_position += turns;
-    
+    rotor->target_position += turns;
     long target_position_steps = lround(rotor->target_position * (double)USTEPS_PER_REV * rotor->gear_ratio);
     rotor->motor.moveTo(target_position_steps);
 
     return 0;
+}
+
+void rotor_set_fast_accel(rotor_t *rotor)
+{
+    rotor->motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON);
+}
+
+void rotor_set_nomimal_accel(rotor_t *rotor)
+{
+     rotor->motor.setAcceleration(MAX_ACCEL_SPSS);
 }

@@ -34,6 +34,7 @@
 
 #define MAX_GEAR_RATIO 100
 #define MAX_SERIAL_BUFFER_LENGTH 1024u
+#define BUTTON_HOLD_TURNS 200
 
 // ISR flag for capacitative touch detected
 volatile bool alert_flag = false;
@@ -51,6 +52,7 @@ bi_decl(bi_ptr_string(0, 0, gear_ratio, "2.0", 32));
 struct context_t {
     bool enable = false;
     bool led = true;
+    bool power_good = false;
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
 };
 
@@ -70,15 +72,15 @@ struct rotor_cmd_t {
 // Errors
 typedef enum {
     ERROR_SUCCESS = 0,
-    ERROR_INVALID_TURN_REQ = -1,
-    ERROR_COMMAND_BUFFER_OVERFLOW = -2,
-    ERROR_COMMAND_MALFORMED = -3,
-    ERROR_NAN_OR_INF_TURN_COMMAND = -4,
-    ERROR_REMOTE_INTERFACE_LOCKED = -5,
-    ERROR_POWER_BAD = -6
+    ERROR_INVALID_TURN_REQ = 1,
+    ERROR_COMMAND_BUFFER_OVERFLOW = 2,
+    ERROR_COMMAND_MALFORMED = 4,
+    ERROR_NAN_TURN_COMMAND = 8,
+    ERROR_REMOTE_INTERFACE_LOCKED = 16,
+    ERROR_POWER_BAD = 32
 } commutator_error_t;
 
-static void print_report(context_t *ctx, commutator_error_t error){
+static void print_report(context_t *ctx, int error){
     JsonDocument doc;
     doc["gear_ratio"] = gear_ratio_f;
     doc["board_rev"] = BOARD_REV;
@@ -92,37 +94,60 @@ static void print_report(context_t *ctx, commutator_error_t error){
     std::cout << std::endl;
 }
 
-static commutator_error_t queue_add_button_turn_cmd_blocking(const context_t *ctx, double turns)
+static inline bool remote_motor_control_available(const context_t *ctx)
 {
-    if (ctx->enable)
-    {
-        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::BUTTON_TURN, .value = {.turns = turns}};
-        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-        return ERROR_SUCCESS;
-    }
-
-    return ERROR_INVALID_TURN_REQ;
+    return ctx->last_sensor_input_status == BUTTON_RELEASE ||
+           ctx->last_sensor_input_status == LED_BUTTON_PRESS;
 }
 
-static commutator_error_t queue_add_turn_cmd_blocking(const context_t *ctx, double turns)
+static int queue_add_cmd_blocking(const context_t *ctx, const rotor_cmd_t *cmd)
 {
-    if (ctx->enable)
+    int rc = ERROR_SUCCESS;
+
+    switch (cmd->tag)
     {
-        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = turns}};
-        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-        return ERROR_SUCCESS;
+        case rotor_cmd_tag::ENABLE:
+            if (!ctx->power_good)
+                rc |= ERROR_POWER_BAD;
+            break;
+
+        case rotor_cmd_tag::BUTTON_TURN:
+
+            if (!ctx->power_good)
+                rc |= ERROR_POWER_BAD;
+            if (!ctx->enable)
+                rc |= ERROR_INVALID_TURN_REQ;
+            if (std::isnan(cmd->value.turns))
+                rc |= ERROR_NAN_TURN_COMMAND;
+            break;
+
+        case rotor_cmd_tag::TURN:
+            if (!ctx->power_good)
+                rc |= ERROR_POWER_BAD;
+            if (std::isnan(cmd->value.turns))
+                rc |= ERROR_NAN_TURN_COMMAND;
+            if (!remote_motor_control_available(ctx))
+                rc |= ERROR_REMOTE_INTERFACE_LOCKED;
+            if (!ctx->enable)
+                rc |= ERROR_INVALID_TURN_REQ;
+            break;
     }
 
-    return ERROR_INVALID_TURN_REQ;
+    if (rc) return rc;
+
+    queue_add_blocking(&rotor_cmd_queue, cmd);
+    return ERROR_SUCCESS;
 }
 
-static commutator_error_t process_button_touches(context_t *ctx)
+static int process_button_touches(context_t *ctx)
 {
-    commutator_error_t rc = ERROR_SUCCESS;
+    int rc = ERROR_SUCCESS;
     if (alert_flag) {
-        rotor_cmd_t rotor_cmd;
+
+        alert_flag = false;
         cap1296_clear_int_bit_in_main_control_register();
         uint8_t sensor_input_status = cap1296_read_sensor_input_status_register();
+
         switch (sensor_input_status)
         {
             case LED_BUTTON_PRESS:
@@ -130,33 +155,44 @@ static commutator_error_t process_button_touches(context_t *ctx)
                 rgb_set_auto(ctx->enable, ctx->led);
                 break;
             case ENABLE_BUTTON_PRESS:
-                if (ltc4425_power_good()) {
-                    ctx->enable = !ctx->enable;
-                    rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
-                    queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                    rgb_set_auto(ctx->enable, ctx->led);
-                }
+            {
+                bool temp = !ctx->enable;
+                rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = temp}};
+                rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
+                if (!rc) ctx->enable = temp;
+                rgb_set_auto(ctx->enable, ctx->led);
                 break;
+            }
             case CW_BUTTON_PRESS:
-                rotor_cmd = {.tag = rotor_cmd_tag::STOP};
-                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rc = queue_add_button_turn_cmd_blocking(ctx, -INFINITY);
+            {
+                rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::STOP};
+                rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
+                rotor_cmd = {.tag = rotor_cmd_tag::BUTTON_TURN, .value = {.turns = -BUTTON_HOLD_TURNS}};
+                rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
                 break;
+            }
             case CCW_BUTTON_PRESS:
-                rotor_cmd = {.tag = rotor_cmd_tag::STOP};
-                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rc = queue_add_button_turn_cmd_blocking(ctx, INFINITY);
+            {
+                rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::STOP};
+                rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
+                rotor_cmd = {.tag = rotor_cmd_tag::BUTTON_TURN, .value = {.turns = BUTTON_HOLD_TURNS}};
+                rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
                 break;
+            }
             case BUTTON_RELEASE:
+            {
                 if (ctx->last_sensor_input_status & (CW_BUTTON_PRESS | CCW_BUTTON_PRESS))
                 {
-                    rotor_cmd = {.tag = rotor_cmd_tag::STOP};
-                    queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+                    rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::STOP};
+                    rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
                 }
                 break;
+            }
         }
+
         ctx->last_sensor_input_status = sensor_input_status;
-        alert_flag = false;
+
+
 #ifdef DEBUG
         printf("{button: %02hhx, counter: %i}\n", sensor_input_status, button_counter++);
 #endif
@@ -165,120 +201,39 @@ static commutator_error_t process_button_touches(context_t *ctx)
     return rc;
 }
 
-static inline bool remote_available(const context_t *ctx)
+static int parse_json_command(context_t *ctx, char *buffer)
 {
-    return ctx->last_sensor_input_status == BUTTON_RELEASE ||
-           ctx->last_sensor_input_status == LED_BUTTON_PRESS ||
-           !ltc4425_power_good();
-}
-
-static commutator_error_t process_serial_commands(context_t *ctx)
-{
-    static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
-    static uint16_t serial_buffer_index = 0;
-    static bool accept_serial_commands_previous = false;
-    static bool accept_serial_commands = false;
-
-    accept_serial_commands = remote_available(ctx);
-
-    if (accept_serial_commands && !accept_serial_commands_previous) {
-        while (getchar_timeout_us(0) != PICO_ERROR_TIMEOUT);
-        serial_buffer_index = 0;
-        memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
-    }
-
-    accept_serial_commands_previous = accept_serial_commands;
-
-    if (tud_cdc_available()) {
-        if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH-1) {
-            serial_buffer_index = 0;
-            memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
-            return ERROR_COMMAND_BUFFER_OVERFLOW;
-        }
-        char c = getchar_timeout_us(0);
-        if (!(serial_buffer_index == 0 && c != '{')) {
-            // ignore anything preceding a '{'
-            serial_buffer[serial_buffer_index++] = c;
-        }
-        if (serial_buffer_index > 0 && c == '{') {
-            // since we don't have any nesting jsons, reset the buffer when a
-            // new '{' arrives. This prevents a singular '{' from bricking
-            // further jsons from being parsed.
-            memset(serial_buffer, 0, serial_buffer_index+1);
-            serial_buffer_index = 0;
-            serial_buffer[serial_buffer_index++] = c;
-        }
-    }
-
     JsonDocument receive;
-    auto error = deserializeJson(receive, serial_buffer);
-
-    if (error.code() == DeserializationError::InvalidInput)
+    auto error = deserializeJson(receive, buffer);
+    if (error.code() != DeserializationError::Ok)
     {
-        memset(serial_buffer, 0, serial_buffer_index+1);
-        serial_buffer_index = 0;
         return ERROR_COMMAND_MALFORMED;
     }
-    else if (error.code() == DeserializationError::IncompleteInput)
-    {
-        return ERROR_SUCCESS;
-    }
 
-    memset(serial_buffer, 0, serial_buffer_index+1);
-    serial_buffer_index = 0;
-
-    rotor_cmd_t rotor_cmd;
-    commutator_error_t rc = ERROR_SUCCESS;
+    int rc = ERROR_SUCCESS;
 
     // Enable command
     if (receive["enable"].is<bool>())
     {
-        if (!accept_serial_commands)
-        {
-            rc = ERROR_REMOTE_INTERFACE_LOCKED;
-        }
-        else
-        {
-            ctx->enable = receive["enable"];
-            rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
-            queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-            rgb_set_auto(ctx->enable, ctx->led);
-        }
+        bool temp = receive["enable"];
+        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = temp}};
+        rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
+        if (!rc) ctx->enable = temp;
+        rgb_set_auto(ctx->enable, ctx->led);
     }
 
     // LED command
     if (receive["led"].is<bool>())
     {
-        if (!accept_serial_commands)
-        {
-            rc = ERROR_REMOTE_INTERFACE_LOCKED;
-        }
-        else
-        {
-            ctx->led = receive["led"];
-            rgb_set_auto(ctx->enable, ctx->led);
-        }
+        ctx->led = receive["led"];
+        rgb_set_auto(ctx->enable, ctx->led);
     }
 
     // Turn command, but don't let this command override current button presses
     if (receive["turn"].is<double>())
     {
-        if (!accept_serial_commands)
-        {
-            rc = ERROR_REMOTE_INTERFACE_LOCKED;
-        }
-        else
-        {
-            double turns = receive["turn"];
-            if (std::isnan(turns) || std::isinf(turns))
-            {
-                rc = ERROR_NAN_OR_INF_TURN_COMMAND;
-            }
-            else
-            {
-                rc = queue_add_turn_cmd_blocking(ctx, turns);
-            }
-        }
+        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::TURN, .value = {.turns = receive["turn"]}};
+        rc |= queue_add_cmd_blocking(ctx, &rotor_cmd);
     }
 
     // Print command
@@ -286,6 +241,7 @@ static commutator_error_t process_serial_commands(context_t *ctx)
     {
         print_report(ctx, ERROR_SUCCESS);
     }
+
 #ifdef DEBUG
     serializeJson(receive, std::cout);
     std::cout << std::endl;
@@ -294,17 +250,63 @@ static commutator_error_t process_serial_commands(context_t *ctx)
     return rc;
 }
 
+static int process_serial_input(context_t *ctx)
+{
+    static char serial_buffer[MAX_SERIAL_BUFFER_LENGTH] = {0};
+    static uint16_t serial_buffer_index = 0;
+
+    while (tud_cdc_available()) {
+
+        // overflow guard
+        if (serial_buffer_index >= MAX_SERIAL_BUFFER_LENGTH - 1) {
+            serial_buffer_index = 0;
+            memset(serial_buffer, 0, MAX_SERIAL_BUFFER_LENGTH);
+            return ERROR_COMMAND_BUFFER_OVERFLOW;
+        }
+
+        char c = getchar_timeout_us(0);
+
+        if (c == '{')
+        {
+            // force index 0 and start over
+            memset(serial_buffer, 0, serial_buffer_index + 1);
+            serial_buffer_index = 0;
+            serial_buffer[serial_buffer_index++] = c;
+
+        }
+        else if (c == '}')
+        {
+            // continue downstairs with current buffer
+            serial_buffer[serial_buffer_index] = c;
+            int rc = parse_json_command(ctx, serial_buffer);
+
+            memset(serial_buffer, 0, serial_buffer_index + 1);
+            serial_buffer_index = 0;
+
+            return rc;
+        }
+        else
+        {
+            serial_buffer[serial_buffer_index++] = c;
+        }
+    }
+
+    return ERROR_SUCCESS;
+
+}
+
 static void core1_entry()
 {
     rotor_t rotor = {AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), gear_ratio_f, 0.0};
     rotor_cmd_t rotor_cmd;
     rotor_init(&rotor);
+    static bool await_stop = false;
 
     rotor_enable(&rotor, false);
 
     while (true)
     {
-        if (queue_try_remove(&rotor_cmd_queue, &rotor_cmd))
+        if (!await_stop && queue_try_remove(&rotor_cmd_queue, &rotor_cmd))
         {
             switch (rotor_cmd.tag)
             {
@@ -312,26 +314,54 @@ static void core1_entry()
                     rotor_enable(&rotor, rotor_cmd.value.enable);
                     break;
                 case rotor_cmd_tag::TURN:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS);
+                    rotor_set_nomimal_accel(&rotor);
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::BUTTON_TURN:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON);
+                    rotor_set_fast_accel(&rotor);
                     rotor_move(&rotor, rotor_cmd.value.turns);
                     break;
                 case rotor_cmd_tag::STOP:
-                    rotor.motor.setAcceleration(MAX_ACCEL_SPSS_BUTTON * 2);
-                    rotor.motor.stop();
+                    rotor_set_fast_accel(&rotor);
+                    rotor_stop(&rotor);
+                    await_stop = true;
                     break;
             }
         }
 
         // If the motor has completed its motion and is stopped, reset the internal position counter
-        if (!rotor.motor.run())
+        if (!rotor_run(&rotor))
         {
+            await_stop = false;
             rotor_stop_and_reset(&rotor);
         }
     }
+}
+
+static int check_power(context_t *ctx)
+{
+    bool pg = ltc4425_power_good();
+    bool power_lost = ctx->power_good && !pg;
+    bool power_restored = !ctx->power_good && pg;
+
+    int rc = ERROR_SUCCESS;
+    if (power_lost)
+    {
+        ctx->enable = false;
+        rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx->enable}};
+        queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
+        rgb_set_auto(ctx->enable, ctx->led);
+        rgb_set_breathing(true);
+        rc |= ERROR_POWER_BAD;
+    }
+    else if (power_restored)
+    {
+        rgb_set_breathing(false);
+        rgb_set_auto(ctx->enable, ctx->led);
+    }
+
+    ctx->power_good = pg;
+    return rc;
 }
 
 int main()
@@ -339,7 +369,7 @@ int main()
     context_t ctx;
 
     gear_ratio_f = atof(gear_ratio);
-    if (gear_ratio_f < -MAX_GEAR_RATIO || gear_ratio_f > MAX_GEAR_RATIO)
+    if (gear_ratio_f < -MAX_GEAR_RATIO || gear_ratio_f > MAX_GEAR_RATIO || gear_ratio_f == 0.0)
     {
         // In all likelihood the string was nonsense
         return EXIT_FAILURE;
@@ -361,6 +391,7 @@ int main()
     ltc4425_init();
     cap1296_init();
     while (!ltc4425_power_good()) { tight_loop_contents(); } // Wait for super caps to charge
+    ctx.power_good = true;
     rgb_set_breathing(false);
     rgb_set_auto(ctx.enable, ctx.led);
 
@@ -371,35 +402,16 @@ int main()
     gpio_set_irq_enabled_with_callback(CAP1296_ALERT, GPIO_IRQ_EDGE_FALL, true, &io_alert_irq_callback);
     cap1296_clear_int_bit_in_main_control_register();
 
-    bool power_good = true, power_good_prev = true;
-
     // Decode commands and buttons
     while (true)
     {
-        commutator_error_t rc = ERROR_SUCCESS;
+        int rc = ERROR_SUCCESS;
 
-        rc = process_button_touches(&ctx);
+        rc |= process_button_touches(&ctx);
+        rc |= process_serial_input(&ctx);
+        rc |= check_power(&ctx);
+
         if (rc) print_report(&ctx, rc);
-
-        rc = process_serial_commands(&ctx);
-        if (rc) print_report(&ctx, rc);
-
-        if (!(power_good = ltc4425_power_good())) {
-            if (power_good_prev) {
-                ctx.enable = false;
-                rotor_cmd_t rotor_cmd = {.tag = rotor_cmd_tag::ENABLE, .value = {.enable = ctx.enable}};
-                queue_add_blocking(&rotor_cmd_queue, &rotor_cmd);
-                rgb_set_auto(ctx.enable, ctx.led);
-                rgb_set_breathing(true);
-                print_report(&ctx, ERROR_POWER_BAD);
-            }
-        }
-        else if (!power_good_prev) {
-            rgb_set_breathing(false);
-            rgb_set_auto(ctx.enable, ctx.led);
-        }
-        
-        power_good_prev = power_good;
 
 #ifdef DEBUG
         printf("%f\n", ltc4425_charge_current());
