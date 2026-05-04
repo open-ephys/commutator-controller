@@ -5,8 +5,8 @@
 #include "tmc2130.h"
 
 // Turn speed and acceleration (defined at the motor itself)
-#define SPEED_RPM 200
-#define ACCEL_RPMM 200
+#define SPEED_RPM 100
+#define ACCEL_RPMM 100
 
 // Stepper and driver parameters
 #define DETENTS 200
