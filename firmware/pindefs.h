@@ -12,7 +12,7 @@
 #define IS31_POW_BW             5
 
 // Capacitative touch sensor pin
-#define CAP1296_ALERT 11
+#define CAP1296_ALERT           11
 
 // Stepper driver pins
 #define TMC2130_SPI_PORT        spi0

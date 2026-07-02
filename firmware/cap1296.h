@@ -3,10 +3,6 @@
 #include "hardware/i2c.h"
 #include "pindefs.h"
 
-// CAP1296 datasheet: 
-// https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/00001569B.pdf
-
-#define CAP1296_ADDR 0x28
 #define BUTTON_RELEASE 0
 #define CW_BUTTON_PRESS (1 << 0)
 #define ENABLE_BUTTON_PRESS (1 << 1)
@@ -15,4 +11,4 @@
 
 void cap1296_init();
 void cap1296_clear_int_bit_in_main_control_register();
-uint8_t cap1296_read_sensor_input_status_register(); 
+uint8_t cap1296_read_sensor_input_status_register();
