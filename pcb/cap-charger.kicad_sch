@@ -2646,7 +2646,7 @@
 				)
 			)
 		)
-		(property "Description" "Polarized capacitor, US symbol"
+		(property "Description" "CAPACITOR POL:   SMD ALUM 100uF 25V ±20% X7R   [UCD1E101MCL6GS] [SMD]"
 			(at 254 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -2657,7 +2657,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "UCD1E101MCL6GS"
 			(at 254 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -2668,7 +2668,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS210012"
 			(at 254 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -2826,7 +2826,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 51kΩ ±1% 0.100W   [CR0603-FX-5102ELF] [SMD]"
 			(at 185.42 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -2848,7 +2848,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CR0603-FX-5102ELF"
 			(at 185.42 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -2859,7 +2859,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020087"
 			(at 185.42 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -2940,7 +2940,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 1206 22uF 25V ±20% X5R   [TMK316BBJ226ML-T] [SMD]"
 			(at 241.3 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -2951,7 +2951,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "TMK316BBJ226ML-T"
 			(at 241.3 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -2962,7 +2962,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010098"
 			(at 241.3 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -3043,7 +3043,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 76.2 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -3054,7 +3054,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 76.2 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -3065,7 +3065,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 76.2 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -3223,7 +3223,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 160kΩ ±1% 0.100W   [ERJ-3EKF1603V] [SMD]"
 			(at 185.42 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -3245,7 +3245,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ERJ-3EKF1603V"
 			(at 185.42 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -3256,7 +3256,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020086"
 			(at 185.42 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -3336,7 +3336,7 @@
 				)
 			)
 		)
-		(property "Description" "Boost Converter DC/DC Adjustable Power"
+		(property "Description" "OTHER:   DC DC CONVERTER 5-15V   [PTN04050CAZ] [Populated PCB]"
 			(at 226.06 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -3347,7 +3347,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "PTN04050CAZ"
 			(at 226.06 69.85 0)
 			(hide yes)
 			(show_name no)
@@ -3358,7 +3358,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS100091"
 			(at 226.06 69.85 0)
 			(hide yes)
 			(show_name no)
@@ -3446,7 +3446,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 1.2MΩ ±1% 0.100W   [AC0603FR-071M2L] [SMD]"
 			(at 90.17 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -3457,7 +3457,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "AC0603FR-071M2L"
 			(at 90.17 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -3468,7 +3468,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020239"
 			(at 90.17 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -3704,7 +3704,7 @@
 				)
 			)
 		)
-		(property "Description" "Polarized capacitor, US symbol"
+		(property "Description" "CAPACITOR POL:   TH SUPERCAPACITOR 3F 2.7V ±10% RADIAL   [HV0820-2R7305-R] [TH]"
 			(at 144.78 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -3715,7 +3715,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "HV0820-2R7305-R"
 			(at 144.78 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -3726,7 +3726,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS210011"
 			(at 144.78 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -3807,7 +3807,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 93.98 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -3818,7 +3818,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 93.98 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -3829,7 +3829,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 93.98 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -3938,9 +3938,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7a94c699-217d-4ed3-b273-5c8e4ecb9bf5")
@@ -3989,7 +3989,7 @@
 				)
 			)
 		)
-		(property "Description" "test point"
+		(property "Description" "#N/A"
 			(at 241.3 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -4194,9 +4194,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8e63897c-75fe-4d9d-a054-c28ba7d5182c")
@@ -4245,7 +4245,7 @@
 				)
 			)
 		)
-		(property "Description" "test point"
+		(property "Description" "#N/A"
 			(at 185.42 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -4346,7 +4346,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0805 4.7uF 50V ±10% X5R   [GRM21BR61H475KE51L] [SMD]"
 			(at 60.96 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4357,7 +4357,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "GRM21BR61H475KE51L"
 			(at 60.96 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4368,7 +4368,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010013"
 			(at 60.96 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4604,7 +4604,7 @@
 				)
 			)
 		)
-		(property "Description" "Polarized capacitor, US symbol"
+		(property "Description" "CAPACITOR POL:   SMD ALUM 100uF 25V ±20% X7R   [UCD1E101MCL6GS] [SMD]"
 			(at 196.85 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -4615,7 +4615,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "UCD1E101MCL6GS"
 			(at 196.85 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -4626,7 +4626,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS210012"
 			(at 196.85 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -4708,7 +4708,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 1.5MΩ ±1% 0.100W   [AC0603FR-071M5L] [SMD]"
 			(at 90.17 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -4719,7 +4719,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "AC0603FR-071M5L"
 			(at 90.17 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -4730,7 +4730,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020237"
 			(at 90.17 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -4887,7 +4887,7 @@
 				)
 			)
 		)
-		(property "Description" "Linear SuperCap charger with current-limited ideal diode and V/I monitor"
+		(property "Description" "IC:   SUPERCAP CHARGER   [LTC4425EMSE#PBF] [12-MSOP-EP]"
 			(at 123.19 91.44 0)
 			(hide yes)
 			(show_name no)
@@ -4898,7 +4898,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "LTC4425EMSE#PBF"
 			(at 123.19 91.44 0)
 			(hide yes)
 			(show_name no)
@@ -4909,7 +4909,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080230"
 			(at 123.19 91.44 0)
 			(hide yes)
 			(show_name no)
@@ -5098,7 +5098,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 1.33kΩ ±1% 0.100W   [ERJ-3EKF1331V] [SMD]"
 			(at 228.6 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -5119,7 +5119,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ERJ-3EKF1331V"
 			(at 228.6 82.55 90)
 			(hide yes)
 			(show_name no)
@@ -5130,7 +5130,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020238"
 			(at 228.6 82.55 90)
 			(hide yes)
 			(show_name no)
@@ -5212,7 +5212,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 1206 22uF 25V ±20% X5R   [TMK316BBJ226ML-T] [SMD]"
 			(at 209.55 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -5223,7 +5223,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "TMK316BBJ226ML-T"
 			(at 209.55 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -5234,7 +5234,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010098"
 			(at 209.55 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -5470,7 +5470,7 @@
 				)
 			)
 		)
-		(property "Description" "Polarized capacitor, US symbol"
+		(property "Description" "CAPACITOR POL:   TH SUPERCAPACITOR 3F 2.7V ±10% RADIAL   [HV0820-2R7305-R] [TH]"
 			(at 144.78 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -5481,7 +5481,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "HV0820-2R7305-R"
 			(at 144.78 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -5492,7 +5492,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS210011"
 			(at 144.78 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -5727,7 +5727,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 2.49kΩ ±1% 0.100W   [ERJ-3EKF2491V] [SMD]"
 			(at 146.05 121.92 0)
 			(hide yes)
 			(show_name no)
@@ -5738,7 +5738,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ERJ-3EKF2491V"
 			(at 146.05 121.92 90)
 			(hide yes)
 			(show_name no)
@@ -5749,7 +5749,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020088"
 			(at 146.05 121.92 90)
 			(hide yes)
 			(show_name no)
@@ -5905,7 +5905,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 162.56 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -5916,7 +5916,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 162.56 105.41 90)
 			(hide yes)
 			(show_name no)
@@ -5927,7 +5927,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 162.56 105.41 90)
 			(hide yes)
 			(show_name no)

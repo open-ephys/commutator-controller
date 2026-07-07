@@ -1613,7 +1613,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 180.34 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -1624,7 +1624,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 180.34 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -1635,7 +1635,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 180.34 96.52 0)
 			(hide yes)
 			(show_name no)
@@ -1716,7 +1716,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 147.32 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -1727,7 +1727,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 147.32 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -1738,7 +1738,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 147.32 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -1895,7 +1895,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0805 0Ω 2A   [RC0805JR-070RL] [SMD]"
 			(at 121.92 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -1906,7 +1906,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0805JR-070RL"
 			(at 121.92 92.71 90)
 			(hide yes)
 			(show_name no)
@@ -1917,7 +1917,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020025"
 			(at 121.92 92.71 90)
 			(hide yes)
 			(show_name no)
@@ -1998,7 +1998,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0603 1uF 25V ±10% X5R   [CL10A105KA8NNNC] [SMD]"
 			(at 134.62 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -2009,7 +2009,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL10A105KA8NNNC"
 			(at 134.62 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -2020,7 +2020,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010022"
 			(at 134.62 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -2475,7 +2475,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0805 0Ω 2A   [RC0805JR-070RL] [SMD]"
 			(at 121.92 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -2486,7 +2486,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0805JR-070RL"
 			(at 121.92 107.95 90)
 			(hide yes)
 			(show_name no)
@@ -2497,7 +2497,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020025"
 			(at 121.92 107.95 90)
 			(hide yes)
 			(show_name no)
@@ -2654,7 +2654,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0805 0Ω 2A   [RC0805JR-070RL] [SMD]"
 			(at 121.92 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -2665,7 +2665,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0805JR-070RL"
 			(at 121.92 102.87 90)
 			(hide yes)
 			(show_name no)
@@ -2676,7 +2676,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020025"
 			(at 121.92 102.87 90)
 			(hide yes)
 			(show_name no)
@@ -2757,7 +2757,7 @@
 				)
 			)
 		)
-		(property "Description" "6-Channel Capacitive Touch Sensor, DFN-10"
+		(property "Description" "IC:   CAPACITIVE TOUCH SENSOR 6CH   [CAP1296-1-AIA-TR] [10-DFN-EP]"
 			(at 152.4 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -2768,7 +2768,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CAP1296-1-AIA-TR"
 			(at 152.4 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -2779,7 +2779,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080233"
 			(at 152.4 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -2963,7 +2963,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0805 0Ω 2A   [RC0805JR-070RL] [SMD]"
 			(at 121.92 97.79 0)
 			(hide yes)
 			(show_name no)
@@ -2974,7 +2974,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0805JR-070RL"
 			(at 121.92 97.79 90)
 			(hide yes)
 			(show_name no)
@@ -2985,7 +2985,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020025"
 			(at 121.92 97.79 90)
 			(hide yes)
 			(show_name no)

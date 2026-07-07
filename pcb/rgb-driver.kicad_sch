@@ -1853,7 +1853,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0805 4.7uF 50V ±10% X5R   [GRM21BR61H475KE51L] [SMD]"
 			(at 69.85 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -1864,7 +1864,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "GRM21BR61H475KE51L"
 			(at 69.85 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -1875,7 +1875,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010013"
 			(at 69.85 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -1957,7 +1957,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 156.21 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -1968,7 +1968,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 156.21 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -1979,7 +1979,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 156.21 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -2061,7 +2061,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 50V ±10% X7R   [CGA2B3X7R1H104K050BB] [SMD]"
 			(at 175.26 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2083,7 +2083,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CGA2B3X7R1H104K050BB"
 			(at 175.26 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2094,7 +2094,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010016"
 			(at 175.26 92.71 0)
 			(hide yes)
 			(show_name no)
@@ -2253,7 +2253,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0805 4.7uF 50V ±10% X5R   [GRM21BR61H475KE51L] [SMD]"
 			(at 185.42 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -2264,7 +2264,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "GRM21BR61H475KE51L"
 			(at 185.42 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -2275,7 +2275,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010013"
 			(at 185.42 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -2356,7 +2356,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 156.21 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -2367,7 +2367,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 156.21 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -2378,7 +2378,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 156.21 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -2847,7 +2847,7 @@
 				)
 			)
 		)
-		(property "Description" "RGB LED, red/anode/blue/green"
+		(property "Description" "DIODE:   LED SMD RGB Red 645nm Green 515nm Blue 460nm   [XZMDKCBDDG45S-9] [4-PLCC]"
 			(at 87.63 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -2858,7 +2858,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "XZMDKCBDDG45S-9"
 			(at 87.63 82.55 90)
 			(hide yes)
 			(show_name no)
@@ -2869,7 +2869,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS030057"
 			(at 87.63 82.55 90)
 			(hide yes)
 			(show_name no)
@@ -3109,7 +3109,7 @@
 				)
 			)
 		)
-		(property "Description" "3-CHANNEL LED DRIVER"
+		(property "Description" "IC:   LED DRIVER LINEAR 42MA   [IS31FL3193-DLS2-TR] [10-DFN-EP]"
 			(at 130.81 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -3120,7 +3120,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "IS31FL3193-DLS2-TR"
 			(at 130.81 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -3131,7 +3131,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080232"
 			(at 130.81 100.33 0)
 			(hide yes)
 			(show_name no)

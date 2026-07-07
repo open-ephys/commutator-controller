@@ -3769,9 +3769,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "3758f038-b760-4b5a-9f02-d4b990f6f7e5")
 		(property "Reference" "TP4"
@@ -3819,7 +3819,7 @@
 				)
 			)
 		)
-		(property "Description" "test point"
+		(property "Description" "#N/A"
 			(at 204.47 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -3918,7 +3918,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor, small symbol"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 124.46 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -3929,7 +3929,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 124.46 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -3940,7 +3940,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 124.46 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -4019,7 +4019,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 5.1kΩ ±1% 0.100W   [ERJ-2RKF5101X] [SMD]"
 			(at 143.51 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -4030,7 +4030,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ERJ-2RKF5101X"
 			(at 143.51 110.49 90)
 			(hide yes)
 			(show_name no)
@@ -4041,7 +4041,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020173"
 			(at 143.51 110.49 90)
 			(hide yes)
 			(show_name no)
@@ -4121,7 +4121,7 @@
 				)
 			)
 		)
-		(property "Description" "600mA low dropout linear regulator, with enable pin, 3.8V-6V input voltage range, 3.3V fixed positive output, SOT-23-5"
+		(property "Description" "IC:   LDO 3.3V 600mA   [AP2112K-3.3TRG1] [SOT-23-5]"
 			(at 194.31 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -4132,7 +4132,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "AP2112K-3.3TRG1"
 			(at 194.31 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -4143,7 +4143,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080155"
 			(at 194.31 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -4310,7 +4310,7 @@
 				)
 			)
 		)
-		(property "Description" "USB 2.0-only 16P Type-C Receptacle connector"
+		(property "Description" "CONNECTOR:   USB2.0 TYPE C 24P SMD R/A   [USB4110-GF-A] [SMD]"
 			(at 106.68 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -4332,7 +4332,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "USB4110-GF-A"
 			(at 106.68 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -4343,7 +4343,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS070153"
 			(at 106.68 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -4702,7 +4702,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 5.1kΩ ±1% 0.100W   [ERJ-2RKF5101X] [SMD]"
 			(at 138.43 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -4713,7 +4713,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ERJ-2RKF5101X"
 			(at 138.43 110.49 90)
 			(hide yes)
 			(show_name no)
@@ -4724,7 +4724,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020173"
 			(at 138.43 110.49 90)
 			(hide yes)
 			(show_name no)
@@ -4807,7 +4807,7 @@
 				(justify left)
 			)
 		)
-		(property "Description" "4-Channel ESD Protection for Super-Speed USB 3.0 Interface, USON-10"
+		(property "Description" "DIODE:   TVS DIODE 5.5VWM 14VC   [TPD4E05U06DQAR] [10-UFDFN]"
 			(at 194.31 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -4818,7 +4818,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "TPD4E05U06DQAR"
 			(at 194.31 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -4829,7 +4829,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS030037"
 			(at 194.31 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -5122,9 +5122,9 @@
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
-		(in_pos_files yes)
+		(in_pos_files no)
 		(dnp no)
 		(uuid "c298c12f-452e-47e7-bc3e-eae5080b7792")
 		(property "Reference" "TP1"
@@ -5172,7 +5172,7 @@
 				)
 			)
 		)
-		(property "Description" "test point"
+		(property "Description" "#N/A"
 			(at 165.1 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -5272,7 +5272,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0603 1uF 25V ±10% X5R   [CL10A105KA8NNNC] [SMD]"
 			(at 173.99 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -5283,7 +5283,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL10A105KA8NNNC"
 			(at 173.99 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -5294,7 +5294,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010022"
 			(at 173.99 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -5453,7 +5453,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0603 1uF 25V ±10% X5R   [CL10A105KA8NNNC] [SMD]"
 			(at 210.82 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -5464,7 +5464,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL10A105KA8NNNC"
 			(at 210.82 110.49 0)
 			(hide yes)
 			(show_name no)
@@ -5475,7 +5475,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010022"
 			(at 210.82 110.49 0)
 			(hide yes)
 			(show_name no)

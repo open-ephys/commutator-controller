@@ -3163,7 +3163,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0805 4.7uF 50V ±10% X5R   [GRM21BR61H475KE51L] [SMD]"
 			(at 186.69 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -3185,7 +3185,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "GRM21BR61H475KE51L"
 			(at 186.69 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -3196,7 +3196,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010013"
 			(at 186.69 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -3354,7 +3354,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 1206 0.47Ω ±0.5% 0.500W   [KDV12DR470ET] [SMD]"
 			(at 181.61 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -3387,7 +3387,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "KDV12DR470ET"
 			(at 181.61 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -3398,7 +3398,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020241"
 			(at 181.61 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -3557,7 +3557,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 50V ±10% X7R   [CGA2B3X7R1H104K050BB] [SMD]"
 			(at 116.84 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -3579,7 +3579,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CGA2B3X7R1H104K050BB"
 			(at 116.84 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -3590,7 +3590,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010016"
 			(at 116.84 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -3671,7 +3671,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 1206 0.47Ω ±0.5% 0.500W   [KDV12DR470ET] [SMD]"
 			(at 167.64 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -3704,7 +3704,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "KDV12DR470ET"
 			(at 167.64 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -3715,7 +3715,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020241"
 			(at 167.64 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -3952,7 +3952,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "CONNECTOR:   HEADER SMD JST 6POS 2MM   [B6B-PH-SM4-TB] [SMD]"
 			(at 210.82 85.09 0)
 			(hide yes)
 			(show_name no)
@@ -3963,7 +3963,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "B6B-PH-SM4-TB"
 			(at 210.82 85.09 0)
 			(hide yes)
 			(show_name no)
@@ -3974,7 +3974,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS070154"
 			(at 210.82 85.09 0)
 			(hide yes)
 			(show_name no)
@@ -4066,7 +4066,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0603 22nF 100V ±10% X7R   [C1608X7R2A223K080AA] [SMD]"
 			(at 104.14 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4088,7 +4088,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1608X7R2A223K080AA"
 			(at 104.14 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4099,7 +4099,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010056"
 			(at 104.14 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4491,7 +4491,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 2.2Ω ±1% 0.100W   [CRCW06032R20FKEAC] [SMD]"
 			(at 152.4 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -4513,7 +4513,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CRCW06032R20FKEAC"
 			(at 152.4 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -4524,7 +4524,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020240"
 			(at 152.4 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -4683,7 +4683,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0805 470nF 50V ±10% X7R   [CL21B474KBFNNNG] [SMD]"
 			(at 129.54 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -4705,7 +4705,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL21B474KBFNNNG"
 			(at 129.54 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -4716,7 +4716,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010099"
 			(at 129.54 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -4797,7 +4797,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0805 4.7uF 50V ±10% X5R   [GRM21BR61H475KE51L] [SMD]"
 			(at 162.56 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -4819,7 +4819,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "GRM21BR61H475KE51L"
 			(at 162.56 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -4830,7 +4830,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010013"
 			(at 162.56 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5144,7 +5144,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 50V ±10% X7R   [CGA2B3X7R1H104K050BB] [SMD]"
 			(at 104.14 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5166,7 +5166,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CGA2B3X7R1H104K050BB"
 			(at 104.14 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5177,7 +5177,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010016"
 			(at 104.14 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5337,7 +5337,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 50V ±10% X7R   [CGA2B3X7R1H104K050BB] [SMD]"
 			(at 179.07 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -5359,7 +5359,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CGA2B3X7R1H104K050BB"
 			(at 179.07 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -5370,7 +5370,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010016"
 			(at 179.07 67.31 0)
 			(hide yes)
 			(show_name no)
@@ -5451,7 +5451,7 @@
 				)
 			)
 		)
-		(property "Description" "Driver for two-phase bipolar stepper motor, 2.0A, SPI, 4.75-46V, QFN-36"
+		(property "Description" "IC:   STEPPER MOTOR DRIVER   [TMC2130-LA] [36-QFN ]"
 			(at 148.59 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -5462,7 +5462,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "TMC2130-LA"
 			(at 148.59 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -5473,7 +5473,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080231"
 			(at 148.59 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -5815,7 +5815,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 101.6 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -5826,7 +5826,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 101.6 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -5837,7 +5837,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 101.6 107.95 0)
 			(hide yes)
 			(show_name no)
@@ -5919,7 +5919,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 50V ±10% X7R   [CGA2B3X7R1H104K050BB] [SMD]"
 			(at 176.53 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5941,7 +5941,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CGA2B3X7R1H104K050BB"
 			(at 176.53 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5952,7 +5952,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010016"
 			(at 176.53 49.53 0)
 			(hide yes)
 			(show_name no)

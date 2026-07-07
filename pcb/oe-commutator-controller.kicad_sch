@@ -1649,7 +1649,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 4.7kΩ ±1% 0.100W   [RC0603FR-074K7L] [SMD]"
 			(at 101.6 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -1660,7 +1660,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-074K7L"
 			(at 101.6 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -1671,7 +1671,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020236"
 			(at 101.6 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -2106,7 +2106,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 0Ω 1A   [RCS06030000Z0EA] [SMD]"
 			(at 121.92 76.2 0)
 			(hide yes)
 			(show_name no)
@@ -2117,7 +2117,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RCS06030000Z0EA"
 			(at 121.92 76.2 90)
 			(hide yes)
 			(show_name no)
@@ -2128,7 +2128,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020151"
 			(at 121.92 76.2 90)
 			(hide yes)
 			(show_name no)
@@ -2463,7 +2463,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 4.7kΩ ±1% 0.100W   [RC0603FR-074K7L] [SMD]"
 			(at 88.9 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -2474,7 +2474,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-074K7L"
 			(at 88.9 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -2485,7 +2485,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020236"
 			(at 88.9 68.58 0)
 			(hide yes)
 			(show_name no)

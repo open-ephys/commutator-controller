@@ -10171,7 +10171,7 @@
 				)
 			)
 		)
-		(property "Description" "128Mbit / 16MiB Serial Flash Memory, Standard/Dual/Quad SPI, 2.7-3.6V, SOIC-8"
+		(property "Description" "IC:   FLASH 128MBIT SPI/QUAD   [W25Q128JVSIQ] [8-SOIC]"
 			(at 36.83 60.96 0)
 			(hide yes)
 			(show_name no)
@@ -10182,7 +10182,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "W25Q128JVSIQ"
 			(at 36.83 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -10193,7 +10193,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080163"
 			(at 36.83 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -10450,7 +10450,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 179.07 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10461,7 +10461,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 179.07 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10472,7 +10472,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 179.07 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10710,7 +10710,7 @@
 				)
 			)
 		)
-		(property "Description" "Four pin crystal, GND on pins 2 and 4"
+		(property "Description" "OTHER:   Crystal 12 MHz ±20ppm 12pF 100Ohms   [ABM8AIG-12.000MHZ-12-2Z-T3] [SMD]"
 			(at 78.74 114.3 0)
 			(hide yes)
 			(show_name no)
@@ -10721,7 +10721,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ABM8AIG-12.000MHZ-12-2Z-T3"
 			(at 78.74 114.3 90)
 			(hide yes)
 			(show_name no)
@@ -10732,7 +10732,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS100059"
 			(at 78.74 114.3 90)
 			(hide yes)
 			(show_name no)
@@ -10820,7 +10820,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 156.21 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10831,7 +10831,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 156.21 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10842,7 +10842,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 156.21 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -10922,7 +10922,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 100Ω ±1% 0.250W   [RCS0402100RFKED] [SMD]"
 			(at 111.76 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -10933,7 +10933,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RCS0402100RFKED"
 			(at 111.76 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -10944,7 +10944,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020028"
 			(at 111.76 129.54 90)
 			(hide yes)
 			(show_name no)
@@ -11102,7 +11102,7 @@
 				)
 			)
 		)
-		(property "Description" "Push button switch, generic, two pins"
+		(property "Description" "CONNECTOR:   SWITCH TACTILE SPST-NO TOP ACTUATED   [TS04-66-50-BK-160-SMT] [SMD]"
 			(at 67.31 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -11113,7 +11113,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "TS04-66-50-BK-160-SMT"
 			(at 67.31 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -11124,7 +11124,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS070115"
 			(at 67.31 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -11206,7 +11206,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0603 1uF 25V ±10% X5R   [CL10A105KA8NNNC] [SMD]"
 			(at 217.17 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11217,7 +11217,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL10A105KA8NNNC"
 			(at 217.17 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11228,7 +11228,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010022"
 			(at 217.17 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -11389,7 +11389,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 30.48 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -11400,7 +11400,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 30.48 74.93 90)
 			(hide yes)
 			(show_name no)
@@ -11411,7 +11411,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 30.48 74.93 90)
 			(hide yes)
 			(show_name no)
@@ -11491,7 +11491,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 1kΩ ±1% 0.100W   [ERJ-2RKF1001X] [SMD]"
 			(at 106.68 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -11502,7 +11502,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "ERJ-2RKF1001X"
 			(at 106.68 119.38 90)
 			(hide yes)
 			(show_name no)
@@ -11513,7 +11513,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020006"
 			(at 106.68 119.38 90)
 			(hide yes)
 			(show_name no)
@@ -11593,7 +11593,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 27Ω ±1% 0.063W   [RMCF0402FT27R0] [SMD]"
 			(at 109.22 71.12 0)
 			(hide yes)
 			(show_name no)
@@ -11604,7 +11604,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RMCF0402FT27R0"
 			(at 109.22 71.12 90)
 			(hide yes)
 			(show_name no)
@@ -11615,7 +11615,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020170"
 			(at 109.22 71.12 90)
 			(hide yes)
 			(show_name no)
@@ -11930,7 +11930,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 54.61 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -11941,7 +11941,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 54.61 52.07 90)
 			(hide yes)
 			(show_name no)
@@ -11952,7 +11952,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 54.61 52.07 90)
 			(hide yes)
 			(show_name no)
@@ -12111,7 +12111,7 @@
 				)
 			)
 		)
-		(property "Description" "MEC 5E single pole normally-open tactile switch"
+		(property "Description" "OTHER:   SWITCH TACTILE SPST-NO 0.05A 12V   [EVQ-P7J01P] [SMD]"
 			(at 88.9 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -12122,7 +12122,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "EVQ-P7J01P"
 			(at 88.9 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -12133,7 +12133,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS100090"
 			(at 88.9 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -12219,7 +12219,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 27Ω ±1% 0.063W   [RMCF0402FT27R0] [SMD]"
 			(at 109.22 73.66 0)
 			(hide yes)
 			(show_name no)
@@ -12230,7 +12230,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RMCF0402FT27R0"
 			(at 109.22 73.66 90)
 			(hide yes)
 			(show_name no)
@@ -12241,7 +12241,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020170"
 			(at 109.22 73.66 90)
 			(hide yes)
 			(show_name no)
@@ -12402,7 +12402,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 209.55 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12413,7 +12413,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 209.55 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12424,7 +12424,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 209.55 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -12503,7 +12503,7 @@
 				)
 			)
 		)
-		(property "Description" "A microcontroller by Raspberry Pi"
+		(property "Description" "IC:   MCU ARM CORTEX-M0+ 32-BIT DUAL-CORE 133MHZ RP2040   [SC0914(13)] [56-VFQFN Exposed Pad]"
 			(at 142.24 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -12514,7 +12514,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "SC0914(13)"
 			(at 142.24 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -12525,7 +12525,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS080158"
 			(at 142.24 101.6 0)
 			(hide yes)
 			(show_name no)
@@ -12846,7 +12846,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 100Ω ±1% 0.250W   [RCS0402100RFKED] [SMD]"
 			(at 111.76 132.08 0)
 			(hide yes)
 			(show_name no)
@@ -12857,7 +12857,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RCS0402100RFKED"
 			(at 111.76 132.08 90)
 			(hide yes)
 			(show_name no)
@@ -12868,7 +12868,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020028"
 			(at 111.76 132.08 90)
 			(hide yes)
 			(show_name no)
@@ -13108,7 +13108,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 186.69 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13119,7 +13119,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 186.69 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13130,7 +13130,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 186.69 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13448,7 +13448,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0603 1uF 25V ±10% X5R   [CL10A105KA8NNNC] [SMD]"
 			(at 110.49 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13459,7 +13459,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL10A105KA8NNNC"
 			(at 110.49 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13470,7 +13470,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010022"
 			(at 110.49 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13551,7 +13551,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 22pF 50V ±5% C0G/NP0   [CL05C220JB51PNC] [SMD]"
 			(at 66.04 109.22 0)
 			(hide yes)
 			(show_name no)
@@ -13573,7 +13573,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL05C220JB51PNC"
 			(at 66.04 109.22 0)
 			(hide yes)
 			(show_name no)
@@ -13584,7 +13584,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010080"
 			(at 66.04 109.22 0)
 			(hide yes)
 			(show_name no)
@@ -13666,7 +13666,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 163.83 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13677,7 +13677,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 163.83 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13688,7 +13688,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 163.83 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -13846,7 +13846,7 @@
 				)
 			)
 		)
-		(property "Description" "Generic connector, double row, 02x05, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+		(property "Description" "DNP: Do Not Populate (DNI)"
 			(at 54.61 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -13857,7 +13857,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "DNP"
 			(at 54.61 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -13868,7 +13868,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS000000"
 			(at 54.61 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -13972,7 +13972,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 100Ω ±1% 0.250W   [RCS0402100RFKED] [SMD]"
 			(at 181.61 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -13983,7 +13983,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RCS0402100RFKED"
 			(at 181.61 63.5 90)
 			(hide yes)
 			(show_name no)
@@ -13994,7 +13994,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020028"
 			(at 181.61 63.5 90)
 			(hide yes)
 			(show_name no)
@@ -14155,7 +14155,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 171.45 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14166,7 +14166,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 171.45 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14177,7 +14177,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 171.45 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14338,7 +14338,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 194.31 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14349,7 +14349,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 194.31 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14360,7 +14360,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 194.31 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14440,7 +14440,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0603 10kΩ ±1% 0.100W   [RC0603FR-0710KL] [SMD]"
 			(at 99.06 52.07 0)
 			(hide yes)
 			(show_name no)
@@ -14451,7 +14451,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0710KL"
 			(at 99.06 52.07 90)
 			(hide yes)
 			(show_name no)
@@ -14462,7 +14462,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020133"
 			(at 99.06 52.07 90)
 			(hide yes)
 			(show_name no)
@@ -14620,7 +14620,7 @@
 				)
 			)
 		)
-		(property "Description" "Resistor, US symbol"
+		(property "Description" "RESISTOR:   SMD 0402 100Ω ±1% 0.250W   [RCS0402100RFKED] [SMD]"
 			(at 181.61 66.04 0)
 			(hide yes)
 			(show_name no)
@@ -14631,7 +14631,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RCS0402100RFKED"
 			(at 181.61 66.04 90)
 			(hide yes)
 			(show_name no)
@@ -14642,7 +14642,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS020028"
 			(at 181.61 66.04 90)
 			(hide yes)
 			(show_name no)
@@ -14959,7 +14959,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 119.38 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14970,7 +14970,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 119.38 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14981,7 +14981,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 119.38 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15140,7 +15140,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 127 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15151,7 +15151,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 127 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15162,7 +15162,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 127 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15244,7 +15244,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 22pF 50V ±5% C0G/NP0   [CL05C220JB51PNC] [SMD]"
 			(at 66.04 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15266,7 +15266,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "CL05C220JB51PNC"
 			(at 66.04 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15277,7 +15277,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010080"
 			(at 66.04 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -15437,7 +15437,7 @@
 				)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "CAPACITOR:   SMD CER 0402 100nF 35V ±10% X5R (OEPS H1 001)   [C1005X5R1V104K050BB] [SMD]"
 			(at 201.93 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15448,7 +15448,7 @@
 				)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "C1005X5R1V104K050BB"
 			(at 201.93 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -15459,7 +15459,7 @@
 				)
 			)
 		)
-		(property "OEPS PN" ""
+		(property "OEPS PN" "OEPS010066"
 			(at 201.93 45.72 0)
 			(hide yes)
 			(show_name no)
