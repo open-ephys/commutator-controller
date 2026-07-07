@@ -27,4 +27,6 @@ fp-info-cache
 
 # Exported BOM files
 *.xml
-*.csv
+
+# Editor and tool history
+.history/
