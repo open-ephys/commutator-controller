@@ -26,7 +26,8 @@
 
 // #define DEBUG
 #define FIRMWARE_VER "0.1.0"
-#define BOARD_REV "H"
+#define BOARD_REV "J"
+#define PART_NUMBER "OEPS-7758"
 
 #ifdef DEBUG
     uint16_t button_counter = 0;
@@ -82,9 +83,10 @@ typedef enum {
 
 static void print_report(context_t *ctx, int error){
     JsonDocument doc;
-    doc["gear_ratio"] = gear_ratio_f;
+    doc["part_number"] = PART_NUMBER;
     doc["board_rev"] = BOARD_REV;
     doc["firmware"] = FIRMWARE_VER;
+    doc["gear_ratio"] = gear_ratio_f;
     doc["enable"] = ctx->enable;
     doc["led"] = ctx->led;
     doc["charge_current"] = ltc4425_charge_current();
