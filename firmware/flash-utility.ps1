@@ -17,7 +17,9 @@
     reboot, so it doesn't depend on the board enumerating over serial, and it
     catches a bad write regardless of what wrote it.
 
-    Requires picotool (https://github.com/raspberrypi/picotool) on PATH.
+    Requires picotool (https://github.com/raspberrypi/picotool) 2.1.0 or later
+    on PATH. Earlier versions of picotool can't parse this firmware's custom
+    binary_info and fails with a cryptic "Hmm uncaught not mapped" error.
 
 .EXAMPLE
     .\flash-utility.ps1 build\commutator.elf J 2.0
@@ -40,6 +42,11 @@ Set-StrictMode -Version Latest
 # eeprom.cpp.
 $GearField = 21
 
+# picotool 2.0.0 can't parse the custom binary_info entry eeprom.cpp adds
+# (eeprom_config_addr) and fails with an unhelpful internal error instead of a
+# clean one, so it's worth checking for up front.
+$MinPicotoolVersion = [version]"2.1.0"
+
 function Die {
     param([string]$Message)
     Write-Host "error: $Message" -ForegroundColor Red
@@ -50,6 +57,20 @@ function Die {
 
 if (-not (Get-Command picotool -ErrorAction SilentlyContinue)) {
     Die "picotool not found on PATH"
+}
+
+$verOutput = & picotool version -s 2>&1
+if ($LASTEXITCODE -ne 0) {
+    Die "could not determine picotool version: $verOutput"
+}
+try {
+    $picotoolVersion = [version]($verOutput -replace '-.*$', '')
+} catch {
+    Die "could not parse picotool version '$verOutput'"
+}
+if ($picotoolVersion -lt $MinPicotoolVersion) {
+    Die ("picotool $verOutput is too old (need $MinPicotoolVersion or later) -- " +
+         "it can't read this firmware's custom binary_info. Upgrade picotool.")
 }
 
 if (-not (Test-Path -LiteralPath $Firmware -PathType Leaf)) {
@@ -135,8 +156,8 @@ try {
     if ($LASTEXITCODE -ne 0) { Die "picotool load (config) failed" }
 
     $configAddrEnd = "0x{0:X8}" -f ($ConfigAddrValue + $configBytes.Length)
-    picotool save -r $ConfigAddr $configAddrEnd $readbackFile
-    if ($LASTEXITCODE -ne 0) { Die "picotool save (readback) failed" }
+    $saveOutput = & picotool save -r $ConfigAddr $configAddrEnd $readbackFile 2>&1
+    if ($LASTEXITCODE -ne 0) { Die "picotool save (readback) failed: $saveOutput" }
 
     $readbackBytes = [System.IO.File]::ReadAllBytes($readbackFile)
     if (Compare-Object $configBytes $readbackBytes -SyncWindow 0) {

@@ -28,9 +28,11 @@ problem after producing the image.
 
 ## Flash Firmware and Hardware Configuration
 
-Requires [`picotool`](https://github.com/raspberrypi/picotool) on your `PATH`.
-Assuming you followed the Pico Getting Started Guide and have started a new
-terminal session since then, this should already be true.
+Requires [`picotool`](https://github.com/raspberrypi/picotool) **2.1.0 or
+later** on your `PATH`. Earlier versions of picotool can't parse this firmware's
+custom `binary_info` and fail with a cryptic `Hmm uncaught not mapped` error.
+`flash-utility.ps1` checks the version itself and fails with a clear message
+before touching the device.
 
 ```powershell
 .\flash-utility.cmd <FIRMWARE> <BOARD_REV> <GEAR_RATIO>
