@@ -26,7 +26,7 @@
 #define PART_NUMBER "OEPS-7758"
 
 // These values are pulled from sector of EEPROM persistent across flashes
-static char board_rev[2] = "?";
+static char board_rev = '?';
 static double gear_ratio = 0.0;
 
 #ifdef DEBUG
@@ -80,7 +80,8 @@ typedef enum {
 static void print_report(context_t *ctx, int error){
     JsonDocument doc;
     doc["part_number"] = PART_NUMBER;
-    doc["board_rev"] = board_rev;
+    char board_rev_str[2] = {board_rev, '\0'};
+    doc["board_rev"] = board_rev_str;
     doc["firmware"] = FIRMWARE_VER;
     doc["gear_ratio"] = gear_ratio;
     doc["enable"] = ctx->enable;
@@ -381,7 +382,7 @@ int main()
     // directly drives motor movement, so an invalid value gates ENABLE/TURN
     // (see queue_add_cmd_blocking) instead of silently running a potential bad 
     // value.
-    eeprom_read_board_rev(board_rev);
+    eeprom_read_board_rev(&board_rev);
     ctx.config_valid = eeprom_read_gear_ratio(&gear_ratio) &&
                         !std::isnan(gear_ratio) && gear_ratio > 0.0 && gear_ratio <= MAX_GEAR_RATIO;
 
