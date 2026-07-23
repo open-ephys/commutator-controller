@@ -8,26 +8,26 @@
 #include <istream>
 
 #include "hardware/gpio.h"
-#include "pico/binary_info.h"
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include "pico/util/queue.h"
 
 #include "AccelStepper.h"
 #include "cap1296.h"
+#include "eeprom.h"
 #include "io.h"
 #include "is32fl3193.h"
 #include "ltc4425.h"
 #include "rotor.h"
 #include "pindefs.h"
 
-#define xstr(a) str(a)
-#define str(a) #a
-
 // #define DEBUG
 #define FIRMWARE_VER "0.1.0"
-#define BOARD_REV "J"
 #define PART_NUMBER "OEPS-7758"
+
+// These values are pulled from sector of EEPROM persistent across flashes
+static char board_rev[2] = "?";
+static double gear_ratio = 0.0;
 
 #ifdef DEBUG
     uint16_t button_counter = 0;
@@ -44,16 +44,11 @@ static void io_alert_irq_callback(unsigned int gpio, long unsigned int events)
     alert_flag = true;
 }
 
-// NB: The gear ratio is configurable without recompilation using
-//      `picotool config -s gear_ratio 3.14`
-// or similar.
-double gear_ratio_f = 2.0;
-bi_decl(bi_ptr_string(0, 0, gear_ratio, "2.0", 32));
-
 struct context_t {
     bool enable = false;
     bool led = true;
     bool power_good = false;
+    bool config_valid = false;
     uint8_t last_sensor_input_status = BUTTON_RELEASE;
 };
 
@@ -78,15 +73,16 @@ typedef enum {
     ERROR_COMMAND_MALFORMED = 4,
     ERROR_NAN_TURN_COMMAND = 8,
     ERROR_REMOTE_INTERFACE_LOCKED = 16,
-    ERROR_POWER_BAD = 32
+    ERROR_POWER_BAD = 32,
+    ERROR_INVALID_CONFIG = 64
 } commutator_error_t;
 
 static void print_report(context_t *ctx, int error){
     JsonDocument doc;
     doc["part_number"] = PART_NUMBER;
-    doc["board_rev"] = BOARD_REV;
+    doc["board_rev"] = board_rev;
     doc["firmware"] = FIRMWARE_VER;
-    doc["gear_ratio"] = gear_ratio_f;
+    doc["gear_ratio"] = gear_ratio;
     doc["enable"] = ctx->enable;
     doc["led"] = ctx->led;
     doc["charge_current"] = ltc4425_charge_current();
@@ -111,12 +107,16 @@ static int queue_add_cmd_blocking(const context_t *ctx, const rotor_cmd_t *cmd)
         case rotor_cmd_tag::ENABLE:
             if (!ctx->power_good)
                 rc |= ERROR_POWER_BAD;
+            if (!ctx->config_valid)
+                rc |= ERROR_INVALID_CONFIG;
             break;
 
         case rotor_cmd_tag::BUTTON_TURN:
 
             if (!ctx->power_good)
                 rc |= ERROR_POWER_BAD;
+            if (!ctx->config_valid)
+                rc |= ERROR_INVALID_CONFIG;
             if (!ctx->enable)
                 rc |= ERROR_INVALID_TURN_REQ;
             if (std::isnan(cmd->value.turns))
@@ -126,6 +126,8 @@ static int queue_add_cmd_blocking(const context_t *ctx, const rotor_cmd_t *cmd)
         case rotor_cmd_tag::TURN:
             if (!ctx->power_good)
                 rc |= ERROR_POWER_BAD;
+            if (!ctx->config_valid)
+                rc |= ERROR_INVALID_CONFIG;
             if (std::isnan(cmd->value.turns))
                 rc |= ERROR_NAN_TURN_COMMAND;
             if (!remote_motor_control_available(ctx))
@@ -241,7 +243,7 @@ static int parse_json_command(context_t *ctx, char *buffer)
     // Print command
     if (receive["print"].is<JsonVariant>())
     {
-        print_report(ctx, ERROR_SUCCESS);
+        print_report(ctx, ctx->config_valid ? ERROR_SUCCESS : ERROR_INVALID_CONFIG);
     }
 
 #ifdef DEBUG
@@ -299,7 +301,7 @@ static int process_serial_input(context_t *ctx)
 
 static void core1_entry()
 {
-    rotor_t rotor = {AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), gear_ratio_f, 0.0};
+    rotor_t rotor = {AccelStepper(AccelStepper::DRIVER, TMC2130_STEP, TMC2130_DIR), gear_ratio, 0.0};
     rotor_cmd_t rotor_cmd;
     rotor_init(&rotor);
     static bool await_stop = false;
@@ -370,18 +372,18 @@ int main()
 {
     context_t ctx;
 
-    gear_ratio_f = atof(gear_ratio);
-    if (gear_ratio_f < -MAX_GEAR_RATIO || gear_ratio_f > MAX_GEAR_RATIO || gear_ratio_f == 0.0)
-    {
-        // In all likelihood the string was nonsense
-        return EXIT_FAILURE;
-    }
-
     // Initialize serial port
     if (!stdio_init_all())
-    {
         return EXIT_FAILURE;
-    }
+
+    // board_rev is purely informational (reported over serial/JSON) and has
+    // no effect on device behavior, so it's read but not validated. gear_ratio
+    // directly drives motor movement, so an invalid value gates ENABLE/TURN
+    // (see queue_add_cmd_blocking) instead of silently running a potential bad 
+    // value.
+    eeprom_read_board_rev(board_rev);
+    ctx.config_valid = eeprom_read_gear_ratio(&gear_ratio) &&
+                        !std::isnan(gear_ratio) && gear_ratio > 0.0 && gear_ratio <= MAX_GEAR_RATIO;
 
     queue_init(&rotor_cmd_queue, sizeof(rotor_cmd_t), 32);
 
