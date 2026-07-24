@@ -6,16 +6,14 @@
 .DESCRIPTION
     The board revision and gear ratio are written to the last sector of flash,
     which the firmware image never reaches, so they survive future firmware
-    flashes (see eeprom.cpp). A firmware built against boards/commutator.h
-    can't overlap that sector at all -- the linker fails outright ("region
-    'FLASH' overflowed") for any build that would.
+    flashes (see eeprom.cpp). A firmware built against boards/commutator.h can't
+    overlap that sector at all. The linker fails any build that exceeds the size
+    of the flash minus the size of the last sector ("region 'FLASH'
+    overflowed").
 
     Config is always written after firmware, then read directly back off the
     device (via `picotool save`) and compared byte-for-byte against what was
-    intended -- so success means "verified on flash", not just "picotool
-    returned 0". This happens while still in BOOTSEL mode, before the final
-    reboot, so it doesn't depend on the board enumerating over serial, and it
-    catches a bad write regardless of what wrote it.
+    intended.
 
     Requires picotool (https://github.com/raspberrypi/picotool) 2.1.0 or later
     on PATH. Earlier versions of picotool can't parse this firmware's custom
