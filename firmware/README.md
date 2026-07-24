@@ -23,8 +23,7 @@ this file's path as input.
 The board definition (`boards/commutator.h`) declares one flash sector less
 than the physical chip, so the linker itself refuses to link a firmware image
 that would overwrite the reserved configuration sector described below (a
-build failure, `region 'FLASH' overflowed`) -- rather than only catching the
-problem after producing the image.
+build failure, `region 'FLASH' overflowed`).
 
 ## Flash Firmware and Hardware Configuration
 
@@ -44,14 +43,12 @@ Example:
 .\flash-utility.cmd build\commutator.elf J 2.0
 ```
 
-`board_rev` is a single character; it's purely informational (reported over
-serial/JSON) and has no effect on device behavior, so its value isn't
-restricted. `gear_ratio` directly drives motor movement, so the firmware
-enforces it must be greater than 0 and at most 100 -- an out-of-range value
-still boots (and reports the error over serial) but refuses to enable the
-motor.
+`board_rev` is a single character. `gear_ratio` directly drives motor movement,
+so the firmware enforces it must be greater than 0 and less than or equal to
+100. An out-of-range value boots, but it reports the error over serial and
+refuses to enable the motor.
 
-After writing, the script reads the config sector directly back off the
-device (via `picotool save`) and compares it byte-for-byte against what was
-intended, while still in BOOTSEL mode -- so success means "verified on
-flash," not just "picotool returned 0".
+After writing, the script reads the config sector directly back off the device
+(via `picotool save`) and compares it byte-for-byte against what was intended,
+while still in BOOTSEL mode. Success means that the correct bytes were written
+to flash.
